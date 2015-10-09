@@ -1,0 +1,44 @@
+{% extends "registration/layout_form.html" %}
+{% load macros %}
+{% loadmacros 'registration/macros.html' %}
+{% load tools %}
+
+{% block nav %}Règlements > Catégorie > Equipe{% endblock %}
+
+{% block form %}
+<form method="POST" class="" action="/registration/category/team/">
+  {% csrf_token %}
+  <!-- HTML -->
+    <div class='container centered'>
+      <div class='row'>
+        <div class='col-lg-8 centered'>
+          {% usemacro display_form_error form %}
+          <legend>Information générale de l'équipe</legend>
+          {% usemacro basic_form form.name 'form-control' %}
+          {% usemacro basic_form form.email 'form-control' %}
+          {% usemacro basic_form form.category 'form-control' %}
+          {% usemacro basic_form form.school 'form-control autocomplete_school' %}
+          {% usemacro basic_form form.company 'form-control autocomplete_company' %}
+        </div>
+      </div>
+      <div class='row'>
+          <div class='col-lg-4'>
+            <legend>Relayeur 1: route (3,3 km)</legend>
+            {% usemacro form_runner form.first_name_1 form.last_name_1 form.gender_1 form.birthday_1 form.license_1 form.federation_1 form.school_1 form.club_1 %}
+          </div>
+          <div class='col-lg-4'>
+            <legend>Relayeur 2: nature (3,4 km)</legend>
+            {% usemacro form_runner form.first_name_2 form.last_name_2 form.gender_2 form.birthday_2 form.license_2 form.federation_2 form.school_2 form.club_2 %}
+          </div>
+          <div class='col-lg-4'>
+            <legend>Relayeur 3: route (3,3 km)</legend>
+            {% usemacro form_runner form.first_name_3 form.last_name_3 form.gender_3 form.birthday_3 form.license_3 form.federation_3 form.school_3 form.club_3 %}
+          </div>
+        </div>
+      <div class="row centered">
+        {% usemacro basic_form form.captcha 'form-control' %}
+      </div>
+      <input type="submit" value="Submit"  class="btn btn-primary">
+    </div>
+</form>
+{% endblock %}

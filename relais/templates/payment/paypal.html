@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% load macros %}
+{% loadmacros "registration/macros.html" %}
+{% block nav %}Inscription > Paiement{% endblock %}
+{% block content %}
+<div class='container centered'>
+  <div class='row'>
+  <h1>Paypal</h1>
+    <div class='col-lg-8 centered'>
+    {{form}}
+    </div>
+  </div>
+</div>
+{{ form.render }}
+{% endblock %}

@@ -1,0 +1,64 @@
+{% load tools %}
+{% load macros %}
+
+{% macro display_error err %}
+  {% if err %}
+<p class='text-danger'>{{err}}</p>
+  {% endif %}
+{% endmacro %}
+
+{% macro display_form_error form %}
+  {% if form.errors %}
+<p class='text-danger'>Certains champs sont incorrects.</p>
+  {% endif %}
+  {% if form.non_field_errors %}
+    {% for e in form.non_field_errors %}
+<p class='text-danger'>{{e}}</p>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+{% macro display_error field %}
+  {% if field.errors %}
+<span class="glyphicon glyphicon-remove form-control-feedback"></span>
+    {% for e in field.errors %}
+<p class='text-danger'>{{e}}</p>
+    {% endfor %}
+  {% endif %}
+
+  {% if field.non_field_errors %}
+    {% for e in field.non_field_errors %}
+<p class='text-danger'>{{e}}</p>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+{% macro basic_form item css %}
+<div id="form_{{ item.name }}" class="form-group has-feedback{{item.errors|yesno:" has-error,,"}}">
+   <label class="control-label" for="id_{{ item.name }}">{{ item.label }}</label>
+   {% if css %}
+   {{ item | addcss:css }}
+   {% else %}
+   {{ item }}
+   {% endif %}
+   <p class="help-text">{{ item.help_text }} </p>
+   {% usemacro display_error item %}
+</div>
+{% endmacro %}
+
+{% macro form_runner first_name last_name gender birthday license federation school club %}
+  {# First name #}
+  {% usemacro basic_form first_name 'form-control' %}
+  {# Last name #}
+  {% usemacro basic_form last_name 'form-control' %}
+  {# Gender #}
+  {% usemacro basic_form gender 'form-control'%}
+  {# Birthday #}
+  {% usemacro basic_form birthday 'form-control datepicker' %}
+  {# license #}
+  {% usemacro basic_form license 'form-control' %}
+  {# federation #}
+  {% usemacro basic_form federation 'form-control autocomplete_fede' %}
+  {# club #}
+  {% usemacro basic_form club 'form-control autocomplete_club' %}
+{% endmacro %}

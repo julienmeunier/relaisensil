@@ -1,0 +1,269 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-12-12 19:36+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: forms.py:29
+msgid "Choice"
+msgstr "Choix"
+
+#: forms.py:36 forms.py:107
+msgid "First Name"
+msgstr "Prénom"
+
+#: forms.py:37 forms.py:109
+msgid "Last Name"
+msgstr "Nom"
+
+#: forms.py:38 forms.py:92 models.py:29 models.py:282 models.py:357
+msgid "Email"
+msgstr "Email"
+
+#: forms.py:39 forms.py:111 models.py:163
+msgid "Gender"
+msgstr "Sexe"
+
+#: forms.py:40 forms.py:113 models.py:164
+msgid "Birthday"
+msgstr "Date de naissance"
+
+#: forms.py:41 forms.py:93
+msgid "Category"
+msgstr "Catégorie"
+
+#: forms.py:43 forms.py:114 models.py:168
+msgid "License number"
+msgstr "Numéro de licence"
+
+#: forms.py:44 forms.py:97 models.py:117 models.py:169
+msgid "School"
+msgstr "Ecole / Composante"
+
+#: forms.py:45 forms.py:116 models.py:87 models.py:170
+msgid "Federation"
+msgstr "Fédération"
+
+#: forms.py:46 forms.py:95 models.py:97 models.py:171 models.py:288
+#: models.py:366
+msgid "Company"
+msgstr "Entreprise"
+
+#: forms.py:47 forms.py:118 models.py:107 models.py:172
+msgid "Club"
+msgstr "Club"
+
+#: forms.py:91 models.py:84 models.py:94 models.py:104 models.py:114
+msgid "Name"
+msgstr "Nom"
+
+#: forms.py:96
+msgid "Complete it if you run with your company"
+msgstr "A compléter si vous courrez avec votre entreprise"
+
+#: forms.py:174 models.py:134
+msgid "Method"
+msgstr "Méthode"
+
+#: models.py:30
+msgid "Email contact"
+msgstr "Courriel pour le contact"
+
+#: models.py:31
+msgid "URL to registration"
+msgstr "URL du module"
+
+#: models.py:32
+msgid "Phone"
+msgstr "Téléphone"
+
+#: models.py:33
+msgid "First event"
+msgstr "Première édition"
+
+#: models.py:34
+msgid "Event"
+msgstr "Prochaine édition"
+
+#: models.py:35
+msgid "End of postal subscription"
+msgstr "Fin de l'inscription par voie postale"
+
+#: models.py:36
+msgid "End of online subscription"
+msgstr "Fin de l'inscription en ligne"
+
+#: models.py:37
+msgid "Legacy rules"
+msgstr "Règlement"
+
+#: models.py:38
+msgid "Disclamer"
+msgstr "Décharge de responsabilité"
+
+#: models.py:39
+msgid "Postal address"
+msgstr "Adresse postale"
+
+#: models.py:42
+msgid "Setting"
+msgstr "Configuration"
+
+#: models.py:49
+msgid "Adult"
+msgstr "Adulte"
+
+#: models.py:50
+msgid "Student"
+msgstr "Etudiant"
+
+#: models.py:51
+msgid "Student ENSIL"
+msgstr "ENSILiens"
+
+#: models.py:52
+msgid "Challenge company"
+msgstr "Challenge Entreprise"
+
+#: models.py:53
+msgid "Old ENSIL people"
+msgstr "Ancien ENSILiens"
+
+#: models.py:55
+msgid "Online"
+msgstr "En ligne"
+
+#: models.py:56
+msgid "On-site"
+msgstr "Sur le lieu de la course"
+
+#: models.py:58 models.py:346
+msgid "Individual"
+msgstr "Individuel"
+
+#: models.py:59
+msgid "Team of 3 people"
+msgstr "Equipe de 3 personnes"
+
+#: models.py:65
+msgid "Type of runner"
+msgstr "Type de coureurs"
+
+#: models.py:66 models.py:283 models.py:358
+msgid "Category of runner"
+msgstr "Type de coureurs"
+
+#: models.py:67
+msgid "When"
+msgstr "Quand"
+
+#: models.py:68 models.py:74 models.py:133
+msgid "Price"
+msgstr "Prix"
+
+#: models.py:75
+msgid "Prices"
+msgstr "Prix"
+
+#: models.py:123
+msgid "Cash"
+msgstr "Espèce"
+
+#: models.py:124
+msgid "Cheque"
+msgstr "Chèque"
+
+#: models.py:126
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: models.py:135
+msgid "Validate"
+msgstr "Validé"
+
+#: models.py:144 models.py:285 models.py:368
+msgid "Payment"
+msgstr "Paiement"
+
+#: models.py:148
+msgid "approved"
+msgstr "validé"
+
+#: models.py:150
+msgid "under validation"
+msgstr "en attente de validation"
+
+#: models.py:154
+msgid "Male"
+msgstr "Homme"
+
+#: models.py:155
+msgid "Female"
+msgstr "Femme"
+
+#: models.py:161
+msgid "First name"
+msgstr "Prénom"
+
+#: models.py:162
+msgid "Last name"
+msgstr "Nom"
+
+#: models.py:175
+msgid "Medical certification"
+msgstr "Certificat médical"
+
+#: models.py:176
+msgid "Legal status"
+msgstr "Status légal"
+
+#: models.py:177
+msgid "Bib Number"
+msgstr "Numéro de dossard"
+
+#: models.py:178
+msgid "Time"
+msgstr "Temps"
+
+#: models.py:179
+msgid "Ready to run"
+msgstr "Prêt à courir"
+
+#: models.py:268 models.py:281
+msgid "Runner"
+msgstr "Coureur"
+
+#: models.py:360
+msgid "1st runner"
+msgstr "1er relayeur"
+
+#: models.py:362
+msgid "2nd runner"
+msgstr "2ème relayeur"
+
+#: models.py:364
+msgid "3rd runner"
+msgstr "3eme relayeur"
+
+#: models.py:396
+msgid "Team"
+msgstr "Equipe"
+
+#~ msgid "Mapping"
+#~ msgstr "Correspondance"
+
+#~ msgid "Who"
+#~ msgstr "Qui"

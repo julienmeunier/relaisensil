@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% load macros %}
+{% loadmacros "registration/macros.html" %}
+{% block nav %}Règlements > Catégorie{% endblock %}
+{% block content %}
+<h2>Formulaire d'engagement : 2/3</h2>
+
+<form method="POST" action="/registration/category/" class="text-center">
+    {% csrf_token %}
+        <div class='container centered'>
+    <div class='row'>
+    <div class='col-lg-8 centered'>
+		{% for field in form %}
+		{% usemacro basic_form field 'form-control' %}
+		{% endfor %}
+	<input type="submit" class="btn btn-default" value="Continuer">
+	</div>
+	   </div>
+	       </div>
+</form>
+{% endblock %}

@@ -1,0 +1,70 @@
+﻿{% extends "layout.html" %}
+{% load tools %}
+{% block nav %}Règlements{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="centered">
+<h2>Formulaire d'engagement : 1/3</h2>
+<b>Inscriptions en ligne (avant le {{ settings.closure_online | date:'l d F H:i' }}) 
+ou par voie postale (avant le {{ settings.closure_postal | date:'l d F' }} - le cachet de la poste faisant foi)</b><br />
+<div class="centered">
+	<table class="table table-striped">
+		<tr>
+			<th class="text-center" rowspan="2">Catégorie</th>
+			<th class="text-center" colspan="2">Pré-inscription en ligne</th>
+			<th class="text-center" colspan="2">Inscription sur place</th>
+		</tr>
+		<tr>
+			<th class="text-center">Individuel</th>
+			<th class="text-center">3 relayeurs</th>
+			<th class="text-center">Individuel</th>
+			<th class="text-center">3 relayeurs</th>
+		</tr>
+		{% for id, name in categories %}
+		<tr>
+			<td class="text-center">{{name}}</td>
+			<td class="text-center">{{prices|key:constants.PRICE_ONLINE|key:id|key:constants.INDIVIDUAL}} €</td>
+			<td class="text-center">{{prices|key:constants.PRICE_ONLINE|key:id|key:constants.TEAM}} €</td>
+			<td class="text-center">{{prices|key:constants.PRICE_DAY|key:id|key:constants.INDIVIDUAL}} €</td>
+			<td class="text-center">{{prices|key:constants.PRICE_DAY|key:id|key:constants.TEAM}} €</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+
+<p><b>Pour vous inscrire, deux solutions :</b></p>
+<ul>
+	<li>En remplissant le formulaire ci-dessous.</li>
+	<li>En téléchargeant le fichier d'inscription (<a href="./docs/bulletinindividuel.doc">Individuelle</a>,
+	<a href="./docs/bulletinequipe.doc"> Equipe de 3</a>, <a href="./docs/bulletinentreprise.doc">Challenge Entreprise</a>) et
+	en nous renvoyant le fichier à <a href="mailto:{{ settings.mail }}">inscription</a>, ou par 
+	par voie postale à {{ settings.postal_address }}</li>
+</ul>
+<br />
+<div class="form_insc">
+	<form method="POST" action="/registration/">
+    {% csrf_token %}
+    	{{form.non_field_errors}}
+		<div class="form-group">
+    		<label>REGLEMENT DE LA MANIFESTATION A LIRE ET A ACCEPTER</label>
+			<textarea class="form-control" rows="8" readonly>{{ settings.rule }}</textarea>
+  		</div>
+		<div class="form-group">
+    		<label>DECHARGE DE LA MANIFESTATION A LIRE ET A ACCEPTER</label>
+			<textarea class="form-control" rows="8" readonly>{{ settings.disclamer }}</textarea>
+  		</div>
+		<div class="form-group">
+    		<label>
+    			<input type="checkbox" name="{{ form.checkbox.name }}" id="{{ form.checkbox.id_for_label }}">
+    			J'accepte la décharge et le règlement (obligatoire pour s'inscrire)</label>
+    			<div class='has-error'>
+				{{ form.checkbox.errors }}
+				</div>
+		</div>
+	<input type="submit" class="btn btn-default" value="J'accepte">
+</form>
+</div>
+</div>
+</div>
+{% endblock %}

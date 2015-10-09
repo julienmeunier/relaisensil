@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block nav %}Inscription > Paiement{% endblock %}
+{% block content %}
+<h2>Paiement : 3/3</h2>
+<b>Choix du paiement enregistré !</b><br />
+<p>Votre inscription au Relais de l'ENSIL est désormais validé ! Un email récapitulatif vous
+sera envoyé sous peu résumant votre inscription.
+Nous vous remercions de vous être inscrit en ligne, et nous vous donnons rendez-vous
+le {{ setting.event | date:'l d F' }} à l'ENSIL !</p>
+<p>Sportivement votre,<br/>L'Equipe du Relais de l'ENSIL</p>
+	<p><a href="{{setting.url}}">Retour au site</a></p>
+{% endblock %}
