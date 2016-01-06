@@ -89,7 +89,7 @@ PAYPAL_RECEIVER_EMAIL = "webmaster-test@relaisensil.com"
 PAYPAL_TEST = True
 
 #------------------------------------------------------------------------------
-# Email setting
+# Email setting
 # Send fake mail on console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEVELOPPER_MAIL = 'julien.meunier.perso@gmail.com'  # For CC in mail
