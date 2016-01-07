@@ -23,6 +23,7 @@ class Setting(models.Model):
     first_event = models.DateTimeField(_('First event'))
     event = models.DateTimeField(_('Event'))
     closure_postal = models.DateTimeField(_('End of postal subscription'))
+    open_online = models.DateTimeField(_('Open of online subscription'))
     closure_online = models.DateTimeField(_('End of online subscription'))
     rule = models.TextField(_('Legacy rules'))
     disclamer = models.TextField(_('Disclamer'))
