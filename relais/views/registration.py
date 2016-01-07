@@ -15,6 +15,7 @@ from relais.models import (
     Setting,
     Team,
 )
+from relais.util.decorator import registration_opened
 from relais.views.payment import sendmail_payment_pending
 
 
@@ -40,6 +41,7 @@ def sendmail_summary(payment):
     mail.send(fail_silently=False)
 
 #------------------------------------------------------------------------------
+@registration_opened()
 def index(request):
     """
     Default index page
@@ -108,6 +110,7 @@ def index(request):
     return render(request, 'registration/home.html', data)
 
 #------------------------------------------------------------------------------
+@registration_opened()
 def category(request):
     """
     User has to choose in which category he wants to run
@@ -132,6 +135,7 @@ def category(request):
     return render(request, 'registration/category.html', {'form': form})
 
 #------------------------------------------------------------------------------
+@registration_opened()
 def individual(request):
     """
     Display form for individual choose
@@ -200,6 +204,7 @@ def individual(request):
                                                         'autocomplete': autocomplete})
 
 #------------------------------------------------------------------------------
+@registration_opened()
 def team(request):
     """
     Display form for team choose

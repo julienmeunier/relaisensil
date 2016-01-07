@@ -1,0 +1,17 @@
+﻿{% extends "layout.html" %}
+{% load tools %}
+{% block nav %}Règlements{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="centered">
+<h2>Les inscriptions sont fermées !</h2>
+<p>
+{% if too_late %}Rendez-vous le {{begin | date:'l d F Y H:i' }} pour l'ouverture des inscriptions en ligne.
+{% else %}Rendez-vous le {{event | date:'l d F Y' }} pour l'inscription sur place.
+{% endif %}
+</p>
+</div>
+</div>
+</div>
+{% endblock %}
