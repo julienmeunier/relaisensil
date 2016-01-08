@@ -47,6 +47,10 @@ class IndividualForm(forms.Form):
     company = forms.CharField(label='Entreprise', required=False)
     club = forms.CharField(label='Club', required=False)
 
+    canicross = forms.BooleanField(label='Canicross',
+                                   help_text='Cochez cette case si vous courrez avec votre chien',
+                                   required=False)
+
     captcha = CaptchaField()
 
     def clean(self):
@@ -89,12 +93,16 @@ class TeamForm(forms.Form):
     Individual form: mix of Runners and Team models.
     """
     required_css_class = 'required'
+
     name = forms.CharField(label='Nom')
     email = forms.EmailField(label='Email')
     category = forms.ChoiceField(label='Catégorie', choices=CATEGORY_CHOICES)
 
     company = forms.CharField(label='Entreprise', required=False)
     school = forms.CharField(label='Ecole', required=False)
+    canicross = forms.BooleanField(label='Canicross',
+                                   help_text='Cochez cette case si vous courrez avec votre chien',
+                                   required=False)
     captcha = CaptchaField()
 
     # redefine constructor

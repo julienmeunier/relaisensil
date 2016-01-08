@@ -164,6 +164,7 @@ def individual(request):
                        school=form.cleaned_data['school'],
                        federation=form.cleaned_data['federation'],
                        club=form.cleaned_data['club'],
+                       canicross=form.cleaned_data['canicross'],
                        certificat=False,
                        legal_status=form.cleaned_data['legal_status'])
             r.clean()  # get num
@@ -235,6 +236,7 @@ def team(request):
                               school=form.cleaned_data['school'],
                               federation=form.cleaned_data['federation_%d' % i],
                               club=form.cleaned_data['club_%d' % i],
+                              canicross=form.cleaned_data['canicross'],
                               certificat=False,
                               legal_status=form.cleaned_data['legal_status_%d' % i],)
                 r[i].clean()  # get num
