@@ -1,7 +1,6 @@
 #-*-coding: utf-8 -*-
 from captcha.fields import CaptchaField
 from django import forms
-from django.utils.translation import ugettext as _
 
 from relais import helpers, constants
 from relais.models import (
@@ -28,25 +27,25 @@ class ConfigForm(forms.Form):
     """
     Configuration choice (Individual vs Team)
     """
-    choice = forms.ChoiceField(label=_("Choice"), choices=CONFIG_CHOICES)
+    choice = forms.ChoiceField(label='Choix', choices=CONFIG_CHOICES)
 
 #------------------------------------------------------------------------------
 class IndividualForm(forms.Form):
     """
     Individual form: mix of Runner and Individual models.
     """
-    first_name = forms.CharField(label=_("First Name"), max_length=30)
-    last_name = forms.CharField(label=_("Last Name"), max_length=30)
-    email = forms.EmailField(label=_("Email"))
-    gender = forms.ChoiceField(label=_('Gender'), choices=GENDER_CHOICES)
-    birthday = forms.DateField(label=_('Birthday'))
-    category = forms.ChoiceField(label=_('Category'), choices=CATEGORY_CHOICES)
+    first_name = forms.CharField(label='Prénom', max_length=30)
+    last_name = forms.CharField(label='Nom', max_length=30)
+    email = forms.EmailField(label='Email')
+    gender = forms.ChoiceField(label='Sexe', choices=GENDER_CHOICES)
+    birthday = forms.DateField(label='Date de naissance')
+    category = forms.ChoiceField(label='Catégorie', choices=CATEGORY_CHOICES)
 
-    license = forms.CharField(label=_('License number'), max_length=30, required=False)
-    school = forms.CharField(label=_('School'), required=False)
-    federation = forms.CharField(label=_('Federation'), required=False)
-    company = forms.CharField(label=_('Company'), required=False)
-    club = forms.CharField(label=_('Club'), required=False)
+    license = forms.CharField(label='Numéro de licence', max_length=30, required=False)
+    school = forms.CharField(label='Ecole', required=False)
+    federation = forms.CharField(label='Fédération', required=False)
+    company = forms.CharField(label='Entreprise', required=False)
+    club = forms.CharField(label='Club', required=False)
 
     captcha = CaptchaField()
 
@@ -90,14 +89,12 @@ class TeamForm(forms.Form):
     Individual form: mix of Runners and Team models.
     """
     required_css_class = 'required'
-    name = forms.CharField(label=_("Name"))
-    email = forms.EmailField(label=_("Email"))
-    category = forms.ChoiceField(label=_('Category'), choices=CATEGORY_CHOICES)
+    name = forms.CharField(label='Nom')
+    email = forms.EmailField(label='Email')
+    category = forms.ChoiceField(label='Catégorie', choices=CATEGORY_CHOICES)
 
-    company = forms.CharField(label=_('Company'), required=False,
-                              help_text=_('Complete it if you run with your company'))
-    school = forms.CharField(label=_('School'), required=False)
-
+    company = forms.CharField(label='Entreprise', required=False)
+    school = forms.CharField(label='Ecole', required=False)
     captcha = CaptchaField()
 
     # redefine constructor
@@ -106,18 +103,18 @@ class TeamForm(forms.Form):
         # as there are 3 runners for a Team, to avoid code duplication,
         # let's use a loop
         for i in xrange(1, 4):
-            self.fields['first_name_%d' % i] = forms.CharField(label=_("First Name"),
+            self.fields['first_name_%d' % i] = forms.CharField(label='Prénom',
                                                                max_length=30)
-            self.fields['last_name_%d' % i] = forms.CharField(label=_("Last Name"),
+            self.fields['last_name_%d' % i] = forms.CharField(label='Nom',
                                                               max_length=30)
-            self.fields['gender_%d' % i] = forms.ChoiceField(label=_('Gender'),
+            self.fields['gender_%d' % i] = forms.ChoiceField(label='Sexe',
                                                              choices=GENDER_CHOICES)
-            self.fields['birthday_%d' % i] = forms.DateField(label=_('Birthday'))
-            self.fields['license_%d' % i] = forms.CharField(label=_('License number'),
+            self.fields['birthday_%d' % i] = forms.DateField(label='Date de naissance')
+            self.fields['license_%d' % i] = forms.CharField(label='Numéro de licence',
                                                             max_length=30, required=False)
-            self.fields['federation_%d' % i] = forms.CharField(label=_('Federation'),
+            self.fields['federation_%d' % i] = forms.CharField(label='Fédération',
                                                                required=False)
-            self.fields['club_%d' % i] = forms.CharField(label=_('Club'),
+            self.fields['club_%d' % i] = forms.CharField(label='Club',
                                                          required=False)
 
     def clean(self):
@@ -173,4 +170,4 @@ class PaymentForm(forms.Form):
     # little bastard no ? :)
     # just remove unknown payment for user form
     choices = ((i, name) for i, name in METHOD_PAYMENT_CHOICES if i != constants.UNKNOWN)
-    method = forms.ChoiceField(label=_('Method'), choices=choices)
+    method = forms.ChoiceField(label='Méthode', choices=choices)

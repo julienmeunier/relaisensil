@@ -4,7 +4,6 @@ import datetime
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.db import models
 from django.utils.crypto import get_random_string
-from django.utils.translation import ugettext as _
 from paypal.standard.ipn.models import PayPalIPN
 
 from relais import constants
@@ -15,55 +14,55 @@ class Setting(models.Model):
     """
     Configuration of the event
     """
-    email = models.EmailField(_('Email'))
-    email_contact = models.EmailField(_('Email contact'))
-    url = models.URLField(_('URL to registration'))
-    url_home = models.URLField(_('URL to home'))
-    phone = models.CharField(_('Phone'), max_length=14)
-    first_event = models.DateTimeField(_('First event'))
-    event = models.DateTimeField(_('Event'))
-    closure_postal = models.DateTimeField(_('End of postal subscription'))
-    open_online = models.DateTimeField(_('Open of online subscription'))
-    closure_online = models.DateTimeField(_('End of online subscription'))
-    rule = models.TextField(_('Legacy rules'))
-    disclamer = models.TextField(_('Disclamer'))
-    postal_address = models.TextField(_('Postal address'))
+    email = models.EmailField('Email pour inscription')
+    email_contact = models.EmailField('Email de contact')
+    url = models.URLField('URL du module d\'inscription')
+    url_home = models.URLField('URL vers le site')
+    phone = models.CharField('Téléphone', max_length=14)
+    first_event = models.DateTimeField('Date première édition')
+    event = models.DateTimeField('Date de l\'édition')
+    closure_postal = models.DateTimeField('Fin des inscriptions par voie postale')
+    open_online = models.DateTimeField('Ouverture des inscriptions en ligne')
+    closure_online = models.DateTimeField('Fermeture des inscriptions en ligne')
+    rule = models.TextField('Règlement')
+    disclamer = models.TextField('Décharge de responsabilité')
+    postal_address = models.TextField('Adresse postale')
 
     class Meta:
-        verbose_name = _('Setting')
+        verbose_name = 'Configuration'
 
     def get_edition_nb(self):
         diff = self.event - self.first_event
         return (diff.days / 365) + 1
 
 #------------------------------------------------------------------------------
-CATEGORY_CHOICES = ((constants.ADULT, _('Adult')),
-                    (constants.STUDENT, _('Student')),
-                    (constants.STUDENT_ENSIL, _('Student ENSIL')),
-                    (constants.CHALLENGE, _('Challenge company')),
-                    (constants.OLDER_ENSIL, _('Old ENSIL people')))
+CATEGORY_CHOICES = ((constants.ADULT, 'Adulte'),
+                    (constants.STUDENT, 'Etudiant'),
+                    (constants.STUDENT_ENSIL, 'Etudiant ENSILiens'),
+                    (constants.CHALLENGE, 'Challenge inter-entreprise'),
+                    (constants.OLDER_ENSIL, 'Ancien de l\'ENSIL'))
 
-WHEN_CHOICES = ((constants.PRICE_ONLINE, _('Online')),
-                (constants.PRICE_DAY, _('On-site')))
+WHEN_CHOICES = ((constants.PRICE_ONLINE, 'En ligne'),
+                (constants.PRICE_DAY, 'Sur place'))
 
-CONFIG_CHOICES = ((constants.INDIVIDUAL, _('Individual')),
-                  (constants.TEAM, _('Team of 3 people')))
+CONFIG_CHOICES = ((constants.INDIVIDUAL, 'Individuel'),
+                  (constants.TEAM, 'Equipe de 3 personnes'))
 
 class Price(models.Model):
     """
     Price of each category.
     """
-    config = models.CharField(_('Type of runner'), max_length=5, choices=CONFIG_CHOICES)
-    who = models.CharField(_('Category of runner'), max_length=5, choices=CATEGORY_CHOICES)
-    when = models.CharField(_('When'), max_length=5, choices=WHEN_CHOICES)
-    price = models.IntegerField(_('Price'))
+    config = models.CharField('Type de coureur', max_length=5, choices=CONFIG_CHOICES)
+    who = models.CharField('Catégorie du coureur', max_length=5, choices=CATEGORY_CHOICES)
+    when = models.CharField('Quand', max_length=5, choices=WHEN_CHOICES)
+    price = models.IntegerField('Prix')
 
     class Meta:
         """
         Additional informations
         """
-        verbose_name = _('Price')
-        verbose_name_plural = _('Prices')
+        verbose_name = 'Prix'
+        verbose_name_plural = 'Prix'
         unique_together = ('config', 'who', 'when')  # one price is allowed
 
     def __unicode__(self):
@@ -72,58 +71,58 @@ class Price(models.Model):
 
 #------------------------------------------------------------------------------
 class Federation(models.Model):
-    name = models.CharField(_('Name'), max_length=30)
+    name = models.CharField('Nom', max_length=30)
 
     class Meta:
-        verbose_name = _('Federation')
+        verbose_name = 'Fédération'
 
     def __unicode__(self):
         return u'%s' % self.name
 
 #------------------------------------------------------------------------------
 class Company(models.Model):
-    name = models.CharField(_('Name'), max_length=30)
+    name = models.CharField('Nom', max_length=30)
 
     class Meta:
-        verbose_name = _('Company')
+        verbose_name = 'Entreprise'
 
     def __unicode__(self):
         return u'%s' % self.name
 
 #------------------------------------------------------------------------------
 class Club(models.Model):
-    name = models.CharField(_('Name'), max_length=30)
+    name = models.CharField('Nom', max_length=30)
 
     class Meta:
-        verbose_name = _('Club')
+        verbose_name = 'Club'
 
     def __unicode__(self):
         return u'%s' % self.name
 
 #------------------------------------------------------------------------------
 class School(models.Model):
-    name = models.CharField(_('Name'), max_length=30)
+    name = models.CharField('Nom', max_length=30)
 
     class Meta:
-        verbose_name = _('School')
+        verbose_name = 'Ecole'
 
     def __unicode__(self):
         return u"%s" % self.name
 
 #------------------------------------------------------------------------------
-METHOD_PAYMENT_CHOICES = ((constants.CASH, _('Cash')),
-                          (constants.CHEQUE, _('Cheque')),
+METHOD_PAYMENT_CHOICES = ((constants.CASH, 'Espèce'),
+                          (constants.CHEQUE, 'Chèque'),
                           (constants.PAYPAL, u'Paypal'),
-                          (constants.UNKNOWN, _('Unknown')))
+                          (constants.UNKNOWN, 'Inconnu'))
 
 class Payment(models.Model):
     """
     All payments (Individual / Team) are stored in this model.
     """
     # Relation between Payment.price <-> Price
-    price = models.ForeignKey(Price, verbose_name=_('Price'))
-    method = models.CharField(_('Method'), max_length=3, choices=METHOD_PAYMENT_CHOICES)
-    state = models.BooleanField(_('Validate'))
+    price = models.ForeignKey(Price, verbose_name='Prix')
+    method = models.CharField('Méthode', max_length=3, choices=METHOD_PAYMENT_CHOICES)
+    state = models.BooleanField('Validé')
     token = models.CharField('Token', max_length=30, default=get_random_string(),
                              editable=False)
     # TODO: update at each action
@@ -132,42 +131,42 @@ class Payment(models.Model):
     ipn = models.ForeignKey(PayPalIPN, blank=True, null=True)
 
     class Meta:
-        verbose_name = _('Payment')
+        verbose_name = 'Paiement'
 
     def __unicode__(self):
         if self.state:
-            s = _('approved')
+            s = 'accepté'
         else:
-            s = _('under validation')
+            s = 'en attente de validation'
         return u'ID: %d - %s (%s) %s' % (self.id, self.price, self.get_method_display(), s)
 
 #------------------------------------------------------------------------------
-GENDER_CHOICES = ((constants.MALE, _('Male')),
-                  (constants.FEMALE, _('Female')))
+GENDER_CHOICES = ((constants.MALE, 'Homme'),
+                  (constants.FEMALE, 'Femme'))
 
 class Runner(models.Model):
     """
     List of people that will run for this event.
     """
-    first_name = models.CharField(_('First name'), max_length=30)
-    last_name = models.CharField(_('Last name'), max_length=30)
-    gender = models.CharField(_('Gender'), max_length=1, choices=GENDER_CHOICES)
-    birthday = models.DateField(_('Birthday'))
+    first_name = models.CharField('Prénom', max_length=30)
+    last_name = models.CharField('Nom', max_length=30)
+    gender = models.CharField('Sexe', max_length=1, choices=GENDER_CHOICES)
+    birthday = models.DateField('Date de naissance')
 
     # additional informations (can be null and blank)
     # some items have a relation with other models.
-    license_nb = models.CharField(_('License number'), max_length=30, blank=True, null=True)
-    school = models.ForeignKey(School, verbose_name=_('School'), blank=True, null=True)
-    federation = models.ForeignKey(Federation, verbose_name=_('Federation'), blank=True, null=True)
-    company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True)
-    club = models.ForeignKey(Club, verbose_name=_('Club'), blank=True, null=True)
+    license_nb = models.CharField('Numéro de licence', max_length=30, blank=True, null=True)
+    school = models.ForeignKey(School, verbose_name='Ecole', blank=True, null=True)
+    federation = models.ForeignKey(Federation, verbose_name='Fédération', blank=True, null=True)
+    company = models.ForeignKey(Company, verbose_name='Entreprise', blank=True, null=True)
+    club = models.ForeignKey(Club, verbose_name='Club', blank=True, null=True)
 
     # for the management
-    certificat = models.BooleanField(_('Medical certification'))
-    legal_status = models.BooleanField(_('Legal status'))  # for minor
-    num = models.PositiveIntegerField(_('Bib Number'), unique=True)
-    time = models.TimeField(_('Time'), blank=True, null=True)
-    ready = models.BooleanField(_('Ready to run'), default=False)
+    certificat = models.BooleanField('Certificat médical')
+    legal_status = models.BooleanField('Status légal')  # for minor
+    num = models.PositiveIntegerField('Numéro de dossard', unique=True)
+    time = models.TimeField('Temps', blank=True, null=True)
+    ready = models.BooleanField('Prêt à courir', default=False)
 
     def age(self):
         today = datetime.date.today()
@@ -256,7 +255,7 @@ class Runner(models.Model):
             )
 
     class Meta:
-        verbose_name = _('Runner')
+        verbose_name = 'Coureur'
         # unicity of Runner, avoid duplication
         unique_together = ('first_name', 'last_name', 'birthday', 'gender')
 
@@ -269,14 +268,14 @@ class Individual(models.Model):
     Runner alone who runs the full circuit.
     """
     # One Individual -> One Runner (unicity)
-    runner = models.OneToOneField(Runner, verbose_name=_('Runner'))
-    email = models.EmailField(_('Email'))
-    category = models.CharField(_('Category of runner'), max_length=3, choices=CATEGORY_CHOICES)
+    runner = models.OneToOneField(Runner, verbose_name='Coureur')
+    email = models.EmailField('Email')
+    category = models.CharField('Catégorie de coureur', max_length=3, choices=CATEGORY_CHOICES)
     # One Individual -> One payment (unicity)
-    payment = models.OneToOneField(Payment, verbose_name=_('Payment'))
+    payment = models.OneToOneField(Payment, verbose_name='Paiement')
 
     # Additional information
-    company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True)
+    company = models.ForeignKey(Company, verbose_name='Entreprise', blank=True, null=True)
 
     def can_run(self):
         """
@@ -336,7 +335,7 @@ class Individual(models.Model):
         super(Individual, self).delete(*args, **kwargs)  # Call the "real" delete() method.
 
     class Meta:
-        verbose_name = _('Individual')
+        verbose_name = 'Individuel'
 
     def __unicode__(self):
         return u'%s' % self.runner
@@ -347,18 +346,18 @@ class Team(models.Model):
     A Team is composed by 3 runners.
     """
     name = models.CharField('Name', max_length=30)
-    email = models.EmailField(_('Email'))  # useful ?
-    category = models.CharField(_('Category of runner'), max_length=3, choices=CATEGORY_CHOICES)
+    email = models.EmailField('Email')  # useful ?
+    category = models.CharField('Catégorie du coureur', max_length=3, choices=CATEGORY_CHOICES)
     # OneToOne relation between Runner and Team
-    runner_1 = models.OneToOneField(Runner, verbose_name=_('1st runner'),
+    runner_1 = models.OneToOneField(Runner, verbose_name='1er coureur',
                                     related_name='team_runner_1')
-    runner_2 = models.OneToOneField(Runner, verbose_name=_('2nd runner'),
+    runner_2 = models.OneToOneField(Runner, verbose_name='2nd coureur',
                                     related_name='team_runner_2')
-    runner_3 = models.OneToOneField(Runner, verbose_name=_('3rd runner'),
+    runner_3 = models.OneToOneField(Runner, verbose_name='3eme coureur',
                                     related_name='team_runner_3')
-    company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True)
+    company = models.ForeignKey(Company, verbose_name='Entreprise', blank=True, null=True)
     # OneToOne relation between Payment and Team
-    payment = models.OneToOneField(Payment, verbose_name=_('Payment'))
+    payment = models.OneToOneField(Payment, verbose_name='Paiement')
 
     def validate_unique(self, exclude=None, *args, **kwargs):
         """
@@ -387,7 +386,7 @@ class Team(models.Model):
         super(Team, self).delete(*args, **kwargs)
 
     class Meta:
-        verbose_name = _('Team')
+        verbose_name = 'Equipe'
 
     def __unicode__(self):
         return u'%s' % self.name
