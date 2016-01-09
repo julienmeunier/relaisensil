@@ -3,8 +3,6 @@
 {% load macros %}
 {% loadmacros "registration/macros.html" %}
 
-{% block nav %}Règlements > Catégorie > Individuel{% endblock %}
-
 {% block form %}
 <form method="POST" action="/registration/category/individual/">
   {% csrf_token %}

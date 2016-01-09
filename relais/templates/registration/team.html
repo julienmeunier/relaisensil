@@ -3,8 +3,6 @@
 {% loadmacros 'registration/macros.html' %}
 {% load tools %}
 
-{% block nav %}Règlements > Catégorie > Equipe{% endblock %}
-
 {% block form %}
 <form method="POST" class="" action="/registration/category/team/">
   {% csrf_token %}
