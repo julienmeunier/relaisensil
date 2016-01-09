@@ -1,8 +1,10 @@
 #-*-coding: utf-8 -*-
 from captcha.fields import CaptchaField
 from django import forms
+from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 
 from relais import helpers, constants
+from relais.constants import RANGE_INDIVIDUAL, RANGE_TEAM
 from relais.models import (
     CATEGORY_CHOICES,
     CONFIG_CHOICES,
@@ -13,7 +15,6 @@ from relais.models import (
     Individual,
     Team,
 )
-from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 
 
 #------------------------------------------------------------------------------
@@ -77,6 +78,7 @@ class IndividualForm(forms.Form):
                             last_name=last_name,
                             birthday=birthday,
                             gender=gender)
+            runner.update_num(RANGE_INDIVIDUAL)
             runner.clean()
             runner.validate_unique()
             # TODO: improve this (return Runner object ?)
@@ -154,6 +156,7 @@ class TeamForm(forms.Form):
                               last_name=last_name,
                               birthday=birthday,
                               gender=gender)
+                r[i].update_num(RANGE_TEAM[i])
                 r[i].clean()
                 try:
                     r[i].validate_unique()

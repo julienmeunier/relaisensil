@@ -36,3 +36,9 @@ V1 = 'Vétéran 1'
 V2 = 'Vétéran 2'
 V3 = 'Vétéran 3'
 V4 = 'Vétéran 4'
+
+RANGE_TEAM = {}
+RANGE_TEAM[1] = (100, 199)
+RANGE_TEAM[2] = (200, 299)
+RANGE_TEAM[3] = (300, 399)
+RANGE_INDIVIDUAL = (500, 799)

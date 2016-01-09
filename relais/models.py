@@ -7,6 +7,7 @@ from django.utils.crypto import get_random_string
 from paypal.standard.ipn.models import PayPalIPN
 
 from relais import constants
+from relais.constants import RANGE_INDIVIDUAL, RANGE_TEAM
 
 
 #------------------------------------------------------------------------------
@@ -172,7 +173,8 @@ class Runner(models.Model):
     # for the management
     certificat = models.BooleanField('Certificat médical')
     legal_status = models.BooleanField('Status légal')  # for minor
-    num = models.PositiveIntegerField('Numéro de dossard', unique=True)
+    num = models.PositiveIntegerField('Numéro de dossard', unique=True,
+                                      help_text='Pour obtenir les derniers dossards, laisser vide')
     time = models.TimeField('Temps', blank=True, null=True)
     ready = models.BooleanField('Prêt à courir', default=False)
 
@@ -237,30 +239,48 @@ class Runner(models.Model):
 
     def clean(self):
         """
-        Update bib number if not exist
+        Check num
         Check if runner can run
         """
+        err = []
         if not self.num:
-            # get last bib number and incremente id
-            # if not exist, force to 100
-            # TODO: can be manageable
-            try:
-                query = Runner.objects.latest(field_name='id')
-                self.num = query.num + 1
-            except models.exceptions.ObjectDoesNotExist:
-                self.num = 100
+            err = self.list_last_num()
 
         if not self.can_run():
             # raise an error and avoid registration
-            # TODO: translation
+            err.append(u'%s ne peut pas s\'inscrire, l\'âge minimale est de '
+                       u'14 ans, ce dernier ayant %s ans.' % (self, self.age()))
+        if err:
             raise ValidationError(
                 {
-                    NON_FIELD_ERRORS: [
-                        u'%s ne peut pas s\'inscrire, l\'âge minimale est de '
-                        u'14 ans, ce dernier ayant %s ans.' % (self, self.age())
-                    ],
+                    NON_FIELD_ERRORS: err
                 }
             )
+
+    def list_last_num(self):
+        num = []
+        data = {
+            'Individuel': RANGE_INDIVIDUAL,
+            'Equipe - 1': RANGE_TEAM[1],
+            'Equipe - 2': RANGE_TEAM[2],
+            'Equipe - 3': RANGE_TEAM[3],
+        }
+        for name, r in data.iteritems():
+            query = Runner.objects.filter(num__gte=r[0]).filter(num__lte=r[1]).order_by('-num')
+            if query:
+                num.append('%s - dernier dossard %s (interval %s)' % (name, query[0].num, r))
+            else:
+                num.append('%s - pas de dernier dossard (interval %s)' % (name, r))
+        return num
+
+    def update_num(self, r):
+        query = Runner.objects.filter(num__gte=r[0]).filter(num__lte=r[1]).order_by('-num')
+        if query:
+            self.num = query[0].num + 1
+            if self.num > r[1]:
+                raise ValidationError('Oops, il semblerait qu\'il y ait trop d\'inscrits. Contactez un responsable.')
+        else:
+            self.num = r[0]
 
     class Meta:
         verbose_name = 'Coureur'

@@ -7,6 +7,7 @@ from django.template.context import Context
 
 from engine.settings.production import DEVELOPPER_MAIL
 from relais import constants, forms, models, helpers
+from relais.constants import RANGE_INDIVIDUAL, RANGE_TEAM
 from relais.models import (
     Individual,
     Payment,
@@ -168,6 +169,7 @@ def individual(request):
                        certificat=False,
                        legal_status=form.cleaned_data['legal_status'],
                        tshirt=form.cleaned_data['tshirt'])
+            r.update_num(RANGE_INDIVIDUAL)
             r.clean()
             r.save()
 
@@ -241,6 +243,7 @@ def team(request):
                               certificat=False,
                               legal_status=form.cleaned_data['legal_status_%d' % i],
                               tshirt=form.cleaned_data['tshirt_%d' % i])
+                r[i].update_num(RANGE_TEAM[i])
                 r[i].clean()
                 r[i].save()
 
