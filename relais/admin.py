@@ -167,7 +167,7 @@ admin.site.register(Team, TeamAdmin)
 
 #------------------------------------------------------------------------------
 class RunnerAdmin(admin.ModelAdmin):
-    list_display = ['last_name', 'first_name', 'certificat', 'legal_status', 'num']
+    list_display = ['last_name', 'first_name', 'certificat', 'legal_status', 'num', 'canicross', 'tshirt']
 
 admin.site.register(Runner, RunnerAdmin)
 
