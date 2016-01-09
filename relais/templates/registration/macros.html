@@ -35,7 +35,7 @@
 
 {% macro basic_form item css %}
 <div id="form_{{ item.name }}" class="form-group has-feedback{{item.errors|yesno:" has-error,,"}}">
-   <label class="control-label" for="id_{{ item.name }}">{{ item.label }}</label>
+   <label class="control-label" for="id_{{ item.name }}">{{ item.label }}{% if 'required' in item.css_classes %} *{% endif %}</label>
    {% if css %}
    {{ item | addcss:css }}
    {% else %}

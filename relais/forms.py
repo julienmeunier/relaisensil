@@ -34,6 +34,8 @@ class IndividualForm(forms.Form):
     """
     Individual form: mix of Runner and Individual models.
     """
+    required_css_class = 'required'
+
     first_name = forms.CharField(label='Prénom', max_length=30)
     last_name = forms.CharField(label='Nom', max_length=30)
     email = forms.EmailField(label='Email')
