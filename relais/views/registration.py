@@ -201,8 +201,8 @@ def individual(request):
                 return HttpResponseRedirect('/payment/%s/%s' % (pay.id, pay.token))
 
     # if any error or no data, display page
-    return render(request, 'registration/runner.html', {'form': form,
-                                                        'autocomplete': autocomplete})
+    return render(request, 'registration/individual.html', {'form': form,
+                                                            'autocomplete': autocomplete})
 
 #------------------------------------------------------------------------------
 @registration_opened()
