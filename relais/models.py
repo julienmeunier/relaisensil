@@ -179,6 +179,8 @@ class Runner(models.Model):
     ready = models.BooleanField('Prêt à courir', default=False)
 
     def age(self):
+        if not self.birthday:
+            return None
         today = datetime.date.today()
         num_years = int((today - self.birthday).days / 365.2425)
         return num_years
@@ -221,7 +223,7 @@ class Runner(models.Model):
         """
         age = self.age()
         # TODO: can be manageable
-        if age < 14:
+        if age and age < 14:
             return False
         else:
             return True
