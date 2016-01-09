@@ -46,7 +46,7 @@
 </div>
 {% endmacro %}
 
-{% macro form_runner first_name last_name gender birthday license federation school club %}
+{% macro form_runner first_name last_name gender birthday license federation school club tshirt %}
   {# First name #}
   {% usemacro basic_form first_name 'form-control' %}
   {# Last name #}
@@ -55,6 +55,8 @@
   {% usemacro basic_form gender 'form-control'%}
   {# Birthday #}
   {% usemacro basic_form birthday 'form-control datepicker' %}
+  {# tshirt #}
+  {% usemacro basic_form tshirt 'form-control' %}
   {# license #}
   {% usemacro basic_form license 'form-control' %}
   {# federation #}

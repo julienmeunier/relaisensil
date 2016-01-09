@@ -8,9 +8,10 @@ from relais.models import (
     CONFIG_CHOICES,
     METHOD_PAYMENT_CHOICES,
     GENDER_CHOICES,
+    TSHIRT_CHOICES,
     Runner,
     Individual,
-    Team
+    Team,
 )
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 
@@ -43,6 +44,10 @@ class IndividualForm(forms.Form):
     birthday = forms.DateField(label='Date de naissance')
     category = forms.ChoiceField(label='Catégorie', choices=CATEGORY_CHOICES)
 
+    tshirt = forms.ChoiceField(label='Taille t-shirt', choices=TSHIRT_CHOICES,
+                               help_text='Les 100 premiers inscrits ont droit à un '
+                               'tshirt technique offert',
+                               required=False)
     license = forms.CharField(label='Numéro de licence', max_length=30, required=False)
     school = forms.CharField(label='Ecole', required=False)
     federation = forms.CharField(label='Fédération', required=False)
@@ -126,6 +131,10 @@ class TeamForm(forms.Form):
                                                                required=False)
             self.fields['club_%d' % i] = forms.CharField(label='Club',
                                                          required=False)
+            self.fields['tshirt_%d' % i] = forms.ChoiceField(label='Taille t-shirt', choices=TSHIRT_CHOICES,
+                                                             help_text='Les 100 premiers inscrits ont droit à un'
+                                                             'tshirt technique offert',
+                                                             required=False)
 
     def clean(self):
         """

@@ -166,8 +166,9 @@ def individual(request):
                        club=form.cleaned_data['club'],
                        canicross=form.cleaned_data['canicross'],
                        certificat=False,
-                       legal_status=form.cleaned_data['legal_status'])
-            r.clean()  # get num
+                       legal_status=form.cleaned_data['legal_status'],
+                       tshirt=form.cleaned_data['tshirt'])
+            r.clean()
             r.save()
 
             # get online price for desired category
@@ -238,8 +239,9 @@ def team(request):
                               club=form.cleaned_data['club_%d' % i],
                               canicross=form.cleaned_data['canicross'],
                               certificat=False,
-                              legal_status=form.cleaned_data['legal_status_%d' % i],)
-                r[i].clean()  # get num
+                              legal_status=form.cleaned_data['legal_status_%d' % i],
+                              tshirt=form.cleaned_data['tshirt_%d' % i])
+                r[i].clean()
                 r[i].save()
 
             # get online price for desired category

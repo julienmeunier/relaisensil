@@ -144,6 +144,11 @@ class Payment(models.Model):
 GENDER_CHOICES = ((constants.MALE, 'Homme'),
                   (constants.FEMALE, 'Femme'))
 
+TSHIRT_CHOICES= (('S', 'S'),
+                 ('M', 'M'),
+                 ('L', 'L'),
+                 ('XL', 'XL'))
+
 class Runner(models.Model):
     """
     List of people that will run for this event.
@@ -161,6 +166,8 @@ class Runner(models.Model):
     company = models.ForeignKey(Company, verbose_name='Entreprise', blank=True, null=True)
     club = models.ForeignKey(Club, verbose_name='Club', blank=True, null=True)
     canicross = models.BooleanField(verbose_name='Canicross')
+    tshirt = models.CharField('Taille tshirt', max_length=4, choices=TSHIRT_CHOICES,
+                              blank=True, null=True)
 
     # for the management
     certificat = models.BooleanField('Certificat médical')
