@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% load macros %}
 {% loadmacros "registration/macros.html" %}
+{% load staticfiles %}
 {% block content %}
 <div class='container centered'>
   <div class='row'>
@@ -9,7 +10,7 @@
     <p>Vous receverez un email de confirmation d'inscription avec les informations
     récapitulatif.</p>
     <p>Si une personne mineure s'est inscrite, elle doit fournir une
-    décharge de responsabilité que vous pourrez trouver ici (TODO)</p>
+    décharge de responsabilité que vous pourrez trouver <a href="{% static 'pdf/autorisation.pdf' %}">ici</a></p>
     <p><b>N'oubliez pas de fournir un certificat médical valide, que vous pourrez 
     nous l'envoyer par email à {{setting.email}} pour accélérer la procédure
     </b>d'inscription</p>
