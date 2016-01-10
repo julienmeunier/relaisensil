@@ -39,7 +39,7 @@ def sendmail_summary(payment):
 
     mail = EmailMessage('[Relais de l\'ENSIL] - Confirmation inscription', msg,
                         setting.email, [to], [setting.email, DEVELOPPER_MAIL])
-    mail.send(fail_silently=False)
+    mail.send(fail_silently=True)
 
 #------------------------------------------------------------------------------
 @registration_opened()
