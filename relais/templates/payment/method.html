@@ -12,8 +12,8 @@
     <p>Si une personne mineure s'est inscrite, elle doit fournir une
     décharge de responsabilité que vous pourrez trouver <a href="{% static 'pdf/autorisation.pdf' %}">ici</a></p>
     <p><b>N'oubliez pas de fournir un certificat médical valide, que vous pourrez 
-    nous l'envoyer par email à {{setting.email}} pour accélérer la procédure
-    </b>d'inscription</p>
+    nous l'envoyer par email à <a href:'mailto:{{setting.email}}'>{{setting.email}}</a> pour accélérer la procédure
+    d'inscription</b></p>
     </div>
   </div>
   <div class='row'>
@@ -21,7 +21,7 @@
     <div class='col-lg-8 centered'>
     <p>{{payment}}</p>
     {% if display_form %}
-     <p>Pour régler ce montant, plusieurs choix s'offre à vous.
+     <p>Pour régler ce montant, plusieurs choix s'offre à vous.</p>
     <form method="POST" action="" class="text-center">
     {% csrf_token %}
         <div class='container centered'>
@@ -35,6 +35,7 @@
             </div>
         </div>
     </form>
+    <p>Note: vous pouvez payer en carte bancaire même sans avoir de compte PayPal.</p>
     {% endif %}
     </div>
   </div>

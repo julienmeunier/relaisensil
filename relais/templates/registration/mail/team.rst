@@ -29,15 +29,15 @@ Ecole
 Information sur les coureurs
 ----------------------------
 
-Coureur 1: nature (3,3 km)
+Coureur 1: route (3,3 km)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 {% usemacro display_runner team.runner_1 %}
 
-Coureur 2: route (3,3 km)
+Coureur 2: nature (3,4 km)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 {% usemacro display_runner team.runner_2 %}
 
-Coureur 3: nature (3,3 km)
+Coureur 3: route (3,3 km)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 {% usemacro display_runner team.runner_3 %}
 {% endblock %}
