@@ -195,13 +195,11 @@ def individual(request):
                                       email=form.cleaned_data['email'],
                                       company=form.cleaned_data['company'])
             sendmail_summary(payment=pay)
-            if p.price == 0:
-                # end of registration
-                return HttpResponseRedirect('/registration/done')
-            else:
+            # Send mail about payment if any (before redirect)
+            if not pay.state:
                 sendmail_payment_pending(payment=pay)
-                # redirect to payment page
-                return HttpResponseRedirect('/payment/%s/%s' % (pay.id, pay.token))
+            # redirect to payment page
+            return HttpResponseRedirect('/payment/%s/%s' % (pay.id, pay.token))
 
     # if any error or no data, display page
     return render(request, 'registration/individual.html', {'form': form,
