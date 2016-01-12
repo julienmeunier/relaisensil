@@ -136,9 +136,9 @@ class Payment(models.Model):
 
     def __unicode__(self):
         if self.state:
-            s = 'accepté'
+            s = u'accepté'
         else:
-            s = 'en attente de validation'
+            s = u'en attente de validation'
         return u'ID: %d - %s (%s) %s' % (self.id, self.price, self.get_method_display(), s)
 
 #------------------------------------------------------------------------------
