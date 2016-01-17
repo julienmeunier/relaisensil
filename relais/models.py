@@ -228,13 +228,13 @@ class Runner(models.Model):
         else:
             return True
 
-    def is_minor(self):
+    def is_adult(self):
         """
         TODO
         """
         age = self.age()
         # TODO: can be manageable
-        if age < 18:
+        if age >= 18:
             return True
         else:
             return False

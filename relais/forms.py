@@ -85,7 +85,7 @@ class IndividualForm(forms.Form):
             runner.validate_unique()
             # TODO: improve this (return Runner object ?)
             self.cleaned_data['num'] = runner.num
-            self.cleaned_data['legal_status'] = runner.is_minor()
+            self.cleaned_data['legal_status'] = runner.is_adult()
             ind = Individual(runner=runner)
             ind.clean()
             ind.validate_unique()
@@ -171,7 +171,7 @@ class TeamForm(forms.Form):
                         }
                     )
                 # TODO: improve this (return Runner object ?)
-                self.cleaned_data['legal_status_%d' % i] = r[i].is_minor()
+                self.cleaned_data['legal_status_%d' % i] = r[i].is_adult()
             # convert name -> id (ForeignKey)
             self.cleaned_data['club_%d' % i] = helpers.add_get_club(self.cleaned_data.get('club_%d' % i))
             self.cleaned_data['federation_%d' % i] = helpers.add_get_fede(self.cleaned_data.get('federation_%d' % i))
