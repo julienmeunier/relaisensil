@@ -67,7 +67,7 @@ class Price(models.Model):
         unique_together = ('config', 'who', 'when')  # one price is allowed
 
     def __unicode__(self):
-        return u'%s %s (%s) - %s €' % (self.get_config_display(), self.get_who_display(),
+        return u'%s %s (inscription %s) - Montant %s €' % (self.get_config_display(), self.get_who_display(),
                                        self.get_when_display(), self.price)
 
 #------------------------------------------------------------------------------
@@ -136,10 +136,10 @@ class Payment(models.Model):
 
     def __unicode__(self):
         if self.state:
-            s = u'accepté'
+            s = u'validé par l\'équipe organisatrice'
         else:
-            s = u'en attente de validation'
-        return u'ID: %d - %s (%s) %s' % (self.id, self.price, self.get_method_display(), s)
+            s = u'en attente de validation par l\'équipe organisatrice' 
+        return u'Paiement numéro %d, Catégorie: %s, Méthode de paiement: %s - %s' % (self.id, self.price, self.get_method_display(), s)
 
 #------------------------------------------------------------------------------
 GENDER_CHOICES = ((constants.MALE, 'Homme'),
