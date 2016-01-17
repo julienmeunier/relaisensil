@@ -12,7 +12,7 @@ votre inscription.
 accélérer votre inscription.
 
 Pour toutes questions complémentaires liées à la course, visitez notre site
-{{setting.url}} ou contactez par email l'équipe organisatrice à {{setting.email_contact}}
+{{setting.url_home}} ou contactez par email l'équipe organisatrice à {{setting.email_contact}}
 
 Pour tout problèmes ou questions liés à l'inscription, contactez {{setting.email}}
 
@@ -22,7 +22,7 @@ Sportivement vôtre,
 
 ---
 L'Equipe du Relais de l'ENSIL
-Site: {{setting.url}}
+Site: {{setting.url_home}}
 Adresse: {{setting.postal_address}}
 Téléphone: {{setting.phone}}
 Contact course: {{setting.email_contact}}
