@@ -185,7 +185,7 @@ class Runner(models.Model):
         num_years = int((today - self.birthday).days / 365.2425)
         return num_years
 
-    def runner_categogy(self):
+    def runner_category(self):
         """
         Category are given by FF(?)
         """
