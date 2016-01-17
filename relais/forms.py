@@ -22,7 +22,9 @@ class RulesForm(forms.Form):
     """
     Validate rules at the beginning of the event.
     """
-    checkbox = forms.BooleanField(label="check", widget=forms.CheckboxInput())
+    checkbox = forms.BooleanField(label="check", widget=forms.CheckboxInput(),
+                                  error_messages={'required': u"Vous devez accepter " \
+                                                             u"la décharge et le règlement"})
 
 #------------------------------------------------------------------------------
 class ConfigForm(forms.Form):
@@ -46,7 +48,7 @@ class IndividualForm(forms.Form):
     category = forms.ChoiceField(label='Catégorie', choices=CATEGORY_CHOICES)
 
     tshirt = forms.ChoiceField(label='Taille t-shirt', choices=TSHIRT_CHOICES,
-                               help_text='Les 100 premiers inscrits ont droit à un '
+                               help_text='Les 150 premiers inscrits ont droit à un '
                                'tshirt technique offert',
                                required=False)
     license = forms.CharField(label='Numéro de licence', max_length=30, required=False)
@@ -134,7 +136,7 @@ class TeamForm(forms.Form):
             self.fields['club_%d' % i] = forms.CharField(label='Club',
                                                          required=False)
             self.fields['tshirt_%d' % i] = forms.ChoiceField(label='Taille t-shirt', choices=TSHIRT_CHOICES,
-                                                             help_text='Les 100 premiers inscrits ont droit à un'
+                                                             help_text='Les 150 premiers inscrits ont droit à un'
                                                              'tshirt technique offert',
                                                              required=False)
 
