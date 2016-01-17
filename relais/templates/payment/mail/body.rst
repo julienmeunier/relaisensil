@@ -3,10 +3,6 @@ Bonjour,
 {% block content %}{% endblock %}
 
 Pour toutes questions complémentaires liées à la course, visitez notre site
-{{setting.url}} ou contactez par email l'équipe organisatrice à
-{{setting.email_contact}}
-
-Pour toutes questions complémentaires liées à la course, visitez notre site
 {{setting.url}} ou contactez par email l'équipe organisatrice à {{setting.email_contact}}
 
 Pour tout problèmes ou questions liés à l'inscription, contactez {{setting.email}}

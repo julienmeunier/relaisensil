@@ -27,7 +27,7 @@ def sendmail_payment_success(payment):
     except Team.DoesNotExist:
         context['name'] = payment.individual
         to = payment.individual.email
-    msg = loader.render_to_string('payment/mail/success.rst', context)
+    msg = loader.render_to_string('payment/mail/success.rst', context).replace("&#39;","'")
     mail = EmailMessage('[Relais de l\'ENSIL] - Paiement valide', msg, setting.email,
                         [to], [setting.email, DEVELOPPER_MAIL])
     mail.send(fail_silently=True)
@@ -42,7 +42,7 @@ def sendmail_payment_pending(payment):
     except Team.DoesNotExist:
         context['name'] = payment.individual
         to = payment.individual.email
-    msg = loader.render_to_string('payment/mail/pending.rst', context)
+    msg = loader.render_to_string('payment/mail/pending.rst', context).replace("&#39;","'")
 
     mail = EmailMessage('[Relais de l\'ENSIL] - Paiement en attente', msg, setting.email,
                         [to], [setting.email, DEVELOPPER_MAIL])
@@ -58,7 +58,7 @@ def sendmail_payment_postal(payment):
     except Team.DoesNotExist:
         context['name'] = payment.individual
         to = payment.individual.email
-    msg = loader.render_to_string('payment/mail/postal.rst', context)
+    msg = loader.render_to_string('payment/mail/postal.rst', context).replace("&#39;","'")
 
     mail = EmailMessage('[Relais de l\'ENSIL] - Paiement en attente', msg, setting.email,
                         [to], [setting.email, DEVELOPPER_MAIL])

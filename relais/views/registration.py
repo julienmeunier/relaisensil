@@ -31,11 +31,11 @@ def sendmail_summary(payment):
     try:
         context['team'] = payment.team
         to = payment.team.email
-        msg = loader.render_to_string('registration/mail/team.rst', context)
+        msg = loader.render_to_string('registration/mail/team.rst', context).replace("&#39;","'")
     except Team.DoesNotExist:
         context['individual'] = payment.individual
         to = payment.individual.email
-        msg = loader.render_to_string('registration/mail/individual.rst', context)
+        msg = loader.render_to_string('registration/mail/individual.rst', context).replace("&#39;","'")
 
     mail = EmailMessage('[Relais de l\'ENSIL] - Confirmation inscription', msg,
                         setting.email, [to], [setting.email, DEVELOPPER_MAIL])
