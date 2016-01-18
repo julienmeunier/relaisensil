@@ -223,7 +223,7 @@ class Runner(models.Model):
         """
         age = self.age()
         # TODO: can be manageable
-        if age and age < 14:
+        if age is not None and age < 14:
             return False
         else:
             return True
