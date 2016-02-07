@@ -1,0 +1,87 @@
+﻿{% extends "layout.html" %}
+{% load tools %}
+{% load macros %}
+{% load macros %}
+{% loadmacros "management/macros.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="centered">
+<h2>Individuel</h2>
+	<table class="table table-striped">
+		<tr>
+			<th class="text-center">Dossard</th>
+			<th class="text-center">Nom</th>
+			<th class="text-center">Prénom</th>
+			<th class="text-center">Sexe</th>
+			<th class="text-center">Age</th>
+			<th class="text-center">Catégorie FFA</th>
+			<th class="text-center">Catégorie</th>
+		</tr>
+		{% for ind in individual %}
+		<tr>
+			{% usemacro display_runner ind.runner %}
+			<td class="text-center">{{ind.runner.age}}</td>
+			<td class="text-center">{{ind.runner.runner_category}}</td>
+			<td class="text-center">{{cat|key:ind.category}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	<h2>Equipe</h2>
+	<table class="table table-striped">
+		<tr>
+			<th class="text-center" rowspan="2">Nom équipe</th>
+			<th class="text-center" colspan="4">Coureur 1</th>
+			<th class="text-center" colspan="4">Coureur 2</th>
+			<th class="text-center" colspan="4">Coureur 3</th>
+			<th class="text-center" rowspan="2">Catégorie</th>
+		</tr>
+		<tr>
+			<th class="text-center">Dossard</th>
+			<th class="text-center">Nom</th>
+			<th class="text-center">Prénom</th>
+			<th class="text-center">Sexe</th>
+			<th class="text-center">Dossard</th>
+			<th class="text-center">Nom</th>
+			<th class="text-center">Prénom</th>
+			<th class="text-center">Sexe</th>
+			<th class="text-center">Dossard</th>
+			<th class="text-center">Nom</th>
+			<th class="text-center">Prénom</th>
+			<th class="text-center">Sexe</th>
+		{% for t in team %}
+		<tr>
+			<td class="text-center">{{t.name}}</td>	
+			{% usemacro display_runner t.runner_1 %}
+			{% usemacro display_runner t.runner_2 %}
+			{% usemacro display_runner t.runner_3 %}
+			<td class="text-center">{{cat|key:t.category}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	<h2>Résultats individuels</h2>
+	{% for name, results in results_ind %}
+	<h3>{{name}}</h3>
+	<table class="table table-striped">
+		<tr>
+			<th class="text-center">Dossard</th>
+			<th class="text-center">Nom</th>
+			<th class="text-center">Prénom</th>
+			<th class="text-center">Sexe</th>
+	        <th class='text-center'>Categorie</th>
+			<th class="text-center">Temps</th>
+		</tr>
+		{% for r in results %}
+		<tr>
+			{% usemacro display_runner r.runner %}
+		    <td class="text-center">{{cat|key:r.category}}</td>
+			<td class="text-center">{{r.runner.time}}</td>	
+		</tr>
+		{% endfor %}
+	</table>
+	{% endfor %}
+</div>
+</div>
+</div>
+{% endblock %}
