@@ -53,9 +53,9 @@ class Price(models.Model):
     """
     Price of each category.
     """
-    config = models.CharField('Type de coureur', max_length=5, choices=CONFIG_CHOICES)
-    who = models.CharField('Catégorie du coureur', max_length=5, choices=CATEGORY_CHOICES)
-    when = models.CharField('Quand', max_length=5, choices=WHEN_CHOICES)
+    config = models.CharField('Type de coureur', max_length=10, choices=CONFIG_CHOICES)
+    who = models.CharField('Catégorie du coureur', max_length=10, choices=CATEGORY_CHOICES)
+    when = models.CharField('Quand', max_length=10, choices=WHEN_CHOICES)
     price = models.IntegerField('Prix')
 
     class Meta:
@@ -122,7 +122,7 @@ class Payment(models.Model):
     """
     # Relation between Payment.price <-> Price
     price = models.ForeignKey(Price, verbose_name='Prix')
-    method = models.CharField('Méthode', max_length=3, choices=METHOD_PAYMENT_CHOICES)
+    method = models.CharField('Méthode', max_length=10, choices=METHOD_PAYMENT_CHOICES)
     state = models.BooleanField('Validé')
     token = models.CharField('Token', max_length=30, default=get_random_string(),
                              editable=False)
@@ -300,7 +300,7 @@ class Individual(models.Model):
     # One Individual -> One Runner (unicity)
     runner = models.OneToOneField(Runner, verbose_name='Coureur')
     email = models.EmailField('Email')
-    category = models.CharField('Catégorie de coureur', max_length=3, choices=CATEGORY_CHOICES)
+    category = models.CharField('Catégorie de coureur', max_length=10, choices=CATEGORY_CHOICES)
     # One Individual -> One payment (unicity)
     payment = models.OneToOneField(Payment, verbose_name='Paiement')
 
@@ -377,7 +377,7 @@ class Team(models.Model):
     """
     name = models.CharField('Name', max_length=30)
     email = models.EmailField('Email')  # useful ?
-    category = models.CharField('Catégorie du coureur', max_length=3, choices=CATEGORY_CHOICES)
+    category = models.CharField('Catégorie du coureur', max_length=10, choices=CATEGORY_CHOICES)
     # OneToOne relation between Runner and Team
     runner_1 = models.OneToOneField(Runner, verbose_name='1er coureur',
                                     related_name='team_runner_1')
