@@ -356,6 +356,12 @@ class Individual(models.Model):
                     }
                 )
 
+    def compute_categories(self):
+        c = set()
+        c.add(self.runner.runner_category())
+        c.add(self.category)
+        return c
+
     def delete(self, *args, **kwargs):
         """
         When deleting a Individual, delete all related objects.

@@ -1,6 +1,9 @@
-from relais.models import Club, Federation, Company, School
+import hashlib
 import json
+
 from django.core.serializers.json import DjangoJSONEncoder
+
+from relais.models import Club, Federation, Company, School, CATEGORY_CHOICES
 
 
 def add_get_club(name):
@@ -42,3 +45,18 @@ def get_all_autocomplete():
     a['company'] = json.dumps(list(Company.objects.all().values_list('name', flat=True)),
                               cls=DjangoJSONEncoder)
     return a
+
+def cat2hash(category):
+    return hashlib.md5(category).hexdigest()
+
+def limit_query(l, begin=0, end=0):
+    try:
+        return l[begin:end]
+    except IndexError:
+        return []
+
+def get_relais_categories():
+    cat = {}
+    for key, name in CATEGORY_CHOICES:
+        cat[key] = name
+    return cat
