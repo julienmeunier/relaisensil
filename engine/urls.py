@@ -14,7 +14,6 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^registration/', include('relais.urls.registration')),
     url(r'^payment/', include('relais.urls.payment')),
-    url(r'^management/', include('relais.urls.management')),
     url(r'^paypal/', include('paypal.standard.ipn.urls')),
     url(r'^captcha/', include('captcha.urls')),
 ) + static(production.STATIC_URL, document_root=production.STATIC_ROOT)
