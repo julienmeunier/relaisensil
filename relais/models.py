@@ -178,18 +178,30 @@ class Runner(models.Model):
     time = models.TimeField('Temps', blank=True, null=True)
     ready = models.BooleanField('Prêt à courir', default=False)
 
-    def age(self):
+    def age(self, ffa=True):
+        """
+        :arg bool ffa:
+            Calculate age according to FFA.
+
+        :returns:
+            If ffa=True, returns the number of year between year of birth and
+            year of this season.
+            Else, returns current age.
+        """
         if not self.birthday:
             return None
-        today = datetime.date.today()
-        num_years = int((today - self.birthday).days / 365.2425)
+        if ffa:
+            num_years = datetime.date.today().year - self.birthday.year
+        else:
+            today = datetime.date.today()
+            num_years = int((today - self.birthday).days / 365.2425)
         return num_years
 
     def runner_category(self):
         """
-        Category are given by FF(?)
+        Category are given by FFA
         """
-        age = self.age()
+        age = self.age(ffa=True)
         if age <= 9:
             r = constants.POUSSIN
         elif 10 <= age and age <= 11:
