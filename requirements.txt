@@ -8,3 +8,4 @@ django-paypal==0.2.7
 django_sendmail_backend==0.1.1
 pytz==2015.7
 pyftpsync==1.0.3
+names>=0.3.0
