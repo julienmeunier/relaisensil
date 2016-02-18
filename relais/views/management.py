@@ -37,6 +37,14 @@ def index(request):
 
 #------------------------------------------------------------------------------
 @logged_in_or_basicauth()
+def timing(request):
+    """
+    Timing page
+    """
+    return render(request, 'management/timing.html')
+
+#------------------------------------------------------------------------------
+@logged_in_or_basicauth()
 def listing(request):
     """
     Listing individuals or teams
