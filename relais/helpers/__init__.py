@@ -47,15 +47,21 @@ def get_all_autocomplete():
     return a
 
 def cat2hash(category):
+    """
+    Hash a category string in order to be usable in dict for example.
+
+    :arg str category:
+        A category string.
+
+    :returns:
+        A hash of this category string
+    """
     return hashlib.md5(category).hexdigest()
 
-def limit_query(l, begin=0, end=0):
-    try:
-        return l[begin:end]
-    except IndexError:
-        return []
-
 def get_relais_categories():
+    """
+    Convert a list of tuple ((a,b),(c,d)) to a dict
+    """
     cat = {}
     for key, name in CATEGORY_CHOICES:
         cat[key] = name
