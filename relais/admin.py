@@ -108,7 +108,8 @@ class TeamAdmin(admin.ModelAdmin):
                     'runner_3_link',
                     'runner_3_certificat',
                     'company',
-                    'payment')
+                    'payment_status',
+                    'payment_link')
     actions = ['really_delete_selected']
     list_max_show_all = 500
     list_per_page = 500
