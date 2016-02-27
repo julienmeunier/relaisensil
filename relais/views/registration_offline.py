@@ -117,7 +117,7 @@ def individual(request):
         return HttpResponseRedirect('/management/registration')
 
     # create a new form for individual information, or complete it
-    form = forms.IndividualForm(request.POST or None)
+    form = forms.IndividualFormOnSite(request.POST or None)
 
     # get all data from the database to autocomplete some fields
     autocomplete = helpers.get_all_autocomplete()
@@ -132,6 +132,7 @@ def individual(request):
                        last_name=form.cleaned_data['last_name'],
                        gender=form.cleaned_data['gender'],
                        birthday=form.cleaned_data['birthday'],
+                       num=form.cleaned_data['num'],
                        license_nb=form.cleaned_data['license'],
                        school=form.cleaned_data['school'],
                        federation=form.cleaned_data['federation'],
@@ -140,7 +141,6 @@ def individual(request):
                        certificat=True,
                        legal_status=True,
                        tshirt=form.cleaned_data['tshirt'])
-            r.update_num(RANGE_INDIVIDUAL)
             r.clean()
             r.save()
 
@@ -175,7 +175,7 @@ def team(request):
         return HttpResponseRedirect('/management/registration')
 
     # create a new form for individual information, or complete it
-    form = forms.TeamForm(request.POST or None)
+    form = forms.TeamFormOnSite(request.POST or None)
 
     # get all data from the database to autocomplete some fields
     autocomplete = helpers.get_all_autocomplete()
@@ -192,6 +192,7 @@ def team(request):
                               last_name=form.cleaned_data['last_name_%d' % i],
                               gender=form.cleaned_data['gender_%d' % i],
                               birthday=form.cleaned_data['birthday_%d' % i],
+                              num=form.cleaned_data['num_%d' % i],
                               license_nb=form.cleaned_data['license_%d' % i],
                               school=form.cleaned_data['school'],
                               federation=form.cleaned_data['federation_%d' % i],
@@ -200,7 +201,6 @@ def team(request):
                               certificat=True,
                               legal_status=True,
                               tshirt=form.cleaned_data['tshirt_%d' % i])
-                r[i].update_num(RANGE_TEAM[i])
                 r[i].clean()
                 r[i].save()
 
