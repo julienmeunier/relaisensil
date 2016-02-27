@@ -1,0 +1,36 @@
+{% extends "registration/layout_form.html" %}
+{% load tools %}
+{% load macros %}
+{% loadmacros "registration/macros.html" %}
+
+{% block form %}
+<form method="POST" action="/management/registration/category/individual/">
+  {% csrf_token %}
+  <!-- HTML -->
+  <div class='container centered'>
+    <legend>Parcours route (3,3 km) / nature (3,4 km) / route (3,3 km)</legend>
+    <div class='row'>
+      <div class='col-lg-8 centered'>
+        {% usemacro display_form_error form %}
+        {% usemacro display_error err %}
+        <legend>Informations de base</legend>
+        {% usemacro basic_form form.email 'form-control' %}
+        {% usemacro basic_form form.category 'form-control' %}
+        {% usemacro basic_form form.school 'form-control autocomplete_school' %}
+        {% usemacro basic_form form.company 'form-control autocomplete_company' %}
+        {% usemacro basic_form form.canicross %}
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-lg-8 centered'>
+        <legend>Coureur</legend>
+        {% usemacro form_runner form.first_name form.last_name form.gender form.birthday form.license form.federation form.school form.club form.tshirt %}
+      </div>
+    </div>
+    <div class="row centered">
+      {% usemacro basic_form form.captcha 'form-control' %}
+    </div>
+    <input type="submit" value="Envoyer" class="btn btn-primary">
+  </div>
+</form>
+{% endblock %}

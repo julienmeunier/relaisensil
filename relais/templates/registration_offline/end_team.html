@@ -1,0 +1,19 @@
+﻿{% extends "layout.html" %}
+{% load tools %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="centered">
+<h2>Equipe</h2>
+<b>Nom</b>: {{team}}<br />
+<b>Coureur 1</b>: {{team.runner_1}}<br />
+<b>Coureur 2</b>: {{team.runner_2}}<br />
+<b>Coureur 3</b>: {{team.runner_3}}<br />
+<b>Montant</b>: {{team.payment.price}}<br />
+<b>N'oubliez pas les certificats médicaux et la décharge de responsabilité
+pour les mineurs.</b>
+</div>
+<a href='/management/registration'>Allons faire une nouvelle inscription :)</a>
+</div>
+</div>
+{% endblock %}
