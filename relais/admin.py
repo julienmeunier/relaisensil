@@ -33,6 +33,8 @@ admin.site.register(Price, PriceAdmin)
 class IndividualAdmin(admin.ModelAdmin):
     list_display = ('id', 'runner_link', 'runner_certificat', 'payment_link', 'payment_status')
     actions = ['really_delete_selected']
+    list_max_show_all = 500
+    list_per_page = 500
 
     # by default, django use QuerySet to delete an entry
     # however, in the case of Individual/Team, delete method of these models
@@ -74,6 +76,8 @@ admin.site.register(Individual, IndividualAdmin)
 #------------------------------------------------------------------------------
 class PaymentAdmin(admin.ModelAdmin):
     list_display = ('id', 'token', 'reverse', 'method', 'price', 'state', 'ipn_link')
+    list_max_show_all = 500
+    list_per_page = 500
 
     def reverse(self, obj):
         try:
@@ -106,6 +110,8 @@ class TeamAdmin(admin.ModelAdmin):
                     'company',
                     'payment')
     actions = ['really_delete_selected']
+    list_max_show_all = 500
+    list_per_page = 500
 
     # by default, django use QuerySet to delete an entry
     # however, in the case of Individual/Team, delete method of these models
