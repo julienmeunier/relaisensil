@@ -45,6 +45,14 @@ def timing(request):
 
 #------------------------------------------------------------------------------
 @logged_in_or_basicauth()
+def timing_auto(request):
+    """
+    Timing page
+    """
+    return render(request, 'management/timing_auto.html')
+
+#------------------------------------------------------------------------------
+@logged_in_or_basicauth()
 def listing(request):
     """
     Listing individuals or teams
