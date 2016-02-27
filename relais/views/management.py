@@ -79,6 +79,7 @@ def results(request):
                      results=Team.objects.order_by('runner_3__time'))],
     }
 
+    to_template['order_by_time'] = True
     return render(request, 'management/results.html', to_template)
 
 #------------------------------------------------------------------------------
@@ -197,6 +198,7 @@ def results_individual(request, display_all=False, order_by_time=True):
                             results=query[0:count_1]))
 
     to_template['individual'] = r
+    to_template['order_by_time'] = order_by_time
 
     return render(request, 'management/results.html', to_template)
 
@@ -433,6 +435,7 @@ def results_team(request, display_all=False, order_by_time=True):
                             results=query[0:count_1]))
 
     to_template['team'] = r
+    to_template['order_by_time'] = order_by_time
 
     return render(request, 'management/results.html', to_template)
 

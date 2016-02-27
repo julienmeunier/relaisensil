@@ -17,7 +17,7 @@
 {% endif %}
 {% endmacro %}
 
-{% macro display_team_results results cat %}
+{% macro display_team_results results cat order_by_time %}
     <table class="table table-striped table-bordered">
         <tr>
             <th class="text-center" rowspan="2">Nom équipe</th>
@@ -43,6 +43,8 @@
             <th class="text-center">Sexe</th>
             <th class="text-center">Temps</th>
         {% for r in results %}
+            {% if order_by_time %}
+                {% if r.runner_3.time %}
         <tr>
             <td class="text-center">{{r.name}}</td>
             {% usemacro display_runner r.runner_1 %}
@@ -53,11 +55,24 @@
             <td class="text-center">{{r.runner_3.time}}</td>
             <td class="text-center">{% usemacro display_category r %}</td>
         </tr>
+                {% endif %}
+            {% else %}
+        <tr>
+            <td class="text-center">{{r.name}}</td>
+            {% usemacro display_runner r.runner_1 %}
+            <td class="text-center">{{r.runner_1.time}}</td>
+            {% usemacro display_runner r.runner_2 %}
+            <td class="text-center">{{r.runner_2.time}}</td>
+            {% usemacro display_runner r.runner_3 %}
+            <td class="text-center">{{r.runner_3.time}}</td>
+            <td class="text-center">{% usemacro display_category r %}</td>
+        </tr>
+            {% endif %}
         {% endfor %}
     </table>
 {% endmacro %}
 
-{% macro display_individual_results results cat %}
+{% macro display_individual_results results cat order_by_time %}
 <table class="table table-striped">
  <tr>
      <th class="text-center">Dossard</th>
@@ -68,11 +83,21 @@
      <th class="text-center">Temps</th>
  </tr>
         {% for r in results %}
+            {% if order_by_time %}
+                {% if r.runner.time %}
         <tr>
             {% usemacro display_runner r.runner %}
             <td class="text-center">{{cat|key:r.category}}</td>
             <td class="text-center">{{r.runner.time}}</td>
         </tr>
+                {% endif %}
+            {% else %}
+        <tr>
+            {% usemacro display_runner r.runner %}
+            <td class="text-center">{{cat|key:r.category}}</td>
+            <td class="text-center">{{r.runner.time}}</td>
+        </tr>
+            {% endif %}
         {% endfor %}
     </table>
 {% endmacro %}
