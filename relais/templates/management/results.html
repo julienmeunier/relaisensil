@@ -4,28 +4,18 @@
 {% loadmacros "management/macros.html" %}
 
 {% block content %}
-<div class="container">
     {% if individual %}
-    <div class="row">
-        <div class="centered">
             <h2>Résultats individuels</h2>
              {% for name, results in individual %}
                 <h3>{{name}}</h3>
                 {% usemacro display_individual_results results cat order_by_time %}
              {% endfor %}
-        </div>
-    </div>
     {% endif %}
     {% if team %}
-    <div class="row">
-        <div class="centered">
             <h2>Résultats équipes</h2>
             {% for name, results in team %}
                 <h3>{{name}}</h3>
                 {% usemacro display_team_results results cat order_by_time %}
             {% endfor %}
-        </div>
-    </div>
     {% endif %}
-</div>
 {% endblock %}
