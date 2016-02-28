@@ -19,8 +19,10 @@
 {% endmacro %}
 
 {% macro display_team_results results cat order_by_time %}
-    <table class="table table-striped table-bordered">
+{% with i=1 %}
+  <table class="table table-striped table-bordered">
         <tr>
+            <th class="text-center" rowspan="2">Classement</th>
             <th class="text-center" rowspan="2">Nom équipe</th>
             <th class="text-center" colspan="6">Coureur 1</th>
             <th class="text-center" colspan="6">Coureur 2</th>
@@ -44,7 +46,7 @@
             <th class="text-center">Nom</th>
             <th class="text-center">Prénom</th>
             <th class="text-center">Sexe</th>
-            <th class="text-center">Age</th>s
+            <th class="text-center">Age</th>
             <th class="text-center">Temps</th>
         {% for r in results %}
             {% if order_by_time %}
@@ -52,6 +54,7 @@
                 {# bypass empty team #}
                 {% else %}
         <tr>
+            <td class="text-center">{{i}}</td>{% ++ i %}
             <td class="text-center">{{r.name}}</td>
             {% usemacro display_runner r.runner_1 %}
             <td class="text-center">{{r.runner_1.time|default:"Temps en cours de récupération par l'équipe"}}</td>
@@ -64,6 +67,7 @@
                 {% endif %}
             {% else %}
         <tr>
+            <td class="text-center"></td>
             <td class="text-center">{{r.name}}</td>
             {% usemacro display_runner r.runner_1 %}
             <td class="text-center">{{r.runner_1.time}}</td>
@@ -76,11 +80,14 @@
             {% endif %}
         {% endfor %}
     </table>
+{% endwith %}
 {% endmacro %}
 
 {% macro display_individual_results results cat order_by_time %}
+{% with i=1 %}
 <table class="table table-striped table-bordered">
  <tr>
+     <th class="text-center">Classement</th>
      <th class="text-center">Dossard</th>
      <th class="text-center">Nom</th>
      <th class="text-center">Prénom</th>
@@ -94,6 +101,7 @@
             {% if order_by_time %}
                 {% if r.runner.time %}
         <tr>
+            <td class="text-center">{{i}}</td>{% ++ i %}
             {% usemacro display_runner r.runner %}
             <td class="text-center">{{r.runner.runner_category}}</td>
             <td class="text-center">{% usemacro display_category r %}</td>
@@ -102,6 +110,7 @@
                 {% endif %}
             {% else %}
         <tr>
+            <td class="text-center"></td>
             {% usemacro display_runner r.runner %}
             <td class="text-center">{{r.runner.runner_category}}</td>
             <td class="text-center">{% usemacro display_category r %}</td>
@@ -110,4 +119,5 @@
             {% endif %}
         {% endfor %}
     </table>
+{% endwith %}
 {% endmacro %}
