@@ -54,7 +54,7 @@
                 {# bypass empty team #}
                 {% else %}
         <tr>
-            <td class="text-center">{{i}}</td>{% ++ i %}
+            <td class="text-center">{{i}}</td>
             <td class="text-center">{{r.name}}</td>
             {% usemacro display_runner r.runner_1 %}
             <td class="text-center">{{r.runner_1.time|default:"Temps en cours de récupération par l'équipe"}}</td>
@@ -63,6 +63,9 @@
             {% usemacro display_runner r.runner_3 %}
             <td class="text-center">{{r.runner_3.time|default:"Temps en cours de récupération par l'équipe"}}</td>
             <td class="text-center">{% usemacro display_category r %}</td>
+            {% if r.runner_1.time and r.runner_2.time and r.runner_3.time %}
+                {% ++ i %}
+            {% endif %}
         </tr>
                 {% endif %}
             {% else %}
