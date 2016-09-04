@@ -72,7 +72,7 @@ class Price(models.Model):
 
 #------------------------------------------------------------------------------
 class Federation(models.Model):
-    name = models.CharField('Nom', max_length=30)
+    name = models.CharField('Nom', max_length=30, unique=True)
 
     class Meta:
         verbose_name = 'Fédération'
@@ -82,7 +82,7 @@ class Federation(models.Model):
 
 #------------------------------------------------------------------------------
 class Company(models.Model):
-    name = models.CharField('Nom', max_length=30)
+    name = models.CharField('Nom', max_length=30, unique=True)
 
     class Meta:
         verbose_name = 'Entreprise'
@@ -92,7 +92,7 @@ class Company(models.Model):
 
 #------------------------------------------------------------------------------
 class Club(models.Model):
-    name = models.CharField('Nom', max_length=30)
+    name = models.CharField('Nom', max_length=30, unique=True)
 
     class Meta:
         verbose_name = 'Club'
@@ -102,7 +102,7 @@ class Club(models.Model):
 
 #------------------------------------------------------------------------------
 class School(models.Model):
-    name = models.CharField('Nom', max_length=30)
+    name = models.CharField('Nom', max_length=30, unique=True)
 
     class Meta:
         verbose_name = 'Ecole'
