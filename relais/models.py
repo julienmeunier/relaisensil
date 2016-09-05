@@ -123,7 +123,7 @@ class Payment(models.Model):
     # Relation between Payment.price <-> Price
     price = models.ForeignKey(Price, verbose_name='Prix')
     method = models.CharField('Méthode', max_length=10, choices=METHOD_PAYMENT_CHOICES)
-    state = models.BooleanField('Validé')
+    state = models.BooleanField('Validé', default=False)
     token = models.CharField('Token', max_length=30, default=get_random_string(),
                              editable=False)
     # TODO: update at each action
@@ -166,13 +166,13 @@ class Runner(models.Model):
     federation = models.ForeignKey(Federation, verbose_name='Fédération', blank=True, null=True)
     company = models.ForeignKey(Company, verbose_name='Entreprise', blank=True, null=True)
     club = models.ForeignKey(Club, verbose_name='Club', blank=True, null=True)
-    canicross = models.BooleanField(verbose_name='Canicross')
+    canicross = models.BooleanField(verbose_name='Canicross', default=False)
     tshirt = models.CharField('Taille tshirt', max_length=4, choices=TSHIRT_CHOICES,
                               blank=True, null=True)
 
     # for the management
-    certificat = models.BooleanField('Certificat médical')
-    legal_status = models.BooleanField('Status légal')  # for minor
+    certificat = models.BooleanField('Certificat médical', default=False)
+    legal_status = models.BooleanField('Status légal', default=False)  # for minor
     num = models.PositiveIntegerField('Numéro de dossard', unique=True,
                                       help_text='Pour obtenir les derniers dossards, laisser vide')
     time = models.TimeField('Temps', blank=True, null=True)
