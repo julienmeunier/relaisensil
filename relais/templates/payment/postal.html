@@ -1,24 +1,23 @@
 {% extends "layout.html" %}
-{% load macros %}
-{% loadmacros "registration/macros.html" %}
 {% block content %}
 <div class='container centered'>
-  <div class='row'>
-  <h1>Chèque</h1>
-    <div class='col-lg-12 centered'>
-    Vous avez choisi un paiement par chèque / liquide.
-    Merci de régler le montant pour l'inscription et de nous le renvoyer à
-    {{setting.postal_address}}.
-    <ul>
-    <li>Identifiant: {{payment.id}}</li>
-    <li>Montant: {{payment.price.price}} €</li>
-    <li>Résumé du paiement: {{payment}}</li>
-    </ul>
+    <div class='row'>
+        <h1>Chèque</h1>
+        <div class='col-lg-12 centered'>
+        Vous avez choisi un paiement par chèque / liquide.
+        Merci de régler le montant pour l'inscription et de nous le renvoyer à
+        {{setting.postal_address}}.
+        <ul>
+            <li>Identifiant: {{payment.id}}</li>
+            <li>Montant: {{payment.price.price}} €</li>
+            <li>Résumé du paiement: {{payment}}</li>
+        </ul>
     </div>
-    <p>Nous vous remercions de vous être inscrit en ligne, et nous vous donnons rendez-vous
-le {{ setting.event | date:'l d F' }} à l'ENSIL !</p>
-<p>Sportivement votre,<br/>L'Equipe du Relais de l'ENSIL</p>
+    <p>Nous vous remercions de vous être inscrit en ligne, et nous vous 
+    donnons rendez-vous le {{ setting.event | date:'l d F' }} à l'ENSIL !</p>
+    <p>Sportivement votre,<br/>
+    L'Equipe du Relais de l'ENSIL</p>
     <p><a href="{{setting.url}}">Retour au site</a></p>
-  </div>
+    </div>
 </div>
 {% endblock %}

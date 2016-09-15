@@ -1,5 +1,4 @@
-﻿{% load staticfiles %}
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="utf-8">
@@ -11,22 +10,22 @@
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/jquery-ui.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/jquery-ui.structure.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/jquery-ui.theme.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/relais.css' %}" />
-    <script type="text/javascript" src="{% static 'lib/js/jquery.js' %}"></script>
-    <script type="text/javascript" src="{% static 'lib/js/jquery-ui.js' %}"></script>
-    <script type="text/javascript" src="{% static 'lib/js/jquery.inputmask.bundle.js' %}"></script>
-    <script type="text/javascript" src="{% static 'lib/js/datepicker-fr.js' %}"></script>
-    <script type="text/javascript" src="{% static 'lib/js/bootstrap.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ static('lib/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ static('lib/css/jquery-ui.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ static('lib/css/jquery-ui.structure.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ static('lib/css/jquery-ui.theme.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ static('css/relais.css') }}" />
+    <script type="text/javascript" src="{{ static('lib/js/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ static('lib/js/jquery-ui.js') }}"></script>
+    <script type="text/javascript" src="{{ static('lib/js/jquery.inputmask.bundle.js') }}"></script>
+    <script type="text/javascript" src="{{ static('lib/js/datepicker-fr.js') }}"></script>
+    <script type="text/javascript" src="{{ static('lib/js/bootstrap.js') }}"></script>
   </head>
   <body>
     <header>
       <div class="page-header">
        <div class="container">
-           <img class="centered" src="{% static 'img/header.png' %}" alt="Relais" />
+           <img class="centered" src="{{ static('img/header.png')}}" alt="Relais" />
         </div>
       </div>
     </header>

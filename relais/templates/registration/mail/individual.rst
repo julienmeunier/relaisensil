@@ -1,28 +1,33 @@
 {% extends "registration/mail/body.rst" %}
-{% load macros %}
-{% load tools %}
-{% loadmacros "registration/mail/macros.rst" %}
+{% from "registration/mail/macros.rst" import display_runner %}
 {% block content %}
 =================================================================
 Coureur 10 km - route (3,3 km) / nature (3,4 km) / route (3,3 km)
 =================================================================
 Catégorie
 ---------
-{{category|key:individual.category}}
+{{category[individual.category]}}
 
 Prix
 ----
-{{individual.payment.price.price}} €{% if individual.company %}
+{{individual.payment.price.price}} €
+
+{%- if individual.company -%}
 
 Entreprise
 ----------
-{{individual.company}}{% endif %}{% if individual.school %}
+{{individual.company}}
+
+{% endif %}
+{%- if individual.school -%}
 
 Ecole
 -----
-{{individual.school}}{% endif %}
+{{individual.school}}
+
+{%- endif -%}
 
 Information sur le coureur
 --------------------------
-{% usemacro display_runner individual.runner %}
+{{ display_runner(individual.runner) }}
 {% endblock %}

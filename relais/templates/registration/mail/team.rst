@@ -8,7 +8,7 @@ Equipe de 3 personnes
 =====================
 Catégorie
 ---------
-{{category|key:team.category}}
+{{category|[team.category}}}
 
 Nom de l'équipe
 ---------------
@@ -16,28 +16,32 @@ Nom de l'équipe
 
 Prix
 ----
-{{team.payment.price.price}} €{% if team.company %}
+{{team.payment.price.price}} €
 
+{% if team.company %}
 Entreprise
 ----------
-{{team.company}}{% endif %}{% if team.school %}
+{{team.company}}
+{% endif %}
 
+{% if team.school %}
 Ecole
 -----
-{{team.school}}{% endif %}
+{{team.school}}
+{% endif %}
 
 Information sur les coureurs
 ----------------------------
 
 Coureur 1: route (3,3 km)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-{% usemacro display_runner team.runner_1 %}
+{{ display_runner(team.runner_1) }}
 
 Coureur 2: nature (3,4 km)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-{% usemacro display_runner team.runner_2 %}
+{{ display_runner(team.runner_2) }}
 
 Coureur 3: route (3,3 km)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-{% usemacro display_runner team.runner_3 %}
+{{ display_runner(team.runner_3) }}
 {% endblock %}

@@ -1,15 +1,14 @@
 {% extends "layout.html" %}
-{% load macros %}
-{% loadmacros "registration/macros.html" %}
 {% block content %}
 <div class='container centered'>
-  <div class='row'>
-  <h1>Paiement par PayPal</h1>
-    <div class='col-lg-12 centered'>
-    <p>En cliquant sur le bouton suivant, vous allez être redirigé vers PayPal qui
-    s'occupera du paiement en ligne. Vous pouvez régler même sans avoir de compte PayPal.</p>
-    {{form.render}}
+    <div class='row'>
+    <h1>Paiement par PayPal</h1>
+        <div class='col-lg-12 centered'>
+            <p>En cliquant sur le bouton suivant, vous allez être redirigé vers
+            PayPal qui s'occupera du paiement en ligne.
+            Vous pouvez régler même sans avoir de compte PayPal.</p>
+            {{form.render()}}
+        </div>
     </div>
-  </div>
 </div>
 {% endblock %}

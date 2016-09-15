@@ -1,8 +1,4 @@
 {% extends "layout.html" %}
-{% load tools %}
-{% load macros %}
-{% load macros %}
-{% loadmacros "management/macros.html" %}
 
 {% block content %}
 <div class="container">
@@ -10,17 +6,17 @@
         <div class="centered">
         <h1>Management de la course du Relais de l'ENSIL</h1>
         <ul>
-        <li><a href='/management/registration'>Inscription sur le jour J sur site (ENSIL)</a></li>
-        <li><a href='/management/listing'>Afficher le listing</a></li>
-        <li><a href='/management/listing/individual'>Afficher le listing individuels par récompenses</a></li>
-        <li><a href='/management/listing/team'>Afficher le listing des équipes par récompenses</a></li>
-        <li><a href='/management/timing_auto'>Gérer la course (temps automatique)</a></li>
-        <li><a href='/management/timing'>Gérer la course (temps)</a></li>
-        <li><a href='/management/results'>Afficher tous les résultats</a></li>
-        <li><a href='/management/results/individual'>Afficher les récompenses individuel</a></li>
-        <li><a href='/management/results/team'>Afficher les récompenses par équipe</a></li>
-        <li><a href='/management/results/individual/all'>Afficher tous les individuel par récompense</a></li>
-        <li><a href='/management/results/team/all'>Afficher toutes les équipe par récompense</a></li>
+            <li><a href='/management/registration'>Inscription sur le jour J sur site (ENSIL)</a></li>
+            <li><a href='/management/listing'>Afficher le listing</a></li>
+            <li><a href='/management/listing/individual'>Afficher le listing individuels par récompenses</a></li>
+            <li><a href='/management/listing/team'>Afficher le listing des équipes par récompenses</a></li>
+            <li><a href='/management/timing_auto'>Gérer la course (temps automatique)</a></li>
+            <li><a href='/management/timing'>Gérer la course (temps)</a></li>
+            <li><a href='/management/results'>Afficher tous les résultats</a></li>
+            <li><a href='/management/results/individual'>Afficher les récompenses individuel</a></li>
+            <li><a href='/management/results/team'>Afficher les récompenses par équipe</a></li>
+            <li><a href='/management/results/individual/all'>Afficher tous les individuel par récompense</a></li>
+            <li><a href='/management/results/team/all'>Afficher toutes les équipe par récompense</a></li>
         </ul>
         <p>Il y a actuellement {{nb_runner}} coureurs, dont {{nb_indiv}} individuels et {{nb_team}} équipes.</p>
         </div>

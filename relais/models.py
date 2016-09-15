@@ -1,4 +1,3 @@
-#-*-coding: utf-8 -*-
 import datetime
 
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
@@ -66,8 +65,8 @@ class Price(models.Model):
         verbose_name_plural = 'Prix'
         unique_together = ('config', 'who', 'when')  # one price is allowed
 
-    def __unicode__(self):
-        return u'%s %s (inscription %s) - Montant %s €' % (self.get_config_display(), self.get_who_display(),
+    def __str__(self):
+        return '%s %s (inscription %s) - Montant %s €' % (self.get_config_display(), self.get_who_display(),
                                        self.get_when_display(), self.price)
 
 #------------------------------------------------------------------------------
@@ -77,8 +76,8 @@ class Federation(models.Model):
     class Meta:
         verbose_name = 'Fédération'
 
-    def __unicode__(self):
-        return u'%s' % self.name
+    def __str__(self):
+        return '%s' % self.name
 
 #------------------------------------------------------------------------------
 class Company(models.Model):
@@ -87,8 +86,8 @@ class Company(models.Model):
     class Meta:
         verbose_name = 'Entreprise'
 
-    def __unicode__(self):
-        return u'%s' % self.name
+    def __str__(self):
+        return '%s' % self.name
 
 #------------------------------------------------------------------------------
 class Club(models.Model):
@@ -97,8 +96,8 @@ class Club(models.Model):
     class Meta:
         verbose_name = 'Club'
 
-    def __unicode__(self):
-        return u'%s' % self.name
+    def __str__(self):
+        return '%s' % self.name
 
 #------------------------------------------------------------------------------
 class School(models.Model):
@@ -107,13 +106,13 @@ class School(models.Model):
     class Meta:
         verbose_name = 'Ecole'
 
-    def __unicode__(self):
-        return u"%s" % self.name
+    def __str__(self):
+        return "%s" % self.name
 
 #------------------------------------------------------------------------------
 METHOD_PAYMENT_CHOICES = ((constants.CASH, 'Espèce'),
                           (constants.CHEQUE, 'Chèque'),
-                          (constants.PAYPAL, u'Paypal'),
+                          (constants.PAYPAL, 'Paypal'),
                           (constants.UNKNOWN, 'Inconnu'))
 
 class Payment(models.Model):
@@ -134,12 +133,12 @@ class Payment(models.Model):
     class Meta:
         verbose_name = 'Paiement'
 
-    def __unicode__(self):
+    def __str__(self):
         if self.state:
-            s = u'validé par l\'équipe organisatrice'
+            s = 'validé par l\'équipe organisatrice'
         else:
-            s = u'en attente de validation par l\'équipe organisatrice' 
-        return u'Paiement numéro %d, Catégorie: %s, Méthode de paiement: %s - %s' % (self.id, self.price, self.get_method_display(), s)
+            s = 'en attente de validation par l\'équipe organisatrice' 
+        return 'Paiement numéro %d, Catégorie: %s, Méthode de paiement: %s - %s' % (self.id, self.price, self.get_method_display(), s)
 
 #------------------------------------------------------------------------------
 GENDER_CHOICES = ((constants.MALE, 'Homme'),
@@ -262,8 +261,8 @@ class Runner(models.Model):
 
         if not self.can_run():
             # raise an error and avoid registration
-            err.append(u'%s ne peut pas s\'inscrire, l\'âge minimale est de '
-                       u'14 ans, ce dernier ayant %s ans.' % (self, self.age()))
+            err.append('%s ne peut pas s\'inscrire, l\'âge minimale est de '
+                       '14 ans, ce dernier ayant %s ans.' % (self, self.age()))
         if err:
             raise ValidationError(
                 {
@@ -301,8 +300,8 @@ class Runner(models.Model):
         # unicity of Runner, avoid duplication
         unique_together = ('first_name', 'last_name', 'birthday', 'gender')
 
-    def __unicode__(self):
-        return u'%s %s (%d)' % (self.first_name, self.last_name, self.num)
+    def __str__(self):
+        return '%s %s (%d)' % (self.first_name, self.last_name, self.num)
 
 #------------------------------------------------------------------------------
 class Individual(models.Model):
@@ -336,8 +335,8 @@ class Individual(models.Model):
             raise ValidationError(
                 {
                     NON_FIELD_ERRORS: [
-                        u'%s ne peut pas s\'inscrire en individuel, l\'âge '
-                        u'minimal est de 16 ans, ce dernier ayant %s ans.'
+                        '%s ne peut pas s\'inscrire en individuel, l\'âge '
+                        'minimal est de 16 ans, ce dernier ayant %s ans.'
                         % (self.runner, self.runner.age())
                     ],
                 }
@@ -363,7 +362,7 @@ class Individual(models.Model):
                     {
                         # TODO: translation
                         NON_FIELD_ERRORS: [
-                            u'%s est déjà dans une équipe (%s)' % (self.runner, team)
+                            '%s est déjà dans une équipe (%s)' % (self.runner, team)
                         ],
                     }
                 )
@@ -385,8 +384,8 @@ class Individual(models.Model):
     class Meta:
         verbose_name = 'Individuel'
 
-    def __unicode__(self):
-        return u'%s' % self.runner
+    def __str__(self):
+        return '%s' % self.runner
 
 #------------------------------------------------------------------------------
 class Team(models.Model):
@@ -418,7 +417,7 @@ class Team(models.Model):
                     {
                         # TODO: translation
                         NON_FIELD_ERRORS: [
-                            u'Le coureur %s est déjà inscrit en individuel' % runner,
+                            'Le coureur %s est déjà inscrit en individuel' % runner,
                         ],
                     }
                 )
@@ -436,5 +435,5 @@ class Team(models.Model):
     class Meta:
         verbose_name = 'Equipe'
 
-    def __unicode__(self):
-        return u'%s' % self.name
+    def __str__(self):
+        return '%s' % self.name

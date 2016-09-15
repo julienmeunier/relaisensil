@@ -1,5 +1,5 @@
-#-*-coding: utf-8 -*-
-from collections import namedtuple
+from _functools import reduce
+from collections import namedtuple, OrderedDict
 import operator
 import random
 
@@ -19,7 +19,6 @@ from relais.models import (
     Team,
 )
 from relais.util.decorator import logged_in_or_basicauth
-from relais.util.ordereddict import OrderedDict
 
 
 RESULTS = namedtuple('Results', ['name', 'results'])
@@ -162,14 +161,14 @@ def results_individual(request, display_all=False, order_by_time=True):
     r.append(RESULTS(name="Scratch Femme",
                             results=query[0:count_3]))
 
-    for key_gender, name_gender in people.iteritems():
+    for key_gender, name_gender in people.items():
         # exclude 3 first one runners Male / Female
         if display_all:
             exclude = []
         else:
             exclude = Individual.objects.filter(runner__gender=key_gender).order_by(order)[0:count_3]
 
-        for key, data in r_cat.iteritems():
+        for key, data in r_cat.items():
             name = "{category} - {gender}".format(category=data['name'],
                                                   gender=name_gender)
             if data['ffa']:
@@ -458,7 +457,7 @@ def create_fake_users(request):
     word_file = "/usr/share/dict/words"
     words = open(word_file).read().splitlines()
 
-    for i in xrange(0, 250):
+    for i in range(0, 250):
         category = cat[random.randint(0, 4)]
         school = None
         company = None
@@ -488,7 +487,7 @@ def create_fake_users(request):
             i.save()
         else:
             r = {}
-            for i in xrange(1, 4):
+            for i in range(1, 4):
                 r[i] = create_fake_runner(category, False, school_name=school, num=i)
             t = Team(name=words[random.randint(0, len(words))], runner_1=r[1],
                      runner_2=r[2], runner_3=r[3], category=category, payment=pay,

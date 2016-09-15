@@ -7,7 +7,7 @@ Pour toutes questions complémentaires liées à la course, visitez notre site
 
 Pour tout problèmes ou questions liés à l'inscription, contactez {{setting.email}}
 
-Rendez vous le {{setting.event | date:'l d F' }} pour le Relais de l'ENSIL !
+Rendez vous le {{setting.event|date('l d F') }} pour le Relais de l'ENSIL !
 
 Sportivement vôtre,
 

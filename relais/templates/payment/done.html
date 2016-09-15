@@ -1,26 +1,27 @@
 {% extends "layout.html" %}
-{% load staticfiles %}
 {% block content %}
 <div class='container centered'>
-  <div class='row'>
-  <h1>Votre inscription a bien été prise en compte !</h1>
-    <div class='col-lg-12 centered'>
-    <p>Vous receverez un email de confirmation d'inscription avec les informations
-    récapitulatif.</p>
-    <p>Si une personne mineure s'est inscrite, elle doit fournir une
-    décharge de responsabilité que vous pourrez trouver <a href="{% static 'pdf/autorisation.pdf' %}">ici</a></p>
-    <p><b>N'oubliez pas de fournir un certificat médical valide, que vous pourrez
-    nous l'envoyer par email à <a href:'mailto:{{setting.email}}'>{{setting.email}}</a> pour accélérer la procédure
-    d'inscription</b></p>
+    <div class='row'>
+    <h1>Votre inscription a bien été prise en compte !</h1>
+        <div class='col-lg-12 centered'>
+            <p>Vous receverez un email de confirmation d'inscription avec 
+            les informations récapitulatif.</p>
+            <p>Si une personne mineure s'est inscrite, elle doit fournir une
+            décharge de responsabilité que vous pourrez trouver
+            <a href="{{ static('pdf/autorisation.pdf') }}">ici</a></p>
+            <p><b>N'oubliez pas de fournir un certificat médical valide, que vous pourrez
+            nous l'envoyer par email à <a href:'mailto:{{setting.email}}'>
+            {{setting.email}}</a> pour accélérer la procédure
+            d'inscription</b></p>
+        </div>
     </div>
-  </div>
-  {% if payment.price.price != 0 %}
-  <div class='row'>
-    <h2>Status de votre paiement</h2>
-    <div class='col-lg-8 centered'>
-      <p>{{payment}}</p>
+    {% if payment.price.price != 0 %}
+    <div class='row'>
+        <h2>Status de votre paiement</h2>
+        <div class='col-lg-8 centered'>
+            <p>{{payment}}</p>
+        </div>
     </div>
-  </div>
-  {% endif %}
+    {% endif %}
 </div>
 {% endblock %}

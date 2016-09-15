@@ -1,21 +1,20 @@
 {% extends "layout.html" %}
-{% load tools %}
-{% load macros %}
-{% loadmacros "management/macros.html" %}
+{% from "management/macros.html" import display_individual_results, display_team_results %}
 
 {% block content %}
-    {% if individual %}
-            <h2>Résultats individuels</h2>
-             {% for name, results in individual %}
-                <h3>{{name}}</h3>
-                {% usemacro display_individual_results results cat order_by_time %}
-             {% endfor %}
-    {% endif %}
-    {% if team %}
-            <h2>Résultats équipes</h2>
-            {% for name, results in team %}
-                <h3>{{name}}</h3>
-                {% usemacro display_team_results results cat order_by_time %}
-            {% endfor %}
-    {% endif %}
+{% if individual %}
+<h2>Résultats individuels</h2>
+    {% for name, results in individual %}
+<h3>{{name}}</h3>
+{{ display_individual_results(results, cat, order_by_time) }}
+    {% endfor %}
+{% endif %}
+
+{% if team %}
+<h2>Résultats équipes</h2>
+    {% for name, results in team %}
+<h3>{{name}}</h3>
+{{ display_team_results(results, cat, order_by_time) }}
+    {% endfor %}
+{% endif %}
 {% endblock %}

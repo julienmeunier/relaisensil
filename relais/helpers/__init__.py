@@ -56,7 +56,7 @@ def cat2hash(category):
     :returns:
         A hash of this category string
     """
-    return hashlib.md5(category).hexdigest()
+    return hashlib.md5(category.encode('utf-8')).hexdigest()
 
 def get_relais_categories():
     """

@@ -3,9 +3,9 @@
 DEPLOY_DIR := $(CURDIR)/python
 
 virtualenv: venv
-	ENV=./.venv/bin/activate $(SHELL) -li;
+	ENV=./.venv/bin/activate $(SHELL) -li
 venv:
-	test -d .venv || virtualenv2 .venv || virtualenv .venv;
+	test -d .venv || virtualenv3 .venv || virtualenv .venv;
 dependencies:
 	.venv/bin/pip install -Ur requirements.txt;
 clean_virtualenv:

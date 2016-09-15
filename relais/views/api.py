@@ -1,11 +1,10 @@
-#-*-coding: utf-8 -*-
-import httplib
+import http
 import json
 
 from django.http.response import (
-        HttpResponseNotAllowed,
-        HttpResponseBadRequest,
-        HttpResponse,
+    HttpResponseNotAllowed,
+    HttpResponseBadRequest,
+    HttpResponse,
 )
 from django.utils.dateparse import parse_time
 from django.views.decorators.csrf import csrf_exempt
@@ -65,7 +64,7 @@ def set_time(request):
     }
 
     return HttpResponse(json.dumps(response),
-                        status=httplib.CREATED,
+                        status=http.HTTPStatus.CREATED,
                         content_type='application/json')
 
 #------------------------------------------------------------------------------
@@ -109,5 +108,5 @@ def get_runner(request):
     }
 
     return HttpResponse(json.dumps(response),
-                        status=httplib.CREATED,
+                        status=http.HTTPStatus.CREATED,
                         content_type='application/json')

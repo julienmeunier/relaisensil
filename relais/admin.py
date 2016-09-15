@@ -48,8 +48,8 @@ class IndividualAdmin(admin.ModelAdmin):
         for obj in queryset:
             obj.delete()
 
-        self.message_user(request, u"%s coureur(s) correctement supprime(s)." % queryset.count())
-    really_delete_selected.short_description = u"Supprimer un coureur (+ paiement)"
+        self.message_user(request, "%s coureur(s) correctement supprime(s)." % queryset.count())
+    really_delete_selected.short_description = "Supprimer un coureur (+ paiement)"
 
     # add a link to the Runner admin page
     def runner_link(self, obj):
@@ -126,8 +126,8 @@ class TeamAdmin(admin.ModelAdmin):
         for obj in queryset:
             obj.delete()
 
-        self.message_user(request, u"%s equipe(s) correctement supprime(s)." % queryset.count())
-    really_delete_selected.short_description = u"Supprimer une equipe (+ paiement + coureurs)"
+        self.message_user(request, "%s equipe(s) correctement supprime(s)." % queryset.count())
+    really_delete_selected.short_description = "Supprimer une equipe (+ paiement + coureurs)"
 
     # add a link to the Runner admin page
     def runner_1_link(self, obj):

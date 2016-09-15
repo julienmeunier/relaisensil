@@ -228,7 +228,7 @@ def team(request):
 
             # add runners (it is safe now)
             r = {}
-            for i in xrange(1, 4):
+            for i in range(1, 4):
                 r[i] = Runner(first_name=form.cleaned_data['first_name_%d' % i],
                               last_name=form.cleaned_data['last_name_%d' % i],
                               gender=form.cleaned_data['gender_%d' % i],

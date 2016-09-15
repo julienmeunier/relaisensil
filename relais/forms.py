@@ -1,4 +1,3 @@
-#-*-coding: utf-8 -*-
 from captcha.fields import CaptchaField
 from django import forms
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
@@ -23,8 +22,8 @@ class RulesForm(forms.Form):
     Validate rules at the beginning of the event.
     """
     checkbox = forms.BooleanField(label="check", widget=forms.CheckboxInput(),
-                                  error_messages={'required': u"Vous devez accepter " \
-                                                             u"la décharge et le règlement"})
+                                  error_messages={'required': "Vous devez accepter " \
+                                                              "la décharge et le règlement"})
 
 #------------------------------------------------------------------------------
 class ConfigForm(forms.Form):
@@ -61,7 +60,7 @@ class IndividualForm(forms.Form):
                                    help_text='Cochez cette case si vous courrez avec votre chien',
                                    required=False)
 
-    captcha = CaptchaField()
+#     captcha = CaptchaField()
 
     def clean(self):
         """
@@ -114,14 +113,14 @@ class TeamForm(forms.Form):
     canicross = forms.BooleanField(label='Canicross',
                                    help_text='Cochez cette case si vous courrez avec votre chien',
                                    required=False)
-    captcha = CaptchaField()
+#     captcha = CaptchaField()
 
     # redefine constructor
     def __init__(self, *args, **kwargs):
         super(TeamForm, self).__init__(*args, **kwargs)
         # as there are 3 runners for a Team, to avoid code duplication,
         # let's use a loop
-        for i in xrange(1, 4):
+        for i in range(1, 4):
             self.fields['first_name_%d' % i] = forms.CharField(label='Prénom',
                                                                max_length=30)
             self.fields['last_name_%d' % i] = forms.CharField(label='Nom',
@@ -148,7 +147,7 @@ class TeamForm(forms.Form):
         cleaned_data = super(TeamForm, self).clean()  # call default method
         r = {}
         # each Runner must be unique
-        for i in xrange(1, 4):
+        for i in range(1, 4):
             first_name = self.cleaned_data.get('first_name_%d' % i)
             last_name = self.cleaned_data.get('last_name_%d' % i)
             birthday = self.cleaned_data.get('birthday_%d' % i)
@@ -166,7 +165,7 @@ class TeamForm(forms.Form):
                     raise ValidationError(
                         {
                             NON_FIELD_ERRORS: [
-                                u'Le coureur %d existe déjà' % i
+                                'Le coureur %d existe déjà' % i
                             ],
                         }
                     )
@@ -275,7 +274,7 @@ class TeamFormOnSite(forms.Form):
         super(TeamFormOnSite, self).__init__(*args, **kwargs)
         # as there are 3 runners for a Team, to avoid code duplication,
         # let's use a loop
-        for i in xrange(1, 4):
+        for i in range(1, 4):
             self.fields['first_name_%d' % i] = forms.CharField(label='Prénom',
                                                                max_length=30)
             self.fields['last_name_%d' % i] = forms.CharField(label='Nom',
@@ -303,7 +302,7 @@ class TeamFormOnSite(forms.Form):
         cleaned_data = super(TeamFormOnSite, self).clean()  # call default method
         r = {}
         # each Runner must be unique
-        for i in xrange(1, 4):
+        for i in range(1, 4):
             first_name = self.cleaned_data.get('first_name_%d' % i)
             last_name = self.cleaned_data.get('last_name_%d' % i)
             birthday = self.cleaned_data.get('birthday_%d' % i)
@@ -322,7 +321,7 @@ class TeamFormOnSite(forms.Form):
                     raise ValidationError(
                         {
                             NON_FIELD_ERRORS: [
-                                u'Le coureur %d existe déjà' % i
+                                'Le coureur %d existe déjà' % i
                             ],
                         }
                     )
