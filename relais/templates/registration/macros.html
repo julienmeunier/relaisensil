@@ -49,12 +49,11 @@
 </div>
 {% endmacro %}
 
-{% macro form_runner(first_name, last_name, gender, birthday, license, federation, school, club, tshirt) %}
+{% macro form_runner(first_name, last_name, gender, birthday, license, federation, school, club) %}
   {{ basic_form(first_name, 'form-control') }}
   {{ basic_form(last_name, 'form-control') }}
   {{ basic_form(gender, 'form-control')}}
   {{ basic_form(birthday, 'from-control datepicker') }}
-  {{ basic_form(tshirt, 'form-control') }}
   {{ basic_form(license, 'form-control') }}
   {{ basic_form(federation, 'from-control autocomplete_fede') }}
   {{ basic_form(club, 'from-control autocomplete_club') }}
