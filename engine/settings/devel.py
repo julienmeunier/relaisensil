@@ -56,19 +56,15 @@ TEMPLATES = [
             # Match the template names ending in .html but not the ones in the admin folder.
             "match_extension": None,
             "match_regex": r"^(?!admin/).*",
-            "app_dirname": "templates",
+            "app_dirname": "jinja",
 
             # Can be set to "jinja2.Undefined" or any other subclass.
             "undefined": None,
 
             "newstyle_gettext": True,
-#             "filters": {
-#                 "myfilter": "path.to.my.filter",
-#             },
             "globals": {
                 "constants": "relais.constants",
                 "cat": "relais.helpers.get_relais_categories",
-#                 "myglobal": "path.to.my.globalfunc",
             },
             "constants": {
             },
