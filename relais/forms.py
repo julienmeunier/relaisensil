@@ -60,7 +60,7 @@ class IndividualForm(forms.Form):
                                    help_text='Cochez cette case si vous courrez avec votre chien',
                                    required=False)
 
-#     captcha = CaptchaField()
+    captcha = CaptchaField()
 
     def clean(self):
         """
@@ -113,7 +113,7 @@ class TeamForm(forms.Form):
     canicross = forms.BooleanField(label='Canicross',
                                    help_text='Cochez cette case si vous courrez avec votre chien',
                                    required=False)
-#     captcha = CaptchaField()
+    captcha = CaptchaField()
 
     # redefine constructor
     def __init__(self, *args, **kwargs):
