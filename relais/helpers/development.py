@@ -25,13 +25,13 @@ def create_fake_runner(category, indiv, school_name=None, num=None):
         time = datetime.time(minute=random.randint(30, 59), second=random.randint(0, 59))
     else:
         if num == 1:
-            range_num = constants.RANGE_TEAM[1]
+            range_num = constants.RANGE_TEAM[0]
             time = datetime.time(minute=random.randint(10, 20), second=random.randint(0, 59))
         elif num == 2:
-            range_num = constants.RANGE_TEAM[2]
+            range_num = constants.RANGE_TEAM[1]
             time = datetime.time(minute=random.randint(20, 40), second=random.randint(0, 59))
         else:
-            range_num = constants.RANGE_TEAM[3]
+            range_num = constants.RANGE_TEAM[2]
             time = datetime.time(minute=random.randint(30, 59), second=random.randint(0, 59))
     if school_name:
         school = School.objects.get_or_create(name=school_name)[0]

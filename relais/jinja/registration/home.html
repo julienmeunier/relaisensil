@@ -36,7 +36,7 @@ ou par voie postale (avant le {{ settings.closure_postal|date('l d F')}}
 
 <br />
 <div class="container">
-    <form method="POST" action="/registration/">
+    <form method="POST" action="{{prefix}}/registration/">
     <h1 class='text-danger'>{{ form.checkbox.errors }}</h1>
     {% csrf_token %}
 {#        {{form.non_field_errors}}#}

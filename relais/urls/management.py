@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from relais.views import management, registration_offline
+from relais.views import management, registration
 
 
 urlpatterns = [
@@ -13,10 +13,10 @@ urlpatterns = [
     url(r'^results/individual(/all)?$', management.results_individual),
     url(r'^results/team(/all)?$', management.results_team),
     url(r'^results$', management.results),
-    url(r'^registration$', registration_offline.index),
-    url(r'^registration/category/$', registration_offline.category),
-    url(r'^registration/category/individual/$', registration_offline.individual),
-    url(r'^registration/category/team/$', registration_offline.team),
-    url(r'^registration/end/([\w]+)/([0-9]+)$', registration_offline.end),
+    url(r'^registration/$', registration.onsite, {'func': registration.index}),
+    url(r'^registration/category/$', registration.onsite, {'func': registration.category}),
+    url(r'^registration/category/individual/$', registration.onsite, {'func': registration.form, 'team': False}),
+    url(r'^registration/category/team/$', registration.onsite, {'func': registration.form, 'team': True}),
+    url(r'^registration/end/([\w]+)/([0-9]+)$', registration.onsite, {'func': registration.end}),
 #     url(r'^fictive$', management.create_fake_users),
 ]

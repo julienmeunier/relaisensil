@@ -2,7 +2,7 @@
 {% from "registration/macros.html" import basic_form, display_form_error, display_error, form_runner %}
 
 {% block form %}
-<form method="POST" action="/registration/category/individual/">
+<form method="POST" action="{{prefix}}/registration/category/individual/">
     {% csrf_token %}
     <div class='container centered'>
         <legend>Parcours route (3,3 km) / nature (3,4 km) / route (3,3 km)</legend>
@@ -20,12 +20,15 @@
         <div class='row'>
             <div class='col-lg-8 centered'>
                 <legend>Coureur</legend>
-{{ form_runner(form.first_name, form.last_name, form.gender, form.birthday, form.license, form.federation, form.school, form.club) }}
+{% if form.num_0 %} {{ basic_form(form.num_0, 'form-control') }} {% endif %}
+{{ form_runner(form.first_name_0, form.last_name_0, form.gender_0, form.birthday_0, form.license_0, form.federation_0, form.school_0, form.club_0) }}
             </div>
         </div>
+{% if form.captcha %}
         <div class="row centered">
 {{ basic_form(form.captcha, 'form-control') }}
         </div>
+{% endif %}
         <input type="submit" value="Envoyer" class="btn btn-primary">
     </div>
 </form>

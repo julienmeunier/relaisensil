@@ -274,9 +274,9 @@ class Runner(models.Model):
         num = []
         data = {
             'Individuel': RANGE_INDIVIDUAL,
-            'Equipe - 1': RANGE_TEAM[1],
-            'Equipe - 2': RANGE_TEAM[2],
-            'Equipe - 3': RANGE_TEAM[3],
+            'Equipe - 1': RANGE_TEAM[0],
+            'Equipe - 2': RANGE_TEAM[1],
+            'Equipe - 3': RANGE_TEAM[2],
         }
         for name, r in data.iteritems():
             query = Runner.objects.filter(num__gte=r[0]).filter(num__lte=r[1]).order_by('-num')

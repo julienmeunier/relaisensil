@@ -41,9 +41,17 @@ def sendmail_summary(payment):
                         setting.email, [to], [setting.email, DEVELOPPER_MAIL])
     mail.send(fail_silently=True)
 
-#------------------------------------------------------------------------------
 @registration_opened()
-def index(request):
+def online(*args, **kwargs):
+    func = kwargs.pop('func')
+    return func(onsite=False, prefix='', *args, **kwargs)
+
+def onsite(*args, **kwargs):
+    func = kwargs.pop('func')
+    return func(onsite=True, prefix='/management', *args, **kwargs)
+
+#------------------------------------------------------------------------------
+def index(request, prefix='', onsite=False):
     """
     Default index page
     """
@@ -97,7 +105,7 @@ def index(request):
         if rule_form.is_valid():
             # set session (all users must accept rules)
             request.session['accept-rules'] = True
-            return HttpResponseRedirect('/registration/category/')
+            return HttpResponseRedirect('%s/registration/category/' % prefix)
 
     # create dict for template
     data = {
@@ -106,19 +114,20 @@ def index(request):
         'prices': prices,
         'constants': constants,
         'form': rule_form,
+        'prefix': prefix,
     }
 
     return render(request, 'registration/home.html', data)
 
 #------------------------------------------------------------------------------
-@registration_opened()
-def category(request):
+def category(request, prefix='', onsite=False):
     """
     User has to choose in which category he wants to run
     """
+
     # No session detected => No rules accepted. Let's redirect.
     if not request.session.get('accept-rules', False):
-        return HttpResponseRedirect('/registration')
+        return HttpResponseRedirect('%s/registration' % prefix)
 
     # create a new form to choose the category, or complete it
     form = forms.ConfigForm(request.POST or None)
@@ -126,27 +135,27 @@ def category(request):
         if form.is_valid():
             # redirect if user choose individual
             if form.cleaned_data['choice'] == constants.INDIVIDUAL:
-                return HttpResponseRedirect('/registration/category/individual')
+                return HttpResponseRedirect('%s/registration/category/individual' % prefix)
 
             # redirect if user choose team
             elif form.cleaned_data['choice'] == constants.TEAM:
-                return HttpResponseRedirect('/registration/category/team')
+                return HttpResponseRedirect('%s/registration/category/team' % prefix)
 
     # default page if no category has been choosen
-    return render(request, 'registration/category.html', {'form': form})
+    return render(request, 'registration/category.html', {'form': form, 'prefix': prefix})
 
 #------------------------------------------------------------------------------
-@registration_opened()
-def individual(request):
+def form(request, prefix='', team=False, onsite=False):
     """
-    Display form for individual choose
+    Display form for individual/team choose
     """
+
     # No session detected => No rules accepted. Let's redirect.
     if not request.session.get('accept-rules', False):
-        return HttpResponseRedirect('/registration')
+        return HttpResponseRedirect('%s/registration' % prefix)
 
     # create a new form for individual information, or complete it
-    form = forms.IndividualForm(request.POST or None)
+    form = forms.SubscriptionForm(request.POST or None, is_a_team=team, onsite=onsite)
 
     # get all data from the database to autocomplete some fields
     autocomplete = helpers.get_all_autocomplete()
@@ -155,82 +164,26 @@ def individual(request):
         if form.is_valid():
             # extra operation for club/federation/school/company
             # are already done by IndividualForm.clean
-
-            # add runner (it is safe now)
-            r = Runner(first_name=form.cleaned_data['first_name'],
-                       last_name=form.cleaned_data['last_name'],
-                       gender=form.cleaned_data['gender'],
-                       birthday=form.cleaned_data['birthday'],
-                       license_nb=form.cleaned_data['license'],
-                       school=form.cleaned_data['school'],
-                       federation=form.cleaned_data['federation'],
-                       club=form.cleaned_data['club'],
-                       canicross=form.cleaned_data['canicross'],
-                       certificat=False,
-                       legal_status=form.cleaned_data['legal_status'],
-                       tshirt=form.cleaned_data['tshirt'])
-            r.update_num(RANGE_INDIVIDUAL)
-            r.clean()
-            r.save()
-
-            # get online price for desired category
-            p = Price.objects.filter(when=constants.PRICE_ONLINE,
-                                     config=constants.INDIVIDUAL,
-                                     who=form.cleaned_data['category']).get()
-
-            if p.price == 0:
-                # TODO: atomic transation
-                # free registration: add cash payment
-                pay = Payment.objects.create(price=p,
-                                             method=constants.CASH,
-                                             state=True)
+            if team:
+                config = constants.TEAM
             else:
-                pay = Payment.objects.create(price=p,
-                                             method=constants.UNKNOWN,
-                                             state=False)
-            # add individual
-            Individual.objects.create(runner=r,
-                                      payment=pay,
-                                      category=form.cleaned_data['category'],
-                                      email=form.cleaned_data['email'],
-                                      company=form.cleaned_data['company'])
-            sendmail_summary(payment=pay)
-            # Send mail about payment if any (before redirect)
-            if not pay.state:
-                sendmail_payment_pending(payment=pay)
-            # redirect to payment page
-            return HttpResponseRedirect('/payment/%s/%s' % (pay.id, pay.token))
+                config = constants.INDIVIDUAL
 
-    # if any error or no data, display page
-    return render(request, 'registration/individual.html', {'form': form,
-                                                            'autocomplete': autocomplete})
-
-#------------------------------------------------------------------------------
-@registration_opened()
-def team(request):
-    """
-    Display form for team choose
-    """
-    # No session detected => No rules accepted. Let's redirect.
-    if not request.session.get('accept-rules', False):
-        return HttpResponseRedirect('/registration')
-
-    # create a new form for individual information, or complete it
-    form = forms.TeamForm(request.POST or None)
-
-    # get all data from the database to autocomplete some fields
-    autocomplete = helpers.get_all_autocomplete()
-
-    if request.method == 'POST':
-        if form.is_valid():
-            # extra operation for club/federation/school/company
-            # are already done by IndividualForm.clean
+            if onsite:
+                price = constants.PRICE_DAY
+                pay_method = constants.CASH
+                pay_status = True
+            else:
+                price = constants.PRICE_ONLINE
+                pay_method = constants.UNKNOWN
+                pay_status = False
 
             # add runners (it is safe now)
-            r = {}
-            for i in range(1, 4):
-                r[i] = Runner(first_name=form.cleaned_data['first_name_%d' % i],
+            r = []
+            for i in range(form.nb):
+                r.append(Runner(first_name=form.cleaned_data['first_name_%d' % i],
                               last_name=form.cleaned_data['last_name_%d' % i],
+                              num=form.cleaned_data['num_%d' % i],
                               gender=form.cleaned_data['gender_%d' % i],
                               birthday=form.cleaned_data['birthday_%d' % i],
                               license_nb=form.cleaned_data['license_%d' % i],
@@ -240,14 +193,13 @@ def team(request):
                               canicross=form.cleaned_data['canicross'],
                               certificat=False,
                               legal_status=form.cleaned_data['legal_status_%d' % i],
-                              tshirt=form.cleaned_data['tshirt_%d' % i])
-                r[i].update_num(RANGE_TEAM[i])
+                              tshirt=form.cleaned_data['tshirt_%d' % i]))
                 r[i].clean()
                 r[i].save()
 
             # get online price for desired category
-            p = Price.objects.filter(when=constants.PRICE_ONLINE,
-                                     config=constants.TEAM,
+            p = Price.objects.filter(when=price,
+                                     config=config,
                                      who=form.cleaned_data['category']).get()
 
             if p.price == 0:
@@ -258,17 +210,27 @@ def team(request):
                                              state=True)
             else:
                 pay = Payment.objects.create(price=p,
-                                             method=constants.UNKNOWN,
-                                             state=False)
-            # add team
-            Team.objects.create(runner_1=r[1], runner_2=r[2], runner_3=r[3],
-                                payment=pay,
-                                name=form.cleaned_data['name'],
-                                category=form.cleaned_data['category'],
-                                email=form.cleaned_data['email'],
-                                company=form.cleaned_data['company'])
+                                             method=pay_method,
+                                             state=pay_status)
+            if team:
+                registered = Team.objects.create(runner_1=r[0], runner_2=r[1], runner_3=r[2],
+                                               payment=pay,
+                                         name=form.cleaned_data['name'],
+                                         category=form.cleaned_data['category'],
+                                         email=form.cleaned_data['email'],
+                                         company=form.cleaned_data['company'])
+                if onsite:
+                    return HttpResponseRedirect('/management/registration/end/team/%s' % registered.pk)
+            else:
+                registered = Individual.objects.create(runner=r[0],
+                                               payment=pay,
+                                               category=form.cleaned_data['category'],
+                                               email=form.cleaned_data['email'],
+                                               company=form.cleaned_data['company'])
+                if onsite:
+                    return HttpResponseRedirect('/management/registration/end/indiv/%s' % registered.pk)
 
-            # Send mail to team
+            # Send mail
             sendmail_summary(payment=pay)
             # Send mail about payment if any (before redirect)
             if not pay.state:
@@ -277,5 +239,15 @@ def team(request):
             return HttpResponseRedirect('/payment/%s/%s' % (pay.id, pay.token))
 
     # if this is a POST request we need to process the form data
-    return render(request, 'registration/team.html', {'form': form,
-                                                      'autocomplete': autocomplete})
+    return render(request, 'registration/%s.html' % ('team' if team else 'individual'),
+                  {'form': form, 'autocomplete': autocomplete,  'prefix': prefix})
+
+#------------------------------------------------------------------------------
+def end(request, category, pk, prefix='', onsite=False):
+    if category == 'indiv':
+        indiv = Individual.objects.filter(pk=pk).get()
+        return render(request, 'registration/end_indiv.html', {'indiv': indiv})
+
+    elif category == 'team':
+        team = Team.objects.filter(pk=pk).get()
+        return render(request, 'registration/end_team.html', {'team': team})
