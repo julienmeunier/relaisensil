@@ -4,6 +4,7 @@ import datetime
 import operator
 import random
 
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render
 
@@ -19,12 +20,11 @@ from relais.models import (
     TSHIRT_CHOICES,
     Team,
 )
-from relais.util.decorator import logged_in_or_basicauth
 
 
 RESULTS = namedtuple('Results', ['name', 'results'])
 #------------------------------------------------------------------------------
-@logged_in_or_basicauth()
+@login_required
 def index(request):
     """
     Home page
@@ -36,7 +36,7 @@ def index(request):
     return render(request, 'management/home.html', stats)
 
 #------------------------------------------------------------------------------
-@logged_in_or_basicauth()
+@login_required
 def timing(request):
     """
     Timing page
@@ -44,7 +44,7 @@ def timing(request):
     return render(request, 'management/timing.html')
 
 #------------------------------------------------------------------------------
-@logged_in_or_basicauth()
+@login_required
 def timing_auto(request):
     """
     Timing page
@@ -52,7 +52,7 @@ def timing_auto(request):
     return render(request, 'management/timing_auto.html')
 
 #------------------------------------------------------------------------------
-@logged_in_or_basicauth()
+@login_required
 def listing(request):
     """
     Listing individuals or teams
@@ -66,7 +66,7 @@ def listing(request):
     return render(request, 'management/listing.html', to_template)
 
 #------------------------------------------------------------------------------
-@logged_in_or_basicauth()
+@login_required
 def results(request):
     """
     Show all results
@@ -83,7 +83,7 @@ def results(request):
     return render(request, 'management/results.html', to_template)
 
 #------------------------------------------------------------------------------
-@logged_in_or_basicauth()
+@login_required
 def results_individual(request, display_all=False, order_by_time=True):
     """
     Display only individual results
@@ -204,7 +204,7 @@ def results_individual(request, display_all=False, order_by_time=True):
     return render(request, 'management/results.html', to_template)
 
 #------------------------------------------------------------------------------
-@logged_in_or_basicauth()
+@login_required
 def results_team(request, display_all=False, order_by_time=True):
     """
     Display only team results
@@ -445,7 +445,7 @@ def results_team(request, display_all=False, order_by_time=True):
     return render(request, 'management/results.html', to_template)
 
 #------------------------------------------------------------------------------
-@logged_in_or_basicauth()
+@login_required
 def create_fake_users(request):
     # for this test, I will generate fictive individual
     r = []

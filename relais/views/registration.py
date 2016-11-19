@@ -18,6 +18,7 @@ from relais.models import (
 )
 from relais.util.decorator import registration_opened
 from relais.views.payment import sendmail_payment_pending
+from django.contrib.auth.decorators import login_required
 
 
 #------------------------------------------------------------------------------
@@ -46,6 +47,7 @@ def online(*args, **kwargs):
     func = kwargs.pop('func')
     return func(onsite=False, prefix='', *args, **kwargs)
 
+@login_required
 def onsite(*args, **kwargs):
     func = kwargs.pop('func')
     return func(onsite=True, prefix='/management', *args, **kwargs)
