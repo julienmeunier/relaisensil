@@ -10,12 +10,10 @@ from django.utils.dateparse import parse_time
 from django.views.decorators.csrf import csrf_exempt
 
 from relais.models import Runner
-from relais.util.decorator import logged_in_or_basicauth
 
 
 #------------------------------------------------------------------------------
 @csrf_exempt
-@logged_in_or_basicauth()
 def set_time(request):
     """
     Set a time to a Runner.
@@ -69,7 +67,6 @@ def set_time(request):
 
 #------------------------------------------------------------------------------
 @csrf_exempt
-@logged_in_or_basicauth()
 def get_runner(request):
     """
     Set a time to a Runner.
