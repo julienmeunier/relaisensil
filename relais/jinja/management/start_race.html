@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<script>
+$(document).ready(function() {
+    // Sent time
+    $('#timing').on('submit', function(e) {
+        e.preventDefault(); // Prevent browser to sent form
+
+        $.ajax({
+            url:  $(this).attr('action'),
+            type:  $(this).attr('method'),
+            success: function(data) {
+                $("#results").attr("class", "alert alert-success");
+                var results = '<strong>GO !</strong><p>';
+                results += data['timestamp'] + '</p>';
+                $("#results").html(results);
+            },
+            error: function(data) {
+                $("#results").attr("class", "alert alert-danger");
+                var results = '<strong>Erreur</strong><p>';
+                results += data.responseText
+                results += '</p>'
+                $("#results").html(results);
+            },
+        });
+    });
+});
+</script>
+<div class="container">
+    <h1>Timing</h1>
+    <div class="row">
+        <form id="timing" action="/api/time/set_go" method="post" class="form-horizontal">
+            <input type="hidden" id='action' value='set' />
+            <input type="submit" id="sent" class="btn btn-default" value="GO !" />
+        </form>
+    </div>
+    <div class="row">
+        <div id="results"></div>
+    </div>
+</div>
+{% endblock %}

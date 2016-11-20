@@ -3,9 +3,6 @@
 {% block content %}
 <script>
 $(document).ready(function() {
-    // Restrict time field to this format
-    $("#start").inputmask("hh:mm:ss");
-
     // At each keyup of num field, check if runner is in database
     $('#num').bind("change paste keyup", function() {
         if($(this).val().length > 2) {
@@ -36,25 +33,15 @@ $(document).ready(function() {
     $('#timing').on('submit', function(e) {
         e.preventDefault(); // Prevent browser to sent form
 
-        var start = $("#start").val()
-        var end = new Date();
-
-        var startDate = new Date("January 1, 1970 " + start);
-        // Hack, timezone + 1
-        var endDate = new Date(1970, 1, 1, end.getHours() - 1, end.getMinutes(), end.getSeconds());
-
-        var time_diff = new Date(endDate - startDate)
-        var time = time_diff.getHours() + ':' + time_diff.getMinutes() + ':' + time_diff.getSeconds()
-
         // minimal checking
-        if($('#num').val() === '' || $('#start').val() === '') {
+        if($('#num').val() === '') {
             alert('Les champs doivent êtres remplis');
         } else {
             // Asychronous HTTP
             $.ajax({
                 url:  $(this).attr('action'),
                 type:  $(this).attr('method'),
-                data:  {'num': $('#num').val(), 'time': time},
+                data:  {'num': $('#num').val()},
                 success: function(data) {
                     $("#results").attr("class", "alert alert-success");
                     var results = '<strong>Coureur mis à jour</strong><p>';
@@ -77,16 +64,10 @@ $(document).ready(function() {
 <div class="container">
     <h1>Timing</h1>
     <div class="row">
-        <form id="timing" action="/api/time/set" method="post" class="form-horizontal">
-            <div class="form-group">
-            <div class="form-group">
-              <label for="start" class="col-sm-2 control-label">Temps de départ</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="start" name="start" />
-                  </div>
-            </div>
-              <label for="num" class="col-sm-2 control-label">Numéro de dossard</label>
-                  <div class="col-sm-10">
+        <form id="timing" action="/api/time/set_auto" method="post" class="form-horizontal col-lg-8 centered">
+            <div class="form-group centered">
+              <label for="num" class="form-group control-label">Numéro de dossard</label>
+                  <div class="form-group">
                     <input type="text" class="form-control" id="num" name="num" />
                   </div>
             </div>

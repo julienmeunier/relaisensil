@@ -27,6 +27,8 @@ class Setting(models.Model):
     rule = models.TextField('Règlement')
     disclamer = models.TextField('Décharge de responsabilité')
     postal_address = models.TextField('Adresse postale')
+    start = models.DateTimeField('Date et heure du départ de la course',
+                                 blank=True, null=True)
 
     class Meta:
         verbose_name = 'Configuration'
@@ -174,7 +176,7 @@ class Runner(models.Model):
     legal_status = models.BooleanField('Status légal', default=False)  # for minor
     num = models.PositiveIntegerField('Numéro de dossard', unique=True,
                                       help_text='Pour obtenir les derniers dossards, laisser vide')
-    time = models.TimeField('Temps', blank=True, null=True)
+    time = models.DurationField('Temps', blank=True, null=True)
     ready = models.BooleanField('Prêt à courir', default=False)
 
     def age(self, ffa=True):

@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^listing/team$', management.results_team, {'display_all': True, 'order_by_time': False }),
     url(r'^timing$', management.timing),
     url(r'^timing_auto$', management.timing_auto),
+    url(r'^start_race$', management.start_race),
     url(r'^results/individual(/all)?$', management.results_individual),
     url(r'^results/team(/all)?$', management.results_team),
     url(r'^results$', management.results),

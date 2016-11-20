@@ -1,6 +1,6 @@
 from _functools import reduce
 from collections import namedtuple, OrderedDict
-import datetime
+from datetime import timedelta
 import operator
 import random
 
@@ -17,7 +17,6 @@ from relais.models import (
     Payment,
     Price,
     Runner,
-    TSHIRT_CHOICES,
     Team,
 )
 
@@ -50,6 +49,14 @@ def timing_auto(request):
     Timing page
     """
     return render(request, 'management/timing_auto.html')
+
+#------------------------------------------------------------------------------
+@login_required
+def start_race(request):
+    """
+    Start race page
+    """
+    return render(request, 'management/start_race.html')
 
 #------------------------------------------------------------------------------
 @login_required
@@ -115,7 +122,7 @@ def results_individual(request, display_all=False, order_by_time=True):
 
     r = []
 
-    individual = Individual.objects.filter(runner__time__gt=datetime.time(0, 0, 0))
+    individual = Individual.objects.filter(runner__time__gt=timedelta(0, 0, 0))
 
     # generate dict with FFA categories -> individual
     ffa = {}
@@ -238,9 +245,9 @@ def results_team(request, display_all=False, order_by_time=True):
     # Let's do it manually
     r = []
 
-    team = Team.objects.filter(runner_1__time__gt=datetime.time(0, 0, 0),
-                               runner_2__time__gt=datetime.time(0, 0, 0),
-                               runner_3__time__gt=datetime.time(0, 0, 0))
+    team = Team.objects.filter(runner_1__time__gt=timedelta(0, 0, 0),
+                               runner_2__time__gt=timedelta(0, 0, 0),
+                               runner_3__time__gt=timedelta(0, 0, 0))
 
     # Male
     query = team.filter(runner_1__gender=constants.MALE,
