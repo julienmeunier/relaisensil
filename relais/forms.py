@@ -43,11 +43,6 @@ class SubscriptionForm(forms.Form):
     company = forms.CharField(label='Entreprise', required=False)
     club = forms.CharField(label='Club', required=False)
 
-    canicross = forms.BooleanField(label='Canicross',
-                                   help_text='Cochez cette case si vous courrez avec votre chien',
-                                   required=False)
-
-
     def __init__(self, *args, **kwargs):
         self.is_a_team = kwargs.pop('is_a_team', False)
         self.onsite = kwargs.pop('onsite', True)

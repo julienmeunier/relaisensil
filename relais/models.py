@@ -167,7 +167,6 @@ class Runner(models.Model):
     federation = models.ForeignKey(Federation, verbose_name='Fédération', blank=True, null=True)
     company = models.ForeignKey(Company, verbose_name='Entreprise', blank=True, null=True)
     club = models.ForeignKey(Club, verbose_name='Club', blank=True, null=True)
-    canicross = models.BooleanField(verbose_name='Canicross', default=False)
     tshirt = models.CharField('Taille tshirt', max_length=4, choices=TSHIRT_CHOICES,
                               blank=True, null=True)
 

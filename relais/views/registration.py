@@ -192,7 +192,6 @@ def form(request, prefix='', team=False, onsite=False):
                               school=form.cleaned_data['school'],
                               federation=form.cleaned_data['federation_%d' % i],
                               club=form.cleaned_data['club_%d' % i],
-                              canicross=form.cleaned_data['canicross'],
                               certificat=False,
                               legal_status=form.cleaned_data['legal_status_%d' % i],
                               tshirt=form.cleaned_data['tshirt_%d' % i]))

@@ -174,7 +174,7 @@ admin.site.register(Team, TeamAdmin)
 
 #------------------------------------------------------------------------------
 class RunnerAdmin(admin.ModelAdmin):
-    list_display = ['last_name', 'first_name', 'certificat', 'legal_status', 'num', 'canicross', 'tshirt', 'ready']
+    list_display = ['last_name', 'first_name', 'certificat', 'legal_status', 'num', 'tshirt', 'ready']
     list_max_show_all = 500
     list_per_page = 500
 

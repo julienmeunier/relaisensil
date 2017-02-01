@@ -36,7 +36,7 @@ def create_fake_runner(category, indiv, school_name=None, num=None):
     if school_name:
         school = School.objects.get_or_create(name=school_name)[0]
     r = Runner(first_name=names.get_first_name(gender=gender), last_name=names.get_last_name(),
-               gender=g, birthday=birthday, time=time, canicross=False, legal_status=True, certificat=True,
+               gender=g, birthday=birthday, time=time, legal_status=True, certificat=True,
                tshirt=tshirt, school=school)
     r.update_num(range_num)
     r.save()
