@@ -1,9 +1,12 @@
 import hashlib
 import json
+from datetime import datetime
 
 from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models.functions.base import Now
 
 from relais.models import Club, Federation, Company, School, CATEGORY_CHOICES
+from relais import constants
 
 
 def add_get_club(name):
@@ -66,3 +69,37 @@ def get_relais_categories():
     for key, name in CATEGORY_CHOICES:
         cat[key] = name
     return cat
+
+def get_years_ffa(category):
+    """
+    Category are given by FFA
+    """
+    today_year = datetime.today().year
+    if category == constants.POUSSIN:
+        r = '< %s' % (today_year - 9)
+    elif category == constants.PUPILLE:
+        r  = '%s - %s' % (today_year - 11, today_year - 10)
+    elif category == constants.BENJAMIN:
+        r  = '%s - %s' % (today_year - 13, today_year - 12)
+    elif category == constants.MINIME:
+        r  = '%s - %s' % (today_year - 15, today_year - 14)
+    elif category == constants.CADET:
+        r  = '%s - %s' % (today_year - 17, today_year - 16)
+    elif category == constants.JUNIOR:
+        r  = '%s - %s' % (today_year - 19, today_year - 18)
+    elif category == constants.ESPOIR:
+        r  = '%s - %s' % (today_year - 22, today_year - 20)
+    elif category == constants.SENOIR:
+        r  = '%s - %s' % (today_year - 39, today_year - 23)
+    elif category == constants.V1:
+        r  = '%s - %s' % (today_year - 49, today_year - 40)
+    elif category == constants.V2:
+        r  = '%s - %s' % (today_year - 59, today_year - 50)
+    elif category == constants.V3:
+        r  = '%s - %s' % (today_year - 69, today_year - 60)
+    elif category == constants.V4:
+        r  = '> %s' % (today_year - 70)
+    else:
+        r = 'Unknown category'
+
+    return r

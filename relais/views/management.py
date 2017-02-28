@@ -8,8 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render
 
-from relais import constants
-from relais.helpers import cat2hash, get_relais_categories
+from relais import constants, helpers
+from relais.helpers import cat2hash, get_relais_categories, get_years_ffa
 from relais.helpers.development import create_fake_runner
 from relais.models import (
     Company,
@@ -143,14 +143,14 @@ def results_individual(request, display_all=False, order_by_time=True):
     # let's use a OrderedDict
     # generate list of "recompense"
     r_cat = OrderedDict()
-    r_cat[constants.V1] = {'name': constants.V1, 'ffa': True}
-    r_cat[constants.V2] = {'name': constants.V2, 'ffa': True}
-    r_cat[constants.V3] = {'name': constants.V3, 'ffa': True}
-    r_cat[constants.V4] = {'name': constants.V4, 'ffa': True}
-    r_cat[constants.ESPOIR] = {'name': constants.ESPOIR, 'ffa': True}
-    r_cat[constants.SENOIR] = {'name': constants.SENOIR, 'ffa': True}
-    r_cat[constants.JUNIOR] = {'name': constants.JUNIOR, 'ffa': True}
-    r_cat[constants.CADET] = {'name': constants.CADET, 'ffa': True}
+    r_cat[constants.V1] = {'name': '%s (%s)' % (constants.V1, get_years_ffa(constants.V1)), 'ffa': True}
+    r_cat[constants.V2] = {'name': '%s (%s)' % (constants.V2, get_years_ffa(constants.V2)), 'ffa': True}
+    r_cat[constants.V3] = {'name': '%s (%s)' % (constants.V3, get_years_ffa(constants.V3)), 'ffa': True}
+    r_cat[constants.V4] = {'name': '%s (%s)' % (constants.V4, get_years_ffa(constants.V4)), 'ffa': True}
+    r_cat[constants.ESPOIR] = {'name': '%s (%s)' % (constants.ESPOIR, get_years_ffa(constants.ESPOIR)), 'ffa': True}
+    r_cat[constants.SENOIR] = {'name': '%s (%s)' % (constants.SENOIR, get_years_ffa(constants.SENOIR)), 'ffa': True}
+    r_cat[constants.JUNIOR] = {'name': '%s (%s)' % (constants.JUNIOR, get_years_ffa(constants.JUNIOR)), 'ffa': True}
+    r_cat[constants.CADET] = {'name': '%s (%s)' % (constants.CADET, get_years_ffa(constants.CADET)), 'ffa': True}
     r_cat[constants.CHALLENGE] = {'name': 'Challenge entreprise', 'ffa': False}
     r_cat[constants.OLDER_ENSIL] = {'name': 'Ancien de l\'ENSIL', 'ffa': False}
 
