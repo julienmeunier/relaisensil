@@ -10,7 +10,6 @@ from django.utils.dateparse import parse_time
 from django.views.decorators.csrf import csrf_exempt
 
 from relais.models import Runner, Setting
-from django.db.models.functions.base import Now
 from datetime import datetime, timezone, timedelta
 
 
