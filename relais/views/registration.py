@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.template import loader
 from django.template.base import Template
 from django.template.context import Context
+from django.utils.crypto import get_random_string
 
 from engine.settings.production import DEVELOPPER_MAIL
 from relais import constants, forms, models, helpers
@@ -202,16 +203,18 @@ def form(request, prefix='', team=False, onsite=False):
             p = Price.objects.filter(when=price,
                                      config=config,
                                      who=form.cleaned_data['category']).get()
-
+            token = get_random_string()
             if p.price == 0:
                 # TODO: atomic transaction
                 # free registration: add cash payment
                 pay = Payment.objects.create(price=p,
                                              method=constants.CASH,
+                                             token=token,
                                              state=True)
             else:
                 pay = Payment.objects.create(price=p,
                                              method=pay_method,
+                                             token=token,
                                              state=pay_status)
             if team:
                 registered = Team.objects.create(runner_1=r[0], runner_2=r[1], runner_3=r[2],
