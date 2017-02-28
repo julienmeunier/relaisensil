@@ -115,14 +115,15 @@ def results_individual(request, display_all=False, order_by_time=True):
         count_1 = 1
         count_3 = 3
 
+    individual = Individual.objects
+
     if order_by_time:
         order = 'runner__time'
+        individual = individual.filter(runner__time__gt=timedelta(0, 0, 0))
     else:
         order = 'runner__num'
 
     r = []
-
-    individual = Individual.objects.filter(runner__time__gt=timedelta(0, 0, 0))
 
     # generate dict with FFA categories -> individual
     ffa = {}
@@ -235,8 +236,13 @@ def results_team(request, display_all=False, order_by_time=True):
         count_1 = 1
         count_3 = 3
 
+    team = Team.objects
+
     if order_by_time:
         order = 'runner_3__time'
+        team = team.filter(runner_1__time__gt=timedelta(0, 0, 0),
+                           runner_2__time__gt=timedelta(0, 0, 0),
+                           runner_3__time__gt=timedelta(0, 0, 0))
     else:
         order = 'runner_3__num'
 
@@ -244,10 +250,6 @@ def results_team(request, display_all=False, order_by_time=True):
     # as Individual
     # Let's do it manually
     r = []
-
-    team = Team.objects.filter(runner_1__time__gt=timedelta(0, 0, 0),
-                               runner_2__time__gt=timedelta(0, 0, 0),
-                               runner_3__time__gt=timedelta(0, 0, 0))
 
     # Male
     query = team.filter(runner_1__gender=constants.MALE,
