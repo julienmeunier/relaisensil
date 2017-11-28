@@ -1,6 +1,6 @@
 {% extends 'payment/mail/body.rst' %}
 {% block content %}
-Votre paiement pour l'inscription du Relais de l'ENSIL ({{name}}) a été validé.
+Votre paiement pour l'inscription du Relais de l'ENSIL-ENSCI ({{name}}) a été validé.
 
 Rappel
 ======

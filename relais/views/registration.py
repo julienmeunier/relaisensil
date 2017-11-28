@@ -39,7 +39,7 @@ def sendmail_summary(payment):
         to = payment.individual.email
         msg = loader.render_to_string('registration/mail/individual.rst', context).replace("&#39;","'")
 
-    mail = EmailMessage('[Relais de l\'ENSIL] - Confirmation inscription', msg,
+    mail = EmailMessage('[Relais de l\'ENSIL-ENSCI] - Confirmation inscription', msg,
                         setting.email, [to], [setting.email, DEVELOPPER_MAIL])
     mail.send(fail_silently=True)
 

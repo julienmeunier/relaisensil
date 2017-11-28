@@ -28,7 +28,7 @@ def sendmail_payment_success(payment):
         context['name'] = payment.individual
         to = payment.individual.email
     msg = loader.render_to_string('payment/mail/success.rst', context).replace("&#39;","'")
-    mail = EmailMessage('[Relais de l\'ENSIL] - Paiement valide', msg, setting.email,
+    mail = EmailMessage('[Relais de l\'ENSIL-ENSCI] - Paiement valide', msg, setting.email,
                         [to], [setting.email, DEVELOPPER_MAIL])
     mail.send(fail_silently=True)
 
@@ -44,7 +44,7 @@ def sendmail_payment_pending(payment):
         to = payment.individual.email
     msg = loader.render_to_string('payment/mail/pending.rst', context).replace("&#39;","'")
 
-    mail = EmailMessage('[Relais de l\'ENSIL] - Paiement en attente', msg, setting.email,
+    mail = EmailMessage('[Relais de l\'ENSIL-ENSCI] - Paiement en attente', msg, setting.email,
                         [to], [setting.email, DEVELOPPER_MAIL])
     mail.send(fail_silently=True)
 
@@ -60,7 +60,7 @@ def sendmail_payment_postal(payment):
         to = payment.individual.email
     msg = loader.render_to_string('payment/mail/postal.rst', context).replace("&#39;","'")
 
-    mail = EmailMessage('[Relais de l\'ENSIL] - Paiement en attente', msg, setting.email,
+    mail = EmailMessage('[Relais de l\'ENSIL-ENSCI] - Paiement en attente', msg, setting.email,
                         [to], [setting.email, DEVELOPPER_MAIL])
     mail.send(fail_silently=True)
 

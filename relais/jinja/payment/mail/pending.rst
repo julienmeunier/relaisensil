@@ -1,6 +1,6 @@
 {% extends 'payment/mail/body.rst' %}
 {% block content %}
-Votre paiement pour l'inscription du Relais de l'ENSIL ({{name}}) est en attente.
+Votre paiement pour l'inscription du Relais de l'ENSIL-ENSCI ({{name}}) est en attente.
 
 Rappel
 ======

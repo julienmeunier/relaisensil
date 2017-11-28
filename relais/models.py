@@ -40,9 +40,9 @@ class Setting(models.Model):
 #------------------------------------------------------------------------------
 CATEGORY_CHOICES = ((constants.ADULT, 'Adulte'),
                     (constants.STUDENT, 'Etudiant'),
-                    (constants.STUDENT_ENSIL, 'Etudiant ENSILiens'),
+                    (constants.STUDENT_ENSIL_ENSCI, 'Etudiant ENSIL-ENSCI'),
                     (constants.CHALLENGE, 'Challenge inter-entreprise'),
-                    (constants.OLDER_ENSIL, 'Ancien de l\'ENSIL'))
+                    (constants.OLDER, 'Ancien de l\'ENSIL-ENSCI'))
 
 WHEN_CHOICES = ((constants.PRICE_ONLINE, 'En ligne'),
                 (constants.PRICE_DAY, 'Sur place'))
@@ -54,8 +54,8 @@ class Price(models.Model):
     """
     Price of each category.
     """
-    config = models.CharField('Type de coureur', max_length=10, choices=CONFIG_CHOICES)
-    who = models.CharField('Catégorie du coureur', max_length=10, choices=CATEGORY_CHOICES)
+    config = models.CharField('Type de coureur', max_length=12, choices=CONFIG_CHOICES)
+    who = models.CharField('Catégorie du coureur', max_length=12, choices=CATEGORY_CHOICES)
     when = models.CharField('Quand', max_length=10, choices=WHEN_CHOICES)
     price = models.IntegerField('Prix')
 

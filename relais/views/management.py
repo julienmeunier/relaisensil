@@ -153,7 +153,7 @@ def results_individual(request, display_all=False, order_by_time=True):
     r_cat[constants.JUNIOR] = {'name': '%s (%s)' % (constants.JUNIOR, get_years_ffa(constants.JUNIOR)), 'ffa': True}
     r_cat[constants.CADET] = {'name': '%s (%s)' % (constants.CADET, get_years_ffa(constants.CADET)), 'ffa': True}
     r_cat[constants.CHALLENGE] = {'name': 'Challenge entreprise', 'ffa': False}
-    r_cat[constants.OLDER_ENSIL] = {'name': 'Ancien de l\'ENSIL', 'ffa': False}
+    r_cat[constants.OLDER] = {'name': 'Ancien de l\'ENSIL-ENSCI', 'ffa': False}
 
     people = OrderedDict()
     people[constants.MALE] = 'Homme'
@@ -330,7 +330,7 @@ def results_team(request, display_all=False, order_by_time=True):
     # 6) Etudiant M
     student = {}
     query = team.filter(Q(category=constants.STUDENT) |
-                        Q(category=constants.STUDENT_ENSIL))
+                        Q(category=constants.STUDENT_ENSIL_ENSCI))
     query = query.filter(runner_1__gender=constants.MALE,
                          runner_2__gender=constants.MALE,
                          runner_3__gender=constants.MALE)
@@ -344,7 +344,7 @@ def results_team(request, display_all=False, order_by_time=True):
 
     # Etudiant F
     query = team.filter(Q(category=constants.STUDENT) |
-                        Q(category=constants.STUDENT_ENSIL))
+                        Q(category=constants.STUDENT_ENSIL_ENSCI))
     query = query.filter(runner_1__gender=constants.FEMALE,
                          runner_2__gender=constants.FEMALE,
                          runner_3__gender=constants.FEMALE)
@@ -364,7 +364,7 @@ def results_team(request, display_all=False, order_by_time=True):
                for x in [constants.MALE, constants.FEMALE]]
 
     query = team.filter(Q(category=constants.STUDENT) |
-                        Q(category=constants.STUDENT_ENSIL))
+                        Q(category=constants.STUDENT_ENSIL_ENSCI))
     query = query.exclude(reduce(operator.or_, q_mixte))  # exlude M/M/M or F/F/F
     query = query.exclude(reduce(operator.or_, q_college))  # exclude college
     query = query.exclude(reduce(operator.or_, q_lycee))  # exclude lycee
@@ -377,40 +377,40 @@ def results_team(request, display_all=False, order_by_time=True):
 
     # XXX: find another way to do this
     if display_all:
-        # Do not exclude ENSIL people when display all
+        # Do not exclude ENSIL-ENSCI people when display all
         student['male'] = []
         student['female'] = []
         student['mix'] = []
 
-    # ENSIL M
-    query = team.filter(category=constants.STUDENT_ENSIL)
+    # ENSIL-ENSCI M
+    query = team.filter(category=constants.STUDENT_ENSIL_ENSCI)
     query = query.filter(runner_1__gender=constants.MALE,
                          runner_2__gender=constants.MALE,
                          runner_3__gender=constants.MALE)
     query = query.exclude(pk__in=student['male'])
     query = query.order_by(order)
 
-    r.append(RESULTS(name="ENSIL - Homme",
+    r.append(RESULTS(name="ENSIL-ENSCI - Homme",
                     results=query[0:count_1]))
 
-    # ENSIL F
-    query = team.filter(category=constants.STUDENT_ENSIL)
+    # ENSIL-ENSCI F
+    query = team.filter(category=constants.STUDENT_ENSIL_ENSCI)
     query = query.filter(runner_1__gender=constants.FEMALE,
                          runner_2__gender=constants.FEMALE,
                          runner_3__gender=constants.FEMALE)
     query = query.exclude(pk__in=student['female'])
     query = query.order_by(order)
 
-    r.append(RESULTS(name="ENSIL - Femme",
+    r.append(RESULTS(name="ENSIL-ENSCI - Femme",
                     results=query[0:count_1]))
 
-    # ENSIL mixte
-    query = team.filter(category=constants.STUDENT_ENSIL)
+    # ENSIL-ENSCI mixte
+    query = team.filter(category=constants.STUDENT_ENSIL_ENSCI)
     query = query.exclude(reduce(operator.or_, q_mixte))  # exlude M/M/M or F/F/F
     query = query.exclude(pk__in=student['mix'])
     query = query.order_by(order)
 
-    r.append(RESULTS(name="ENSIL - Mixte",
+    r.append(RESULTS(name="ENSIL-ENSCI - Mixte",
                     results=query[0:count_1]))
 
     # Challenge M
@@ -441,11 +441,11 @@ def results_team(request, display_all=False, order_by_time=True):
     r.append(RESULTS(name="Challenge Entreprise - Mixte",
                         results=query[0:count_1]))
 
-    # Anciens ENSILiens
-    query = team.filter(category=constants.OLDER_ENSIL)
+    # Anciens ENSIL-ENSCI
+    query = team.filter(category=constants.OLDER)
     query = query.order_by(order)
 
-    r.append(RESULTS(name="Anciens ENSIL",
+    r.append(RESULTS(name="Anciens ENSIL-ENSCI",
                             results=query[0:count_1]))
 
     to_template['team'] = r
@@ -462,8 +462,8 @@ def create_fake_users(request):
     cat[0] = constants.ADULT
     cat[1] = constants.CHALLENGE
     cat[2] = constants.STUDENT
-    cat[3] = constants.STUDENT_ENSIL
-    cat[4] = constants.OLDER_ENSIL
+    cat[3] = constants.STUDENT_ENSIL_ENSCI
+    cat[4] = constants.OLDER
 
     Runner.objects.all().delete()
     Individual.objects.all().delete()
