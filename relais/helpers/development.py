@@ -4,7 +4,7 @@ import random
 import names
 
 from relais import constants
-from relais.models import TSHIRT_CHOICES, Runner, School
+from relais.models import TSHIRT_CHOICES, People, School
 
 def create_fake_runner(category, indiv, school_name=None, num=None):
     is_male = bool(random.getrandbits(1))
@@ -35,7 +35,7 @@ def create_fake_runner(category, indiv, school_name=None, num=None):
             time = datetime.time(minute=random.randint(30, 59), second=random.randint(0, 59))
     if school_name:
         school = School.objects.get_or_create(name=school_name)[0]
-    r = Runner(first_name=names.get_first_name(gender=gender), last_name=names.get_last_name(),
+    r = People(first_name=names.get_first_name(gender=gender), last_name=names.get_last_name(),
                gender=g, birthday=birthday, time=time, legal_status=True, certificat=True,
                tshirt=tshirt, school=school)
     r.update_num(range_num)

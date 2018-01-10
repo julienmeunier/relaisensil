@@ -18,8 +18,8 @@
         </tr>
         {% for ind in individual %}
         <tr>
-            {{ display_runner(ind.runner) }}
-            <td class="text-center">{{ind.runner.runner_category()}}</td>
+            {{ display_runner(ind.runner_1) }}
+            <td class="text-center">{{ind.runner_1.runner_category()}}</td>
             <td class="text-center">{{ display_category(ind)}}</td>
         </tr>
         {% endfor %}
@@ -51,7 +51,7 @@
                      <th class="text-center">Age</th>
         {% for t in team %}
         <tr>
-            <td class="text-center">{{t.name}}</td>
+            <td class="text-center">{{t.team}}</td>
             {{ display_runner(t.runner_1) }}
             {{ display_runner(t.runner_2) }}
             {{ display_runner(t.runner_3) }}

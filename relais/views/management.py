@@ -13,11 +13,10 @@ from relais.helpers import cat2hash, get_relais_categories, get_years_ffa
 from relais.helpers.development import create_fake_runner
 from relais.models import (
     Company,
-    Individual,
     Payment,
     Price,
+    People,
     Runner,
-    Team,
 )
 
 
@@ -29,9 +28,9 @@ def index(request):
     Home page
     """
     stats = {}
-    stats['nb_runner'] = len(Runner.objects.all())
-    stats['nb_indiv'] = len(Individual.objects.all())
-    stats['nb_team'] = len(Team.objects.all())
+    stats['nb_runner'] = len(People.objects.all())
+    stats['nb_indiv'] = len(helpers.get_all_indiv())
+    stats['nb_team'] = len(helpers.get_all_indiv())
     return render(request, 'management/home.html', stats)
 
 #------------------------------------------------------------------------------
@@ -66,8 +65,8 @@ def listing(request):
     """
     to_template = {
         'cat': get_relais_categories(),
-        'individual': Individual.objects.all(),  # all individuals registered
-        'team': Team.objects.all(),  # all teams registered
+        'individual': helpers.get_all_indiv(),  # all individuals registered
+        'team': helpers.get_all_team(),  # all teams registered
     }
 
     return render(request, 'management/listing.html', to_template)
@@ -78,12 +77,14 @@ def results(request):
     """
     Show all results
     """
+    indiv = helpers.get_all_indiv()
+    team = helpers.get_all_team()
     to_template = {
         'cat': get_relais_categories(),
         'individual': [RESULTS(name="Tous les résultats individuels",
-                                      results=Individual.objects.order_by('runner__time'))],
+                                      results=indiv.order_by('runner_1__time'))],
         'team': [RESULTS(name="Tous les résultats équipes",
-                     results=Team.objects.order_by('runner_3__time'))],
+                     results=team.order_by('runner_3__time'))],
     }
 
     to_template['order_by_time'] = True
@@ -115,13 +116,13 @@ def results_individual(request, display_all=False, order_by_time=True):
         count_1 = 1
         count_3 = 3
 
-    individual = Individual.objects
+    individual = helpers.get_all_indiv() 
 
     if order_by_time:
-        order = 'runner__time'
-        individual = individual.filter(runner__time__gt=timedelta(0, 0, 0))
+        order = 'runner_1__time'
+        individual = individual.filter(runner_1__time__gt=timedelta(0, 0, 0))
     else:
-        order = 'runner__num'
+        order = 'runner_1__num'
 
     r = []
 
@@ -136,9 +137,9 @@ def results_individual(request, display_all=False, order_by_time=True):
 
     # compute FFA people
     # eg: ffa[category][male] = list of people
-    for i in Individual.objects.all():
-        c = cat2hash(i.runner.runner_category())
-        ffa[c][i.runner.gender].append(i.pk)
+    for i in individual:
+        c = cat2hash(i.runner_1.runner_category())
+        ffa[c][i.runner_1.gender].append(i.pk)
 
     # when iterate on a dict, data are not ordered
     # let's use a OrderedDict
@@ -161,12 +162,12 @@ def results_individual(request, display_all=False, order_by_time=True):
 
     # End of configuration
     # Begin of get results
-    query = individual.filter(runner__gender=constants.MALE)
+    query = individual.filter(runner_1__gender=constants.MALE)
     query = query.order_by(order)
     r.append(RESULTS(name="Scratch Homme",
                      results=query[0:count_3]))
 
-    query = individual.filter(runner__gender=constants.FEMALE)
+    query = individual.filter(runner_1__gender=constants.FEMALE)
     query = query.order_by(order)
     r.append(RESULTS(name="Scratch Femme",
                             results=query[0:count_3]))
@@ -176,7 +177,7 @@ def results_individual(request, display_all=False, order_by_time=True):
         if display_all:
             exclude = []
         else:
-            exclude = individual.filter(runner__gender=key_gender).order_by(order)[0:count_3]
+            exclude = individual.filter(runner_1__gender=key_gender).order_by(order)[0:count_3]
 
         for key, data in r_cat.items():
             name = "{category} - {gender}".format(category=data['name'],
@@ -192,7 +193,7 @@ def results_individual(request, display_all=False, order_by_time=True):
             else:
                 # Relais specificities
                 # No exclusion for Relais specificities (cumul)
-                query = individual.filter(category=key, runner__gender=key_gender)
+                query = individual.filter(category=key, runner_1__gender=key_gender)
                 query = query.order_by(order)
 
             # get results
@@ -202,7 +203,7 @@ def results_individual(request, display_all=False, order_by_time=True):
     r.append(RESULTS(name="La tenue originale (non géré automatiquement)",
                             results=[]))
 
-    query = individual.order_by('-runner__time')
+    query = individual.order_by('-runner_1__time')
     r.append(RESULTS(name="Le dernier",
                             results=query[0:count_1]))
 
@@ -236,7 +237,7 @@ def results_team(request, display_all=False, order_by_time=True):
         count_1 = 1
         count_3 = 3
 
-    team = Team.objects
+    team = helpers.get_all_team()
 
     if order_by_time:
         order = 'runner_3__time'
@@ -465,9 +466,8 @@ def create_fake_users(request):
     cat[3] = constants.STUDENT_ENSIL_ENSCI
     cat[4] = constants.OLDER
 
+    People.objects.all().delete()
     Runner.objects.all().delete()
-    Individual.objects.all().delete()
-    Team.objects.all().delete()
     Payment.objects.all().delete()
     word_file = "/usr/share/dict/words"
     words = open(word_file).read().splitlines()
@@ -496,17 +496,17 @@ def create_fake_users(request):
         pay = Payment.objects.create(price=p,
                                      method=constants.CASH,
                                      state=True)
+        r = [None] * 3
+        name = None
         if indiv:
-            r = create_fake_runner(category, True, school_name=school)
-            i = Individual(runner=r, category=category, payment=pay, company=company)
-            i.save()
+            r[0] = create_fake_runner(category, True, school_name=school)
         else:
-            r = {}
-            for i in range(1, 4):
+            for i in range(0, 3):
                 r[i] = create_fake_runner(category, False, school_name=school, num=i)
-            t = Team(name=words[random.randint(0, len(words))], runner_1=r[1],
-                     runner_2=r[2], runner_3=r[3], category=category, payment=pay,
-                     company=company)
-            t.save()
+            name = words[random.randint(0, len(words))]
+        run = Runner(name=name, runner_1=r[1],
+                 runner_2=r[2], runner_3=r[3], category=category, payment=pay,
+                 company=company)
+        run.save()
 
     return render(request)

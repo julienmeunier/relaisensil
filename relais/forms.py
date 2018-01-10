@@ -10,9 +10,8 @@ from relais.models import (
     METHOD_PAYMENT_CHOICES,
     GENDER_CHOICES,
     TSHIRT_CHOICES,
+    People,
     Runner,
-    Individual,
-    Team,
 )
 
 
@@ -84,8 +83,9 @@ class SubscriptionForm(forms.Form):
         validation.
         """
         cleaned_data = super(SubscriptionForm, self).clean()  # call default method
-        r = []
-        # each Runner must be unique
+        # force initialization
+        r = [None] * 3
+        # each People must be unique
         for i in range(self.nb):
             first_name = self.cleaned_data.get('first_name_%d' % i)
             last_name = self.cleaned_data.get('last_name_%d' % i)
@@ -93,11 +93,11 @@ class SubscriptionForm(forms.Form):
             gender = self.cleaned_data.get('gender_%d' % i)
             num = self.cleaned_data.get('num_%d' % i, None)
             if not None in (first_name, last_name, birthday, gender):
-                r.append(Runner(first_name=first_name,
+                r[i] = People(first_name=first_name,
                               last_name=last_name,
                               birthday=birthday,
                               gender=gender,
-                              num=num))
+                              num=num)
                 if not num:
                     if self.is_a_team:
                         r[i].update_num(RANGE_TEAM[i])
@@ -123,23 +123,17 @@ class SubscriptionForm(forms.Form):
                             ],
                         }
                     )
-                # TODO: improve this (return Runner object ?)
+                # TODO: improve this (return People object ?)
                 self.cleaned_data['legal_status_%d' % i] = r[i].is_adult()
             # convert name -> id (ForeignKey)
             self.cleaned_data['club_%d' % i] = helpers.add_get_club(self.cleaned_data.get('club_%d' % i))
             self.cleaned_data['federation_%d' % i] = helpers.add_get_fede(self.cleaned_data.get('federation_%d' % i))
 
-        if self.is_a_team:
-            # check if Team is unique
-            t = Team(runner_1=r[0], runner_2=r[1], runner_3=r[2],
-                     name=self.cleaned_data.get('name'),
-                     email=self.cleaned_data.get('email'))
-            t.clean()
-            t.validate_unique()
-        else:
-            ind = Individual(runner=r[0])
-            ind.clean()
-            ind.validate_unique()
+        run = Runner(runner_1=r[0], runner_2=r[1], runner_3=r[2],
+                 team=self.cleaned_data.get('name', None),
+                 email=self.cleaned_data.get('email'))
+        run.clean()
+        run.validate_unique()
 
         # convert name -> id (ForeignKey)
         self.cleaned_data['school'] = helpers.add_get_school(self.cleaned_data.get('school'))

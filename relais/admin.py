@@ -4,11 +4,10 @@ from relais.models import (
     Company,
     Federation,
     Payment,
-    Individual,
-    Team,
-    Runner,
+    People,
     School,
     Price,
+    Runner,
     Setting,
 )
 
@@ -30,61 +29,14 @@ class PriceAdmin(admin.ModelAdmin):
 admin.site.register(Price, PriceAdmin)
 
 #------------------------------------------------------------------------------
-class IndividualAdmin(admin.ModelAdmin):
-    list_display = ('id', 'runner_link', 'runner_certificat', 'payment_link', 'payment_status')
-    actions = ['really_delete_selected']
-    list_max_show_all = 500
-    list_per_page = 500
-
-    # by default, django use QuerySet to delete an entry
-    # however, in the case of Individual/Team, delete method of these models
-    # must be called in order to clean up other models
-    def get_actions(self, request):
-        actions = super(IndividualAdmin, self).get_actions(request)
-        del actions['delete_selected']
-        return actions
-
-    def really_delete_selected(self, request, queryset):
-        for obj in queryset:
-            obj.delete()
-
-        self.message_user(request, "%s coureur(s) correctement supprime(s)." % queryset.count())
-    really_delete_selected.short_description = "Supprimer un coureur (+ paiement)"
-
-    # add a link to the Runner admin page
-    def runner_link(self, obj):
-        return '<a href="/admin/relais/runner/%s">%s</a>' % (obj.runner.pk, obj.runner)
-    runner_link.allow_tags = True
-
-    def payment_link(self, obj):
-        return '<a href="/admin/relais/payment/%s">Access to payment</a>' % obj.payment.pk
-    payment_link.allow_tags = True
-
-    # display items for another models in the admin page
-    def runner_certificat(self, obj):
-        return obj.runner.certificat
-    runner_certificat.boolean = True
-    runner_certificat.short_description = 'Certificat'
-
-    def payment_status(self, obj):
-        return obj.payment.state
-    payment_status.boolean = True
-    payment_status.short_description = 'Payment'
-
-admin.site.register(Individual, IndividualAdmin)
-
-#------------------------------------------------------------------------------
 class PaymentAdmin(admin.ModelAdmin):
     list_display = ('id', 'token', 'reverse', 'method', 'price', 'state', 'ipn_link')
     list_max_show_all = 500
     list_per_page = 500
 
     def reverse(self, obj):
-        try:
-            return '<a href="/admin/relais/individual/%s">%s</a>' % (obj.individual.pk,
-                                                                     obj.individual)
-        except Individual.DoesNotExist:
-            return '<a href="/admin/relais/team/%s">%s</a>' % (obj.team.pk, obj.team)
+        return '<a href="/admin/relais/runner/%s">%s</a>' % (obj.runner.pk,
+                                                             obj.runner)
     reverse.short_description = 'Origine'
     reverse.allow_tags = True
 
@@ -99,8 +51,9 @@ class PaymentAdmin(admin.ModelAdmin):
 admin.site.register(Payment, PaymentAdmin)
 
 #------------------------------------------------------------------------------
-class TeamAdmin(admin.ModelAdmin):
-    list_display = ('name',
+class RunnerAdmin(admin.ModelAdmin):
+    list_display = ('type',
+                    'team',
                     'runner_1_link',
                     'runner_1_certificat',
                     'runner_2_link',
@@ -114,34 +67,47 @@ class TeamAdmin(admin.ModelAdmin):
     list_max_show_all = 500
     list_per_page = 500
 
+    def type(self, obj):
+        if obj.team:
+            return 'Equipe'
+        else:
+            return 'Individuel'
+    type.short_description = 'Type de course'
+    type.allow_tags = True
+
     # by default, django use QuerySet to delete an entry
     # however, in the case of Individual/Team, delete method of these models
     # must be called in order to clean up other models
     def get_actions(self, request):
-        actions = super(TeamAdmin, self).get_actions(request)
+        actions = super(RunnerAdmin, self).get_actions(request)
         del actions['delete_selected']
         return actions
 
     def really_delete_selected(self, request, queryset):
         for obj in queryset:
             obj.delete()
+        self.message_user(request, "%s coureurs(s) correctement supprime(s)." % queryset.count())
+    really_delete_selected.short_description = "Supprimer ? (+ paiement + coureurs)"
 
-        self.message_user(request, "%s equipe(s) correctement supprime(s)." % queryset.count())
-    really_delete_selected.short_description = "Supprimer une equipe (+ paiement + coureurs)"
-
-    # add a link to the Runner admin page
+    # add a link to the People admin page
     def runner_1_link(self, obj):
-        return '<a href="/admin/relais/runner/%s">%s</a>' % (obj.runner_1.pk, obj.runner_1)
+        return '<a href="/admin/relais/people/%s">%s</a>' % (obj.runner_1.pk, obj.runner_1)
     runner_1_link.allow_tags = True
 
-    # add a link to the Runner admin page
+    # add a link to the People admin page
     def runner_2_link(self, obj):
-        return '<a href="/admin/relais/runner/%s">%s</a>' % (obj.runner_2.pk, obj.runner_2)
+        if obj.runner_2:
+            return '<a href="/admin/relais/people/%s">%s</a>' % (obj.runner_2.pk, obj.runner_2)
+        else:
+            return None
     runner_2_link.allow_tags = True
 
-    # add a link to the Runner admin page
+    # add a link to the People admin page
     def runner_3_link(self, obj):
-        return '<a href="/admin/relais/runner/%s">%s</a>' % (obj.runner_3.pk, obj.runner_3)
+        if obj.runner_2:
+            return '<a href="/admin/relais/people/%s">%s</a>' % (obj.runner_3.pk, obj.runner_3)
+        else:
+            return None
     runner_3_link.allow_tags = True
 
     def payment_link(self, obj):
@@ -156,13 +122,19 @@ class TeamAdmin(admin.ModelAdmin):
 
     # display items for another models in the admin page
     def runner_2_certificat(self, obj):
-        return obj.runner_2.certificat
+        if obj.runner_2:
+            return obj.runner_2.certificat
+        else:
+            return None
     runner_2_certificat.boolean = True
     runner_2_certificat.short_description = 'Cert. 2'
 
     # display items for another models in the admin page
     def runner_3_certificat(self, obj):
-        return obj.runner_3.certificat
+        if obj.runner_3:
+            return obj.runner_3.certificat
+        else:
+            return None
     runner_3_certificat.boolean = True
     runner_3_certificat.short_description = 'Cert. 3'
 
@@ -170,15 +142,15 @@ class TeamAdmin(admin.ModelAdmin):
         return obj.payment.state
     payment_status.boolean = True
     payment_status.short_description = 'Payment'
-admin.site.register(Team, TeamAdmin)
+admin.site.register(Runner, RunnerAdmin)
 
 #------------------------------------------------------------------------------
-class RunnerAdmin(admin.ModelAdmin):
+class PeopleAdmin(admin.ModelAdmin):
     list_display = ['last_name', 'first_name', 'certificat', 'legal_status', 'num', 'tshirt', 'ready']
     list_max_show_all = 500
     list_per_page = 500
 
-admin.site.register(Runner, RunnerAdmin)
+admin.site.register(People, PeopleAdmin)
 
 #------------------------------------------------------------------------------
 # Classic admin for other models

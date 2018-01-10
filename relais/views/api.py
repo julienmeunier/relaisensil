@@ -9,7 +9,7 @@ from django.http.response import (
 from django.utils.dateparse import parse_time
 from django.views.decorators.csrf import csrf_exempt
 
-from relais.models import Runner, Setting
+from relais.models import People, Setting
 from datetime import datetime, timezone, timedelta
 
 
@@ -17,7 +17,7 @@ from datetime import datetime, timezone, timedelta
 @csrf_exempt
 def set_time(request):
     """
-    Set a time to a Runner.
+    Set a time to a People.
 
     Accept only POST request with parameters:
     :arg int num:
@@ -48,8 +48,8 @@ def set_time(request):
         return HttpResponseBadRequest('"time" must be HH:MM[:ss[.uuuuuu]]')
 
     try:
-        runner = Runner.objects.filter(num=num).get()
-    except Runner.DoesNotExist:
+        runner = People.objects.filter(num=num).get()
+    except People.DoesNotExist:
         return HttpResponseBadRequest('runner with number %s is unknown' % num)
 
     runner.time = timedelta(days=0, minutes=time.minute, seconds=time.second)
@@ -70,7 +70,7 @@ def set_time(request):
 @csrf_exempt
 def set_dynamic_time(request):
     """
-    Set a time to a Runner.
+    Set a time to a People.
 
     Accept only POST request with parameters:
     :arg int num:
@@ -91,15 +91,15 @@ def set_dynamic_time(request):
         return HttpResponseBadRequest('num must be an integer')
 
     try:
-        runner = Runner.objects.filter(num=num).get()
-    except Runner.DoesNotExist:
+        runner = People.objects.filter(num=num).get()
+    except People.DoesNotExist:
         return HttpResponseBadRequest('runner with number %s is unknown' % num)
 
     s = Setting.objects.get()
     delta = datetime.now(timezone.utc) - s.start
     runner.time = delta
     runner.save()
-    runner = Runner.objects.filter(num=num).get()
+    runner = People.objects.filter(num=num).get()
 
     response = {
         'first_name': runner.first_name,
@@ -139,7 +139,7 @@ def set_top_time_dynamic(request):
 @csrf_exempt
 def get_runner(request):
     """
-    Set a time to a Runner.
+    Set a time to a People.
 
     Accept only POST request with parameters:
     :arg int num:
@@ -163,8 +163,8 @@ def get_runner(request):
         return HttpResponseBadRequest('num must be an integer')
 
     try:
-        runner = Runner.objects.filter(num=num).get()
-    except Runner.DoesNotExist:
+        runner = People.objects.filter(num=num).get()
+    except People.DoesNotExist:
         return HttpResponseBadRequest('runner with number %s is unknown' % num)
 
     response = {

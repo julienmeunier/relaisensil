@@ -1,11 +1,10 @@
 import hashlib
 import json
-from datetime import datetime
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models.functions.base import Now
 
-from relais.models import Club, Federation, Company, School, CATEGORY_CHOICES
+from relais.models import Club, Federation, Company, School, Runner, CATEGORY_CHOICES
 from relais import constants
 
 
@@ -103,3 +102,13 @@ def get_years_ffa(category):
         r = 'Unknown category'
 
     return r
+
+def get_all_indiv():
+    return Runner.objects.filter(runner_1__isnull=False,
+                                 runner_2__isnull=True,
+                                 runner_3__isnull=True)
+
+def get_all_team():
+    return Runner.objects.filter(runner_1__isnull=False,
+                                 runner_2__isnull=False,
+                                 runner_3__isnull=False)

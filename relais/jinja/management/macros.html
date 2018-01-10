@@ -10,13 +10,9 @@
 {% set pretty_category = cat() %}
 {{pretty_category[people.category]}}
 {% if people.company %}
-- {{people.company}}
+- Entreprise "{{people.company}}"
 {% elif people.category == 'STD' %}
-  {%- if people.runner %}
-- {{people.runner.school}}
-  {%- else %}
-- {{people.runner_1.school}}
-{% endif %}
+- Ecole "{{people.runner_1.school}}"
 {% endif %}
 {% endmacro %}
 
@@ -57,7 +53,7 @@
                 {% else %}
         <tr>
             <td class="text-center">{{i}}</td>
-            <td class="text-center">{{r.name}}</td>
+            <td class="text-center">{{r.team}}</td>
             {{display_runner(r.runner_1)}}
             <td class="text-center">{{r.runner_1.time|default("Temps en cours de récupération par l'équipe")}}</td>
             {{display_runner(r.runner_2)}}
@@ -73,7 +69,7 @@
             {% else %}
         <tr>
             <td class="text-center"></td>
-            <td class="text-center">{{r.name}}</td>
+            <td class="text-center">{{r.team}}</td>
             {{display_runner(r.runner_1)}}
             <td class="text-center">{{r.runner_1.time}}</td>
             {{display_runner(r.runner_2)}}
@@ -103,23 +99,23 @@
  </tr>
         {% for r in results %}
             {% if order_by_time %}
-                {% if r.runner.time %}
+                {% if r.runner_1.time %}
         <tr>
             <td class="text-center">{{i}}</td>
-            {% set i=i+1 %}
-            {{display_runner(r.runner)}}
-            <td class="text-center">{{r.runner.runner_category()}}</td>
+            {% set i = i + 1 %}
+            {{display_runner(r.runner_1)}}
+            <td class="text-center">{{r.runner_1.runner_category()}}</td>
             <td class="text-center">{{display_category(r)}}</td>
-            <td class="text-center">{{r.runner.time}}</td>
+            <td class="text-center">{{r.runner_1.time}}</td>
         </tr>
                 {% endif %}
             {% else %}
         <tr>
             <td class="text-center"></td>
-            {{display_runner(r.runner)}}
-            <td class="text-center">{{r.runner.runner_category()}}</td>
+            {{display_runner(r.runner_1)}}
+            <td class="text-center">{{r.runner_1.runner_category()}}</td>
             <td class="text-center">{{display_category(r)}}</td>
-            <td class="text-center">{{r.runner.time}}</td>
+            <td class="text-center">{{r.runner_1.time}}</td>
         </tr>
             {% endif %}
         {% endfor %}

@@ -14,19 +14,15 @@ from engine.settings.production import DEVELOPPER_MAIL
 from relais import constants
 from relais import forms
 from relais.forms import PaymentForm
-from relais.models import Payment, Setting, Team
+from relais.models import Payment, Setting
 
 
 #------------------------------------------------------------------------------
 def sendmail_payment_success(payment):
     setting = Setting.objects.get()
     context = {'setting': setting, 'payment': payment}
-    try:
-        context['name'] = payment.team
-        to = payment.team.email
-    except Team.DoesNotExist:
-        context['name'] = payment.individual
-        to = payment.individual.email
+    context['name'] = payment.runner
+    to = payment.runner.email
     msg = loader.render_to_string('payment/mail/success.rst', context).replace("&#39;","'")
     mail = EmailMessage('[Relais de l\'ENSIL-ENSCI] - Paiement valide', msg, setting.email,
                         [to], [setting.email, DEVELOPPER_MAIL])
@@ -36,12 +32,8 @@ def sendmail_payment_success(payment):
 def sendmail_payment_pending(payment):
     setting = Setting.objects.get()
     context = {'setting': setting, 'payment': payment}
-    try:
-        context['name'] = payment.team
-        to = payment.team.email
-    except Team.DoesNotExist:
-        context['name'] = payment.individual
-        to = payment.individual.email
+    context['name'] = payment.runner
+    to = payment.runner.email
     msg = loader.render_to_string('payment/mail/pending.rst', context).replace("&#39;","'")
 
     mail = EmailMessage('[Relais de l\'ENSIL-ENSCI] - Paiement en attente', msg, setting.email,
@@ -52,12 +44,8 @@ def sendmail_payment_pending(payment):
 def sendmail_payment_postal(payment):
     setting = Setting.objects.get()
     context = {'setting': setting, 'payment': payment}
-    try:
-        context['name'] = payment.team
-        to = payment.team.email
-    except Team.DoesNotExist:
-        context['name'] = payment.individual
-        to = payment.individual.email
+    context['name'] = payment.runner
+    to = payment.runner.email
     msg = loader.render_to_string('payment/mail/postal.rst', context).replace("&#39;","'")
 
     mail = EmailMessage('[Relais de l\'ENSIL-ENSCI] - Paiement en attente', msg, setting.email,

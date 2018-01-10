@@ -10,12 +10,11 @@ from engine.settings.production import DEVELOPPER_MAIL
 from relais import constants, forms, models, helpers
 from relais.constants import RANGE_INDIVIDUAL, RANGE_TEAM
 from relais.models import (
-    Individual,
     Payment,
     Price,
+    People,
     Runner,
     Setting,
-    Team,
 )
 from relais.util.decorator import registration_opened
 from relais.views.payment import sendmail_payment_pending
@@ -30,13 +29,11 @@ def sendmail_summary(payment):
     for i, name in models.CATEGORY_CHOICES:
         category[i] = name
     context = {'setting': setting, 'category': category}
-    try:
-        context['team'] = payment.team
-        to = payment.team.email
+    context['r'] = payment.runner
+    to = payment.runner.email
+    if payment.runner.team:
         msg = loader.render_to_string('registration/mail/team.rst', context).replace("&#39;","'")
-    except Team.DoesNotExist:
-        context['individual'] = payment.individual
-        to = payment.individual.email
+    else:
         msg = loader.render_to_string('registration/mail/individual.rst', context).replace("&#39;","'")
 
     mail = EmailMessage('[Relais de l\'ENSIL-ENSCI] - Confirmation inscription', msg,
@@ -182,9 +179,9 @@ def form(request, prefix='', team=False, onsite=False):
                 pay_status = False
 
             # add runners (it is safe now)
-            r = []
+            r = [None] * 3
             for i in range(form.nb):
-                r.append(Runner(first_name=form.cleaned_data['first_name_%d' % i],
+                r[i] = People(first_name=form.cleaned_data['first_name_%d' % i],
                               last_name=form.cleaned_data['last_name_%d' % i],
                               num=form.cleaned_data['num_%d' % i],
                               gender=form.cleaned_data['gender_%d' % i],
@@ -195,7 +192,7 @@ def form(request, prefix='', team=False, onsite=False):
                               club=form.cleaned_data['club_%d' % i],
                               certificat=False,
                               legal_status=form.cleaned_data['legal_status_%d' % i],
-                              tshirt=form.cleaned_data['tshirt_%d' % i]))
+                              tshirt=form.cleaned_data['tshirt_%d' % i])
                 r[i].clean()
                 r[i].save()
 
@@ -216,23 +213,19 @@ def form(request, prefix='', team=False, onsite=False):
                                              method=pay_method,
                                              token=token,
                                              state=pay_status)
-            if team:
-                registered = Team.objects.create(runner_1=r[0], runner_2=r[1], runner_3=r[2],
-                                               payment=pay,
-                                         name=form.cleaned_data['name'],
-                                         category=form.cleaned_data['category'],
-                                         email=form.cleaned_data['email'],
-                                         company=form.cleaned_data['company'])
-                if onsite:
-                    return HttpResponseRedirect('/management/registration/end/team/%s' % registered.pk)
-            else:
-                registered = Individual.objects.create(runner=r[0],
-                                               payment=pay,
-                                               category=form.cleaned_data['category'],
-                                               email=form.cleaned_data['email'],
-                                               company=form.cleaned_data['company'])
-                if onsite:
-                    return HttpResponseRedirect('/management/registration/end/indiv/%s' % registered.pk)
+            registered = Runner.objects.create(
+                runner_1=r[0], runner_2=r[1], runner_3=r[2],
+                payment=pay,
+                team=form.cleaned_data.get('name', None),
+                category=form.cleaned_data['category'],
+                email=form.cleaned_data['email'],
+                company=form.cleaned_data['company']
+            )
+
+            if team and onsite:
+                return HttpResponseRedirect('/management/registration/end/team/%s' % registered.pk)
+            elif not team and onsite:
+                return HttpResponseRedirect('/management/registration/end/indiv/%s' % registered.pk)
 
             # Send mail
             sendmail_summary(payment=pay)
@@ -248,10 +241,9 @@ def form(request, prefix='', team=False, onsite=False):
 
 #------------------------------------------------------------------------------
 def end(request, category, pk, prefix='', onsite=False):
+    r = Runner.objects.filter(pk=pk).get()
     if category == 'indiv':
-        indiv = Individual.objects.filter(pk=pk).get()
-        return render(request, 'registration/end_indiv.html', {'indiv': indiv})
+        return render(request, 'registration/end_indiv.html', {'indiv': r})
 
     elif category == 'team':
-        team = Team.objects.filter(pk=pk).get()
-        return render(request, 'registration/end_team.html', {'team': team})
+        return render(request, 'registration/end_team.html', {'team': r})

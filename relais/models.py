@@ -119,7 +119,7 @@ METHOD_PAYMENT_CHOICES = ((constants.CASH, 'Espèce'),
 
 class Payment(models.Model):
     """
-    All payments (Individual / Team) are stored in this model.
+    All payments are stored in this model.
     """
     # Relation between Payment.price <-> Price
     price = models.ForeignKey(Price, verbose_name='Prix')
@@ -151,7 +151,7 @@ TSHIRT_CHOICES= (('S', 'S'),
                  ('L', 'L'),
                  ('XL', 'XL'))
 
-class Runner(models.Model):
+class People(models.Model):
     """
     List of people that will run for this event.
     """
@@ -280,7 +280,7 @@ class Runner(models.Model):
             'Equipe - 3': RANGE_TEAM[2],
         }
         for name, r in data.iteritems():
-            query = Runner.objects.filter(num__gte=r[0]).filter(num__lte=r[1]).order_by('-num')
+            query = People.objects.filter(num__gte=r[0]).filter(num__lte=r[1]).order_by('-num')
             if query:
                 num.append('%s - dernier dossard %s (interval %s)' % (name, query[0].num, r))
             else:
@@ -288,7 +288,7 @@ class Runner(models.Model):
         return num
 
     def update_num(self, r):
-        query = Runner.objects.filter(num__gte=r[0]).filter(num__lte=r[1]).order_by('-num')
+        query = People.objects.filter(num__gte=r[0]).filter(num__lte=r[1]).order_by('-num')
         if query:
             self.num = query[0].num + 1
             if self.num > r[1]:
@@ -297,144 +297,49 @@ class Runner(models.Model):
             self.num = r[0]
 
     class Meta:
-        verbose_name = 'Coureur'
-        # unicity of Runner, avoid duplication
+        verbose_name = 'Personne'
+        # unicity of People, avoid duplication
         unique_together = ('first_name', 'last_name', 'birthday', 'gender')
 
     def __str__(self):
         return '%s %s (%d)' % (self.first_name, self.last_name, self.num)
 
 #------------------------------------------------------------------------------
-class Individual(models.Model):
+class Runner(models.Model):
     """
-    Runner alone who runs the full circuit.
+    TODO
     """
-    # One Individual -> One Runner (unicity)
-    runner = models.OneToOneField(Runner, verbose_name='Coureur')
+    team = models.CharField('Nom de l\'équipe', max_length=30, blank=True, null=True)
     email = models.EmailField('Email')
-    category = models.CharField('Catégorie de coureur', max_length=10, choices=CATEGORY_CHOICES)
-    # One Individual -> One payment (unicity)
-    payment = models.OneToOneField(Payment, verbose_name='Paiement')
-
-    # Additional information
-    company = models.ForeignKey(Company, verbose_name='Entreprise', blank=True, null=True)
-
-    def can_run(self):
-        """
-        According to FF(?), to run 10 km, runner must have more than 16 yo.
-        """
-        if self.runner.age() < 16:
-            return False
-        else:
-            return True
-
-    def clean(self):
-        """
-        Check if Individual can run
-        """
-        if not self.can_run():
-            raise ValidationError(
-                {
-                    NON_FIELD_ERRORS: [
-                        '%s ne peut pas s\'inscrire en individuel, l\'âge '
-                        'minimal est de 16 ans, ce dernier ayant %s ans.'
-                        % (self.runner, self.runner.age())
-                    ],
-                }
-            )
-
-    def validate_unique(self, exclude=None, *args, **kwargs):
-        """
-        Check if Runner is not in another Individual or Team
-        The OneToOne relation is only available between two tables,
-        not between three tables.
-        """
-        super(Individual, self).validate_unique(*args, **kwargs)
-        if self.runner:
-            team = None
-            if Team.objects.filter(runner_1=self.runner).exists():
-                team = Team.objects.filter(runner_1=self.runner).get()
-            elif Team.objects.filter(runner_2=self.runner).exists():
-                team = Team.objects.filter(runner_2=self.runner).get()
-            elif Team.objects.filter(runner_3=self.runner).exists():
-                team = Team.objects.filter(runner_3=self.runner).get()
-            if team:
-                raise ValidationError(
-                    {
-                        # TODO: translation
-                        NON_FIELD_ERRORS: [
-                            '%s est déjà dans une équipe (%s)' % (self.runner, team)
-                        ],
-                    }
-                )
-
-    def compute_categories(self):
-        c = set()
-        c.add(self.runner.runner_category())
-        c.add(self.category)
-        return c
-
-    def delete(self, *args, **kwargs):
-        """
-        When deleting a Individual, delete all related objects.
-        """
-        self.runner.delete()
-        self.payment.delete()
-        super(Individual, self).delete(*args, **kwargs)  # Call the "real" delete() method.
-
-    class Meta:
-        verbose_name = 'Individuel'
-
-    def __str__(self):
-        return '%s' % self.runner
-
-#------------------------------------------------------------------------------
-class Team(models.Model):
-    """
-    A Team is composed by 3 runners.
-    """
-    name = models.CharField('Name', max_length=30)
-    email = models.EmailField('Email')  # useful ?
-    category = models.CharField('Catégorie du coureur', max_length=10, choices=CATEGORY_CHOICES)
-    # OneToOne relation between Runner and Team
-    runner_1 = models.OneToOneField(Runner, verbose_name='1er coureur',
-                                    related_name='team_runner_1')
-    runner_2 = models.OneToOneField(Runner, verbose_name='2nd coureur',
-                                    related_name='team_runner_2')
-    runner_3 = models.OneToOneField(Runner, verbose_name='3eme coureur',
-                                    related_name='team_runner_3')
+    category = models.CharField('Catégorie du coureur', max_length=10, choices=CATEGORY_CHOICES,
+                                default='Adulte')
+    # OneToOne relation between People and Team
+    runner_1 = models.OneToOneField(People, verbose_name='1er coureur',
+                                    related_name='runner_1')
+    runner_2 = models.OneToOneField(People, verbose_name='2nd coureur',
+                                    related_name='runner_2', blank=True, null=True)
+    runner_3 = models.OneToOneField(People, verbose_name='3eme coureur',
+                                    related_name='runner_3', blank=True, null=True)
     company = models.ForeignKey(Company, verbose_name='Entreprise', blank=True, null=True)
     # OneToOne relation between Payment and Team
     payment = models.OneToOneField(Payment, verbose_name='Paiement')
 
-    def validate_unique(self, exclude=None, *args, **kwargs):
-        """
-        Check if all Runner are not in Individual
-        """
-        super(Team, self).validate_unique(*args, **kwargs)
-        for runner in [self.runner_1, self.runner_2, self.runner_3]:
-            if Individual.objects.filter(runner=runner).exists():
-                raise ValidationError(
-                    {
-                        # TODO: translation
-                        NON_FIELD_ERRORS: [
-                            'Le coureur %s est déjà inscrit en individuel' % runner,
-                        ],
-                    }
-                )
-
     def delete(self, *args, **kwargs):
         """
-        When deleting a Team, delete all related objects.
+        When deleting a Runner, delete all related objects.
         """
         self.runner_1.delete()
-        self.runner_2.delete()
-        self.runner_3.delete()
+        if self.team:
+            self.runner_2.delete()
+            self.runner_3.delete()
         self.payment.delete()
-        super(Team, self).delete(*args, **kwargs)
+        super(Runner, self).delete(*args, **kwargs)
 
     class Meta:
-        verbose_name = 'Equipe'
+        verbose_name = 'Coureur'
 
     def __str__(self):
-        return '%s' % self.name
+        if self.team:
+            return 'Equipe: %s' % self.team
+        else:
+            return '%s %s' % (self.runner_1.first_name, self.runner_1.last_name)

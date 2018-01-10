@@ -6,28 +6,28 @@ Coureur 10 km - route (3,3 km) / nature (3,4 km) / route (3,3 km)
 =================================================================
 Catégorie
 ---------
-{{category[individual.category]}}
+{{category[r.category]}}
 
 Prix
 ----
-{{individual.payment.price.price}} €
+{{r.payment.price.price}} €
 
-{%- if individual.company -%}
+{%- if r.company -%}
 
 Entreprise
 ----------
-{{individual.company}}
+{{r.company}}
 
 {% endif %}
-{%- if individual.school -%}
+{%- if r.school -%}
 
 Ecole
 -----
-{{individual.school}}
+{{r.school}}
 
 {%- endif -%}
 
 Information sur le coureur
 --------------------------
-{{ display_runner(individual.runner) }}
+{{ display_runner(r.runner_1) }}
 {% endblock %}
