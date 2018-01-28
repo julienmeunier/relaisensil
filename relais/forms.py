@@ -7,11 +7,11 @@ from relais.constants import RANGE_INDIVIDUAL, RANGE_TEAM
 from relais.models import (
     CATEGORY_CHOICES,
     CONFIG_CHOICES,
-    METHOD_PAYMENT_CHOICES,
     GENDER_CHOICES,
-    TSHIRT_CHOICES,
+    METHOD_PAYMENT_CHOICES,
     People,
     Runner,
+    TSHIRT_CHOICES,
 )
 
 

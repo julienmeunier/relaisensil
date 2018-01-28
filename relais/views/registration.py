@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.mail.message import EmailMessage
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
@@ -8,17 +9,15 @@ from django.utils.crypto import get_random_string
 
 from engine.settings.production import DEVELOPPER_MAIL
 from relais import constants, forms, models, helpers
-from relais.constants import RANGE_INDIVIDUAL, RANGE_TEAM
 from relais.models import (
     Payment,
-    Price,
     People,
+    Price,
     Runner,
     Setting,
 )
 from relais.util.decorator import registration_opened
 from relais.views.payment import sendmail_payment_pending
-from django.contrib.auth.decorators import login_required
 
 
 #------------------------------------------------------------------------------

@@ -1,3 +1,4 @@
+from datetime import datetime, timezone, timedelta
 import http
 import json
 
@@ -10,7 +11,6 @@ from django.utils.dateparse import parse_time
 from django.views.decorators.csrf import csrf_exempt
 
 from relais.models import People, Setting
-from datetime import datetime, timezone, timedelta
 
 
 #------------------------------------------------------------------------------

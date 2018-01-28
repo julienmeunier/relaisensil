@@ -1,13 +1,14 @@
 from django.contrib import admin
+
 from relais.models import (
     Club,
     Company,
     Federation,
     Payment,
     People,
-    School,
     Price,
     Runner,
+    School,
     Setting,
 )
 

@@ -1,11 +1,19 @@
+from datetime import datetime
 import hashlib
 import json
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models.functions.base import Now
 
-from relais.models import Club, Federation, Company, School, Runner, CATEGORY_CHOICES
 from relais import constants
+from relais.models import (
+    CATEGORY_CHOICES,
+    Club,
+    Federation,
+    Company,
+    School,
+    Runner,
+)
 
 
 def add_get_club(name):
