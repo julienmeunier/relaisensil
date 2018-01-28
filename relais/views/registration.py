@@ -18,6 +18,7 @@ from relais.models import (
 )
 from relais.util.decorator import registration_opened
 from relais.views.payment import sendmail_payment_pending
+from relais.helpers import ovh
 
 
 #------------------------------------------------------------------------------
@@ -228,6 +229,8 @@ def form(request, prefix='', team=False, onsite=False):
 
             # Send mail
             sendmail_summary(payment=pay)
+            # Register to our mailing list
+            ovh.add_runner_mailing(form.cleaned_data['email'])
             # Send mail about payment if any (before redirect)
             if not pay.state:
                 sendmail_payment_pending(payment=pay)
