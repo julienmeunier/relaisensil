@@ -110,11 +110,11 @@ def results_individual(request, display_all=False, order_by_time=True):
 
     # 
     if display_all:
-        count_1 = None
-        count_3 = None
+        limit_1 = None
+        limit_3 = None
     else:
-        count_1 = 1
-        count_3 = 3
+        limit_1 = 1
+        limit_3 = 3
 
     individual = helpers.get_all_indiv() 
 
@@ -165,19 +165,19 @@ def results_individual(request, display_all=False, order_by_time=True):
     query = individual.filter(runner_1__gender=constants.MALE)
     query = query.order_by(order)
     r.append(RESULTS(name="Scratch Homme",
-                     results=query[0:count_3]))
+                     results=query[0:limit_3]))
 
     query = individual.filter(runner_1__gender=constants.FEMALE)
     query = query.order_by(order)
     r.append(RESULTS(name="Scratch Femme",
-                            results=query[0:count_3]))
+                            results=query[0:limit_3]))
 
     for key_gender, name_gender in people.items():
         # exclude 3 first one runners Male / Female
         if display_all:
             exclude = []
         else:
-            exclude = individual.filter(runner_1__gender=key_gender).order_by(order)[0:count_3]
+            exclude = individual.filter(runner_1__gender=key_gender).order_by(order)[0:limit_3]
 
         for key, data in r_cat.items():
             name = "{category} - {gender}".format(category=data['name'],
@@ -197,7 +197,7 @@ def results_individual(request, display_all=False, order_by_time=True):
                 query = query.order_by(order)
 
             # get results
-            results = query[0:count_1]
+            results = query[0:limit_1]
             r.append(RESULTS(name=name, results=results))
 
     r.append(RESULTS(name="La tenue originale (non géré automatiquement)",
@@ -205,7 +205,7 @@ def results_individual(request, display_all=False, order_by_time=True):
 
     query = individual.order_by('-runner_1__time')
     r.append(RESULTS(name="Le dernier",
-                            results=query[0:count_1]))
+                            results=query[0:limit_1]))
 
     to_template['individual'] = r
     to_template['order_by_time'] = order_by_time
@@ -231,11 +231,11 @@ def results_team(request, display_all=False, order_by_time=True):
     }
 
     if display_all:
-        count_1 = None
-        count_3 = None
+        limit_1 = None
+        limit_3 = None
     else:
-        count_1 = 1
-        count_3 = 3
+        limit_1 = 1
+        limit_3 = 3
 
     team = helpers.get_all_team()
 
@@ -259,7 +259,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.order_by(order)
 
     r.append(RESULTS(name="Homme",
-                            results=query[0:count_3]))
+                            results=query[0:limit_3]))
 
     # Female
     query = team.filter(runner_1__gender=constants.FEMALE,
@@ -268,7 +268,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.order_by(order)
 
     r.append(RESULTS(name="Femme",
-                            results=query[0:count_3]))
+                            results=query[0:limit_3]))
 
     # Mixte 1
     mixte1 = [(constants.FEMALE, constants.MALE, constants.MALE),
@@ -284,7 +284,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.order_by(order)
 
     r.append(RESULTS(name="Mixte 1",
-                            results=query[0:count_1]))
+                            results=query[0:limit_1]))
     # Mixte 2
     mixte2 = [(constants.MALE, constants.FEMALE, constants.FEMALE),
                (constants.FEMALE, constants.MALE, constants.FEMALE),
@@ -299,7 +299,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.order_by(order)
 
     r.append(RESULTS(name="Mixte 2",
-                     results=query[0:count_1]))
+                     results=query[0:limit_1]))
 
     # College
     # need to parse school name
@@ -312,7 +312,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.filter(reduce(operator.or_, q_college))
     query = query.order_by(order)
     r.append(RESULTS(name="Collégiens",
-                        results=query[0:count_1]))
+                        results=query[0:limit_1]))
 
     # 5) Lycée
     # need to parse school names
@@ -326,7 +326,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.order_by(order)
 
     r.append(RESULTS(name="Lycéens",
-                        results=query[0:count_1]))
+                        results=query[0:limit_1]))
 
     # 6) Etudiant M
     student = {}
@@ -339,7 +339,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.exclude(reduce(operator.or_, q_lycee))  # exclude lycee
     query = query.order_by(order)
 
-    student['male'] = query[0:count_1]
+    student['male'] = query[0:limit_1]
     r.append(RESULTS(name="Etudiants - Homme",
                             results=student['male']))
 
@@ -353,7 +353,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.exclude(reduce(operator.or_, q_lycee))  # exclude lycee
     query = query.order_by(order)
 
-    student['female'] = query[0:count_1]
+    student['female'] = query[0:limit_1]
 
     r.append(RESULTS(name="Etudiants - Femme",
                             results=student['female']))
@@ -371,7 +371,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.exclude(reduce(operator.or_, q_lycee))  # exclude lycee
     query = query.order_by(order)
 
-    student['mix'] = query[0:count_1]
+    student['mix'] = query[0:limit_1]
 
     r.append(RESULTS(name="Etudiants - Mixte",
                         results=student['mix']))
@@ -392,7 +392,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.order_by(order)
 
     r.append(RESULTS(name="ENSIL-ENSCI - Homme",
-                    results=query[0:count_1]))
+                    results=query[0:limit_1]))
 
     # ENSIL-ENSCI F
     query = team.filter(category=constants.STUDENT_ENSIL_ENSCI)
@@ -403,7 +403,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.order_by(order)
 
     r.append(RESULTS(name="ENSIL-ENSCI - Femme",
-                    results=query[0:count_1]))
+                    results=query[0:limit_1]))
 
     # ENSIL-ENSCI mixte
     query = team.filter(category=constants.STUDENT_ENSIL_ENSCI)
@@ -412,7 +412,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.order_by(order)
 
     r.append(RESULTS(name="ENSIL-ENSCI - Mixte",
-                    results=query[0:count_1]))
+                    results=query[0:limit_1]))
 
     # Challenge M
     query = team.filter(category=constants.CHALLENGE)
@@ -422,7 +422,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.order_by(order)
 
     r.append(RESULTS(name="Challenge Entreprise - Homme",
-                        results=query[0:count_1]))
+                        results=query[0:limit_1]))
 
     # Challenge F
     query = team.filter(category=constants.CHALLENGE)
@@ -432,7 +432,7 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.order_by(order)
 
     r.append(RESULTS(name="Challenge Entreprise - Femme",
-                        results=query[0:count_1]))
+                        results=query[0:limit_1]))
 
     # Challenge mixte
     query = team.filter(category=constants.CHALLENGE)
@@ -440,14 +440,14 @@ def results_team(request, display_all=False, order_by_time=True):
     query = query.order_by(order)
 
     r.append(RESULTS(name="Challenge Entreprise - Mixte",
-                        results=query[0:count_1]))
+                        results=query[0:limit_1]))
 
     # Anciens ENSIL-ENSCI
     query = team.filter(category=constants.OLDER)
     query = query.order_by(order)
 
     r.append(RESULTS(name="Anciens ENSIL-ENSCI",
-                            results=query[0:count_1]))
+                            results=query[0:limit_1]))
 
     to_template['team'] = r
     to_template['order_by_time'] = order_by_time
