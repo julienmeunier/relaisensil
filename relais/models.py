@@ -35,7 +35,7 @@ class Setting(models.Model):
 
     def get_edition_nb(self):
         diff = self.event - self.first_event
-        return (diff.days / 365) + 1
+        return int((diff.days / 365) + 1)
 
 #------------------------------------------------------------------------------
 CATEGORY_CHOICES = ((constants.ADULT, 'Adulte'),
