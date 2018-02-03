@@ -35,6 +35,12 @@ class PaymentAdmin(admin.ModelAdmin):
     list_max_show_all = 500
     list_per_page = 500
 
+    def make_valid(self, _, queryset):
+        queryset.update(state=True)
+    make_valid.short_description = "Valider le paiement"
+
+    actions = [make_valid]
+
     def reverse(self, obj):
         return '<a href="/admin/relais/runner/%s">%s</a>' % (obj.runner.pk,
                                                              obj.runner)
