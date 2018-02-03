@@ -12,20 +12,20 @@ Prix
 ----
 {{r.payment.price.price}} €
 
-{%- if r.company -%}
+{%- if r.company %}
 
 Entreprise
 ----------
 {{r.company}}
 
 {% endif %}
-{%- if r.school -%}
+{%- if r.school %}
 
 Ecole
 -----
 {{r.school}}
 
-{%- endif -%}
+{%- endif %}
 
 Information sur le coureur
 --------------------------
