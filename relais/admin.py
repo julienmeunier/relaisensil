@@ -72,7 +72,6 @@ class RunnerAdmin(admin.ModelAdmin):
                     'payment_link')
     list_max_show_all = 500
     list_per_page = 500
-    actions = [really_delete_selected, make_valid_cert, make_valid_payment]
 
     def type(self, obj):
         if obj.team:
@@ -113,6 +112,8 @@ class RunnerAdmin(admin.ModelAdmin):
             obj.delete()
         self.message_user(request, "%s coureurs(s) correctement supprime(s)." % queryset.count())
     really_delete_selected.short_description = "Supprimer ? (+ paiement + coureurs)"
+
+    actions = [really_delete_selected, make_valid_cert, make_valid_payment]
 
     # add a link to the People admin page
     def runner_1_link(self, obj):
