@@ -64,9 +64,9 @@ class RunnerAdmin(admin.ModelAdmin):
                     'company',
                     'payment_status',
                     'payment_link')
-    actions = ['really_delete_selected']
     list_max_show_all = 500
     list_per_page = 500
+    actions = [really_delete_selected, make_valid_cert, make_valid_payment]
 
     def type(self, obj):
         if obj.team:
@@ -75,6 +75,24 @@ class RunnerAdmin(admin.ModelAdmin):
             return 'Individuel'
     type.short_description = 'Type de course'
     type.allow_tags = True
+
+    def make_valid_cert(self, request, queryset):
+        for obj in queryset:
+            obj.runner_1.certificat = True
+            obj.runner_1.save()
+            if obj.runner_2:
+                obj.runner_2.certificat = True
+                obj.runner_2.save()
+            if obj.runner_3:
+                obj.runner_3.certificat = True
+                obj.runner_3.save()
+    make_valid_cert.short_description = "Valider les certificats"
+
+    def make_valid_payment(self, request, queryset):
+        for obj in queryset:
+            obj.payment.state = True
+            obj.payment.save()
+    make_valid_payment.short_description = "Valider le paiement"
 
     # by default, django use QuerySet to delete an entry
     # however, in the case of Individual/Team, delete method of these models
