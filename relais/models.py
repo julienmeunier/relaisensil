@@ -55,7 +55,7 @@ class Price(models.Model):
     Price of each category.
     """
     config = models.CharField('Type de coureur', max_length=12, choices=CONFIG_CHOICES)
-    who = models.CharField('Catégorie du coureur', max_length=12, choices=CATEGORY_CHOICES)
+    who = models.CharField('Catégorie du coureur', max_length=20, choices=CATEGORY_CHOICES)
     when = models.CharField('Quand', max_length=10, choices=WHEN_CHOICES)
     price = models.IntegerField('Prix')
 
@@ -311,7 +311,7 @@ class Runner(models.Model):
     """
     team = models.CharField('Nom de l\'équipe', max_length=30, blank=True, null=True)
     email = models.EmailField('Email')
-    category = models.CharField('Catégorie du coureur', max_length=10, choices=CATEGORY_CHOICES,
+    category = models.CharField('Catégorie du coureur', max_length=20, choices=CATEGORY_CHOICES,
                                 default='Adulte')
     # OneToOne relation between People and Team
     runner_1 = models.OneToOneField(People, verbose_name='1er coureur',
