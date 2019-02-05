@@ -153,6 +153,8 @@ def results_individual(request, display_all=False, order_by_time=True):
     r_cat[constants.SENOIR] = {'name': '%s (%s)' % (constants.SENOIR, get_years_ffa(constants.SENOIR)), 'ffa': True}
     r_cat[constants.JUNIOR] = {'name': '%s (%s)' % (constants.JUNIOR, get_years_ffa(constants.JUNIOR)), 'ffa': True}
     r_cat[constants.CADET] = {'name': '%s (%s)' % (constants.CADET, get_years_ffa(constants.CADET)), 'ffa': True}
+    r_cat[constants.STUDENT_ENSIL_ENSCI] = {'name': 'Etudiant ENSIL-ENSCI', 'ffa': False}
+    r_cat[constants.STUDENT] = {'name': 'Etudiant', 'ffa': False}
     r_cat[constants.CHALLENGE] = {'name': 'Challenge entreprise', 'ffa': False}
     r_cat[constants.OLDER] = {'name': 'Ancien de l\'ENSIL-ENSCI', 'ffa': False}
 
